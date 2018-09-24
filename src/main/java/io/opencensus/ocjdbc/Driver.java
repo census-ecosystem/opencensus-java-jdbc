@@ -20,6 +20,8 @@ import java.sql.SQLFeatureNotSupportedException;
 import java.util.logging.Logger;
 import java.util.Properties;
 
+import io.opencensus.ocjdbc.Observability;
+
 /*
  * Driver is a class that wraps and instruments a sql.Driver
  * instance wit htracing and metrics using OpenCensus.
@@ -38,7 +40,19 @@ public class Driver implements java.sql.Driver {
 
     @Override
     public java.sql.Connection connect(String url, Properties info) throws SQLException {
-        return this.driver.connect(url, info);
+        Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Driver.connect", "connect");
+
+        try {
+            // Retrieve the raw connection then wrap it with the OpenCensus instrumented
+            // Connection class instance to provide metrics and traces per call.
+            java.sql.Connection conn = this.driver.connect(url, info);
+            return new Connection(conn);
+        } catch (Exception e) {
+            span.recordException(e);
+            throw e;
+        } finally {
+            span.close();
+        }
     }
 
     @Override
