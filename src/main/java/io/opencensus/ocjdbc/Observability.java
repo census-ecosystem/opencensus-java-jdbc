@@ -48,6 +48,11 @@ public class Observability {
     private static final Tagger tagger = Tags.getTagger();
     private static final Tracer tracer = Tracing.getTracer();
 
+    private static final String DETECTED_OS_NAME        = System.getProperty("os.name", "");
+    private static final String DETECTED_ARCH           = System.getProperty("os.arch", "");
+    private static final String DETECTED_OS_VERSION     = System.getProperty("os.version", "");
+    private static final String DETECTED_JAVA_VERSION   = System.getProperty("java.version", "");
+
     // Units of measurement
     private static final String BYTES = "By";
     private static final String DIMENSIONLESS = "1";
@@ -58,6 +63,16 @@ public class Observability {
     public static final TagKey keyPhase  = TagKey.create("phase");
     public static final TagKey keyReason = TagKey.create("reason");
     public static final TagKey keyType   = TagKey.create("type");
+    private static final TagKey keyArchitecture = TagKey.create("arch");
+    private static final TagKey keyJavaVersion  = TagKey.create("java_version");
+    private static final TagKey keyOSName = TagKey.create("os_name");
+    private static final TagKey keyOSVersion = TagKey.create("os_version");
+
+    private static List<TagKeyPair> mandatorySystemTagKeyPairs = Arrays.asList(
+                                                                    tagKeyPair(keyArchitecture, DETECTED_ARCH),
+                                                                    tagKeyPair(keyJavaVersion, DETECTED_JAVA_VERSION),
+                                                                    tagKeyPair(keyOSName, DETECTED_OS_NAME),
+                                                                    tagKeyPair(keyOSVersion, DETECTED_OS_VERSION));
 
     // Measures
     public static final MeasureLong mCalls       = MeasureLong.create("java.sql/calls", "The number of calls to the server", DIMENSIONLESS);
@@ -66,34 +81,39 @@ public class Observability {
     public static final MeasureDouble mLatencyMs = MeasureDouble.create("java.sql/latency", "The latency of calls in milliseconds", MILLISECONDS);
     public static final MeasureLong mValueLength = MeasureLong.create("java.sql/value_length", "Records the lengths of values", DIMENSIONLESS);
 
-    public static void recordTaggedStat(TagKey key, String value, MeasureLong ml, int i) {
-        recordTaggedStat(key, value, ml, new Long(i));
-    }
-
-    public static void recordTaggedStat(TagKey key, String value, MeasureLong ml, Long l) {
-        Scope ss = tagger.withTagContext(tagger.emptyBuilder()
-                                                .put(key, TagValue.create(value))
-                                                .build());
-        statsRecorder.newMeasureMap().put(ml, l).record();
-        ss.close();
-    }
-
-    public static void recordTaggedStat(TagKey key, String value, MeasureDouble md, Double d) {
-        Scope ss = tagger.withTagContext(tagger.emptyBuilder()
-                                               .put(key, TagValue.create(value))
-                                               .build());
-        statsRecorder.newMeasureMap().put(md, d).record();
-        ss.close();
-    }
-
-    public static void recordStatWithTags(MeasureLong ml, long l, TagKeyPair ...pairs) {
+    private static Scope buildTagContextAndScopeWithSystemProperties(TagKeyPair ...pairs) {
         TagContextBuilder tb = tagger.emptyBuilder();
         for (TagKeyPair kvp : pairs) {
             tb.put(kvp.key, TagValue.create(kvp.value));
         }
 
-        TagContext tctx = tb.build();
-        Scope ss = tagger.withTagContext(tctx);
+        // It is imperative that we record the various mandatory OS and System identifiers.
+        // See Issue https://github.com/opencensus-integrations/ocjdbc/issues/4
+        // As they are very useful in helping disambiguate between processes.
+        for (TagKeyPair mandatoryKVP : mandatorySystemTagKeyPairs) {
+            tb.put(mandatoryKVP.key, TagValue.create(mandatoryKVP.value));
+        }
+        return tagger.withTagContext(tb.build());
+    }
+
+    public static void recordTaggedStat(TagKey key, String value, MeasureLong ml, int i) {
+        recordTaggedStat(key, value, ml, new Long(i));
+    }
+
+    public static void recordTaggedStat(TagKey key, String value, MeasureLong ml, Long l) {
+        Scope ss = buildTagContextAndScopeWithSystemProperties(tagKeyPair(key, value));
+        statsRecorder.newMeasureMap().put(ml, l).record();
+        ss.close();
+    }
+
+    public static void recordTaggedStat(TagKey key, String value, MeasureDouble md, Double d) {
+        Scope ss = buildTagContextAndScopeWithSystemProperties(tagKeyPair(key, value));
+        statsRecorder.newMeasureMap().put(md, d).record();
+        ss.close();
+    }
+
+    public static void recordStatWithTags(MeasureLong ml, long l, TagKeyPair ...pairs) {
+        Scope ss = buildTagContextAndScopeWithSystemProperties(pairs);
         statsRecorder.newMeasureMap().put(ml, l).record();
         ss.close();
     }
@@ -106,25 +126,31 @@ public class Observability {
         private long startTimeNs;
         private String method;
         private boolean closed;
-        private TagValue methodAsTagValue;
 
         public RoundtripTrackingSpan(String name, String method) {
             this.startTimeNs = System.nanoTime();
             this.spanScope = tracer.spanBuilder(name).startScopedSpan();
             this.span = tracer.getCurrentSpan();
             this.method = method;
-            this.methodAsTagValue = TagValue.create(method);
         }
 
         public void end() {
             if (this.closed)
                 return;
 
-            long totalTimeNs = System.nanoTime() - this.startTimeNs;
-            double timeSpentMs = (new Double(totalTimeNs))/1e6;
-            recordTaggedStat(keyMethod, this.method, mLatencyMs, timeSpentMs);
-            this.closed = true;
-            this.spanScope.close();
+            try {
+                // Record the number of calls of the made method.
+                recordTaggedStat(keyMethod, this.method, mCalls, 1);
+
+                long totalTimeNs = System.nanoTime() - this.startTimeNs;
+                double timeSpentMs = (new Double(totalTimeNs))/1e6;
+
+                // Finally record the latency of the entire call.
+                recordTaggedStat(keyMethod, this.method, mLatencyMs, timeSpentMs);
+            } finally {
+                this.spanScope.close();
+                this.closed = true;
+            }
         }
 
         @Override
