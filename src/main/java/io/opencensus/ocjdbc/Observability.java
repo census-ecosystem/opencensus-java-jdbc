@@ -189,10 +189,13 @@ public class Observability {
     }
 
     private static List<TagKey> addMandatorySystemTagKeys(TagKey ...customTagKeys) {
-        List<TagKey> out = Arrays.asList(customTagKeys);
-        for (TagKeyPair kvp : mandatorySystemTagKeyPairs) {
+        List<TagKey> out = new ArrayList<TagKey>();
+        for (TagKey tagKey : customTagKeys)
+            out.add(tagKey);
+
+        for (TagKeyPair kvp : mandatorySystemTagKeyPairs)
             out.add(kvp.key);
-        }
+
         return out;
     }
 
