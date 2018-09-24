@@ -184,7 +184,8 @@ public class Statement implements java.sql.Statement, java.sql.Wrapper {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Statement.executeQuery", "executeQuery");
 
         try {
-            return this.stmt.executeQuery(SQL);
+            java.sql.ResultSet rs = this.stmt.executeQuery(SQL);
+            return new ResultSet(rs);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -287,7 +288,8 @@ public class Statement implements java.sql.Statement, java.sql.Wrapper {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Statement.getGeneratedKeys", "getGeneratedKeys");
 
         try {
-            return this.stmt.getGeneratedKeys();
+            java.sql.ResultSet rs = this.stmt.getGeneratedKeys();
+            return new ResultSet(rs);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -371,7 +373,8 @@ public class Statement implements java.sql.Statement, java.sql.Wrapper {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Statement.getResultSet", "getResultSet");
 
         try {
-            return this.stmt.getResultSet();
+            java.sql.ResultSet rs = this.stmt.getResultSet();
+            return new ResultSet(rs);
         } catch (Exception e) {
             span.recordException(e);
             throw e;

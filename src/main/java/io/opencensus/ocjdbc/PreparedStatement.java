@@ -227,7 +227,8 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.executeQuery", "executeQuery");
 
         try {
-            return this.pstmt.executeQuery(SQL);
+            java.sql.ResultSet rs = this.pstmt.executeQuery(SQL);
+            return new ResultSet(rs);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -297,7 +298,8 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.executeQuery", "executeQuery");
 
         try {
-            return this.pstmt.executeQuery();
+            java.sql.ResultSet rs = this.pstmt.executeQuery();
+            return new ResultSet(rs);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -353,7 +355,8 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.getGeneratedKeys", "getGeneratedKeys");
 
         try {
-            return this.pstmt.getGeneratedKeys();
+            java.sql.ResultSet rs = this.pstmt.getGeneratedKeys();
+            return new ResultSet(rs);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -437,7 +440,8 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.getResultSet", "getResultSet");
 
         try {
-            return this.pstmt.getResultSet();
+            java.sql.ResultSet rs = this.pstmt.getResultSet();
+            return new ResultSet(rs);
         } catch (Exception e) {
             span.recordException(e);
             throw e;

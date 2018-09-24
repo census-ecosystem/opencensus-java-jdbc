@@ -227,7 +227,8 @@ public class CallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.executeQuery", "executeQuery");
 
         try {
-            return this.cstmt.executeQuery(SQL);
+            java.sql.ResultSet rs = this.cstmt.executeQuery(SQL);
+            return new ResultSet(rs);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -297,7 +298,8 @@ public class CallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.executeQuery", "executeQuery");
 
         try {
-            return this.cstmt.executeQuery();
+            java.sql.ResultSet rs = this.cstmt.executeQuery();
+            return new ResultSet(rs);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -353,7 +355,8 @@ public class CallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getGeneratedKeys", "getGeneratedKeys");
 
         try {
-            return this.cstmt.getGeneratedKeys();
+            java.sql.ResultSet rs = this.cstmt.getGeneratedKeys();
+            return new ResultSet(rs);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -437,7 +440,8 @@ public class CallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getResultSet", "getResultSet");
 
         try {
-            return this.cstmt.getResultSet();
+            java.sql.ResultSet rs = this.cstmt.getResultSet();
+            return new ResultSet(rs);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
