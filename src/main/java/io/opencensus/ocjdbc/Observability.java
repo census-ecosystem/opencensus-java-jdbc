@@ -34,6 +34,7 @@ import io.opencensus.tags.Tagger;
 import io.opencensus.tags.Tags;
 import io.opencensus.trace.AttributeValue;
 import io.opencensus.trace.Span;
+import io.opencensus.trace.Status;
 import io.opencensus.trace.Tracer;
 import io.opencensus.trace.Tracing;
 
@@ -131,18 +132,15 @@ public class Observability {
             this.end();
         }
 
-        public void recordStatWithTags(MeasureLong ml, long l, TagKeyPair ...pairs) {
-            TagContextBuilder tb = tagger.emptyBuilder();
-            for (TagKeyPair kvp : pairs) {
-                tb.put(kvp.key, TagValue.create(kvp.value));
-            }
-            // Now add the method
-            tb.put(keyMethod, this.methodAsTagValue);
-
-            TagContext tctx = tb.build();
-            Scope ss = tagger.withTagContext(tctx);
-            statsRecorder.newMeasureMap().put(ml, l).record();
-            ss.close();
+        /*
+         * recordException annotates the underlying span with the description of the exception
+         * and also sets its status to indicate the exception but it also increments the number
+         * of errors by 1, adding tags: "method", "reason" to the recorded metric.
+         * */
+        public void recordException(Exception e) {
+            String detail = e.toString();
+            this.span.setStatus(Status.INTERNAL.withDescription(detail));
+            recordStatWithTags(mErrors, 1, tagKeyPair(keyReason, detail), tagKeyPair(keyMethod, this.method));
         }
     }
 

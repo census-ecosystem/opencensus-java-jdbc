@@ -32,7 +32,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.addBatch();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -46,7 +46,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.addBatch(SQL);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -60,7 +60,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.cancel();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -74,7 +74,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.clearBatch();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -88,7 +88,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.clearWarnings();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -103,7 +103,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.clearParameters();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -117,7 +117,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.close();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -131,7 +131,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.closeOnCompletion();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -145,7 +145,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.execute();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -159,7 +159,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.execute(SQL);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -173,7 +173,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.execute(SQL, columnNames);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -187,7 +187,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.execute(SQL, columnIndices);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -201,7 +201,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.execute(SQL, autoGeneratedKeys);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -215,7 +215,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.executeBatch();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -229,7 +229,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.executeQuery(SQL);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -243,7 +243,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.executeUpdate(SQL);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -257,7 +257,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.executeUpdate(SQL, autoGeneratedKeys);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -271,7 +271,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.executeUpdate(SQL, columnIndices);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -285,7 +285,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.executeUpdate(SQL, columnNames);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -299,7 +299,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.executeQuery();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -313,7 +313,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.executeUpdate();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -327,7 +327,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getFetchDirection();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -341,7 +341,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getFetchSize();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -355,7 +355,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getGeneratedKeys();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -369,7 +369,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getMaxFieldSize();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -383,7 +383,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getMaxRows();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -397,7 +397,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getMetaData();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -411,7 +411,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getMoreResults(current);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -425,7 +425,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getMoreResults();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -439,7 +439,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getResultSet();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -453,7 +453,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getResultSetConcurrency();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -467,7 +467,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getQueryTimeout();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -486,7 +486,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getParameterMetaData();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -500,7 +500,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getResultSetHoldability();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -514,7 +514,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getResultSetType();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -528,7 +528,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getUpdateCount();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -542,7 +542,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getWarnings();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -556,7 +556,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getArray(parameterIndex);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -570,7 +570,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getArray(parameterName);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -584,7 +584,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setArray(parameterIndex, x);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -598,7 +598,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setAsciiStream(parameterIndex, stream);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -612,7 +612,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setAsciiStream(parameterIndex, stream, length);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -626,7 +626,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setAsciiStream(parameterIndex, stream, length);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -640,7 +640,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setAsciiStream(parameterName, stream);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -654,7 +654,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setAsciiStream(parameterName, stream, length);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -668,7 +668,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setAsciiStream(parameterName, stream, length);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -682,7 +682,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getBigDecimal(parameterIndex);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -696,7 +696,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getBigDecimal(parameterIndex, scale);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -710,7 +710,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getBigDecimal(parameterName);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -724,7 +724,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setBigDecimal(parameterIndex, x);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -738,7 +738,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setBigDecimal(parameterName, x);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -752,7 +752,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setBinaryStream(parameterIndex, stream);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -766,7 +766,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setBinaryStream(parameterIndex, stream, length);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -780,7 +780,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setBinaryStream(parameterIndex, stream, length);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -794,7 +794,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setBinaryStream(parameterName, stream);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -808,7 +808,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setBinaryStream(parameterName, stream, length);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -822,7 +822,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setBinaryStream(parameterName, stream, length);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -836,7 +836,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getBlob(parameterIndex);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -850,7 +850,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getBlob(parameterName);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -864,7 +864,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setBlob(parameterIndex, x);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -878,7 +878,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setBlob(parameterIndex, x);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -892,7 +892,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setBlob(parameterIndex, inputStream, length);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -906,7 +906,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setBlob(parameterName, x);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -920,7 +920,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setBlob(parameterName, x);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -934,7 +934,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setBlob(parameterName, inputStream, length);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -948,7 +948,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getBoolean(parameterIndex);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -962,7 +962,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getBoolean(parameterName);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -976,7 +976,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setBoolean(parameterIndex, x);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -990,7 +990,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setBoolean(parameterName, x);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1004,7 +1004,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getByte(parameterIndex);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1018,7 +1018,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getByte(parameterName);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1032,7 +1032,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setByte(parameterIndex, x);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1046,7 +1046,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setByte(parameterName, x);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1060,7 +1060,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getBytes(parameterIndex);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1074,7 +1074,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getBytes(parameterName);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1088,7 +1088,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setBytes(parameterIndex, x);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1102,7 +1102,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setBytes(parameterName, x);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1116,7 +1116,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setCharacterStream(parameterIndex, reader);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1130,7 +1130,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setCharacterStream(parameterIndex, reader, length);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1144,7 +1144,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setCharacterStream(parameterIndex, reader, length);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1158,7 +1158,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setCharacterStream(parameterName, reader);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1172,7 +1172,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setCharacterStream(parameterName, reader, length);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1186,7 +1186,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setCharacterStream(parameterName, reader, length);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1200,7 +1200,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getClob(parameterIndex);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1214,7 +1214,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getClob(parameterName);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1228,7 +1228,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setClob(parameterIndex, x);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1242,7 +1242,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setClob(parameterIndex, reader);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1256,7 +1256,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setClob(parameterIndex, reader, length);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1270,7 +1270,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setClob(parameterName, x);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1284,7 +1284,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setClob(parameterName, reader);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1298,7 +1298,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setClob(parameterName, reader, length);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1312,7 +1312,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getDate(parameterIndex);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1326,7 +1326,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getDate(parameterIndex, cal);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1340,7 +1340,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getDate(parameterName);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1354,7 +1354,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getDate(parameterName, cal);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1368,7 +1368,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setDate(parameterIndex, x);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1382,7 +1382,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setDate(parameterName, x);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1396,7 +1396,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setDate(parameterIndex, x, cal);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1410,7 +1410,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setDate(parameterName, x, cal);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1425,7 +1425,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getDouble(parameterIndex);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1439,7 +1439,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getDouble(parameterName);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1453,7 +1453,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setDouble(parameterIndex, x);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1467,7 +1467,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setDouble(parameterName, x);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1481,7 +1481,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getFloat(parameterIndex);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1495,7 +1495,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getFloat(parameterName);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1509,7 +1509,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setFloat(parameterIndex, x);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1523,7 +1523,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setFloat(parameterName, x);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1537,7 +1537,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getInt(parameterIndex);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1551,7 +1551,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getInt(parameterName);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1565,7 +1565,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setInt(parameterIndex, x);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1579,7 +1579,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setInt(parameterName, x);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1593,7 +1593,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getLong(parameterIndex);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1607,7 +1607,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getLong(parameterName);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1621,7 +1621,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setLong(parameterIndex, x);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1635,7 +1635,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setLong(parameterName, x);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1649,7 +1649,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setNCharacterStream(parameterIndex, value);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1663,7 +1663,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setNCharacterStream(parameterIndex, value, length);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1677,7 +1677,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setNCharacterStream(parameterName, value);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1691,7 +1691,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setNCharacterStream(parameterName, value, length);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1705,7 +1705,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setNClob(parameterName, value);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1719,7 +1719,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setNClob(parameterIndex, value);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1733,7 +1733,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setNClob(parameterIndex, reader);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1747,7 +1747,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setNClob(parameterName, reader);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1761,7 +1761,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setNClob(parameterName, reader, length);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1775,7 +1775,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setNClob(parameterIndex, reader, length);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1789,7 +1789,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setNString(parameterIndex, value);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1803,7 +1803,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setNString(parameterName, value);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1817,7 +1817,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setNull(parameterIndex, sqlType);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1831,7 +1831,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setNull(parameterName, sqlType);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1845,7 +1845,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setNull(parameterIndex, sqlType, typeName);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1859,7 +1859,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setNull(parameterName, sqlType, typeName);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1873,7 +1873,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setObject(parameterIndex, x);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1887,7 +1887,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setObject(parameterName, x);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1901,7 +1901,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setObject(parameterIndex, x, targetSqlType);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1915,7 +1915,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setObject(parameterName, x, targetSqlType);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1930,7 +1930,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setObject(parameterIndex, x, targetSqlType, scaleOrLength);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1944,7 +1944,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setObject(parameterName, x, targetSqlType, scaleOrLength);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1959,7 +1959,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getRef(parameterIndex);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1973,7 +1973,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getRef(parameterName);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1987,7 +1987,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setRef(parameterIndex, x);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2001,7 +2001,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getRowId(parameterIndex);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2015,7 +2015,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getRowId(parameterName);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2029,7 +2029,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setRowId(parameterIndex, x);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2043,7 +2043,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setRowId(parameterName, x);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2057,7 +2057,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getShort(parameterIndex);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2071,7 +2071,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getShort(parameterName);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2085,7 +2085,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setShort(parameterIndex, x);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2099,7 +2099,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setShort(parameterName, x);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2113,7 +2113,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setSQLXML(parameterIndex, xmlObject);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2127,7 +2127,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setSQLXML(parameterName, xmlObject);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2141,7 +2141,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getString(parameterIndex);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2155,7 +2155,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getString(parameterName);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2169,7 +2169,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setString(parameterIndex, x);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2183,7 +2183,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setString(parameterName, x);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2197,7 +2197,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getTime(parameterIndex);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2211,7 +2211,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getTime(parameterIndex, cal);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2225,7 +2225,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getTime(parameterName);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2239,7 +2239,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getTime(parameterName, cal);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2253,7 +2253,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setTime(parameterIndex, x);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2267,7 +2267,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setTime(parameterName, x);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2281,7 +2281,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setTime(parameterIndex, x, cal);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2295,7 +2295,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setTime(parameterName, x, cal);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2309,7 +2309,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getTimestamp(parameterIndex);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2323,7 +2323,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getTimestamp(parameterIndex, cal);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2337,7 +2337,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getTimestamp(parameterName);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2351,7 +2351,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getTimestamp(parameterName, cal);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2365,7 +2365,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setTimestamp(parameterIndex, x);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2379,7 +2379,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setTimestamp(parameterName, x);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2393,7 +2393,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setTimestamp(parameterIndex, x, cal);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2407,7 +2407,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setTimestamp(parameterName, x, cal);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2421,7 +2421,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setUnicodeStream(parameterIndex, x, length);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2435,7 +2435,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getURL(parameterIndex);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2449,7 +2449,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getURL(parameterName);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2463,7 +2463,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setURL(parameterIndex, x);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2477,7 +2477,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setURL(parameterName, x);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2491,7 +2491,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.isClosed();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2505,7 +2505,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.isCloseOnCompletion();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2519,7 +2519,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.isPoolable();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2533,7 +2533,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setCursorName(cursorName);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2547,7 +2547,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setEscapeProcessing(enable);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2561,7 +2561,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setFetchDirection(direction);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2575,7 +2575,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setFetchSize(rows);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2589,7 +2589,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setMaxFieldSize(max);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2603,7 +2603,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setMaxRows(max);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2617,7 +2617,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setPoolable(poolable);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2631,7 +2631,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.setQueryTimeout(seconds);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2655,7 +2655,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getObject(parameterIndex);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2669,7 +2669,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getObject(parameterIndex, type);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2683,7 +2683,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getObject(parameterIndex, map);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2697,7 +2697,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getObject(parameterName);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2711,7 +2711,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getObject(parameterName, type);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2725,7 +2725,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getObject(parameterName, map);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2739,7 +2739,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getSQLXML(parameterIndex);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2753,7 +2753,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getSQLXML(parameterName);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2767,7 +2767,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getNString(parameterIndex);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2781,7 +2781,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getNString(parameterName);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2795,7 +2795,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getNCharacterStream(parameterIndex);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2809,7 +2809,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getNCharacterStream(parameterName);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2823,7 +2823,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getCharacterStream(parameterIndex);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2837,7 +2837,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getCharacterStream(parameterName);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2851,7 +2851,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getNClob(parameterIndex);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2865,7 +2865,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.getNClob(parameterName);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2879,7 +2879,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.registerOutParameter(parameterIndex, sqlType);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2893,7 +2893,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.registerOutParameter(parameterIndex, sqlType, scale);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2907,7 +2907,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.registerOutParameter(parameterIndex, sqlType, typeName);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2921,7 +2921,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.registerOutParameter(parameterName, sqlType);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2935,7 +2935,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.registerOutParameter(parameterName, sqlType, scale);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2949,7 +2949,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             this.cstmt.registerOutParameter(parameterName, sqlType, typeName);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -2963,7 +2963,7 @@ public class CallableStatement implements java.sql.CallableStatement {
         try {
             return this.cstmt.wasNull();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();

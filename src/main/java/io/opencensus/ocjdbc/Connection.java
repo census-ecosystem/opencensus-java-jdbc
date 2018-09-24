@@ -37,7 +37,7 @@ public class Connection implements java.sql.Connection {
         try {
             this.conn.abort(executor);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -51,7 +51,7 @@ public class Connection implements java.sql.Connection {
         try {
             this.conn.clearWarnings();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -65,7 +65,7 @@ public class Connection implements java.sql.Connection {
         try {
             this.conn.close();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -79,7 +79,7 @@ public class Connection implements java.sql.Connection {
         try {
             this.conn.commit();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -93,7 +93,7 @@ public class Connection implements java.sql.Connection {
         try {
             return this.conn.createArrayOf(typeName, elements);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -107,7 +107,7 @@ public class Connection implements java.sql.Connection {
         try {
             return this.conn.createBlob();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -121,7 +121,7 @@ public class Connection implements java.sql.Connection {
         try {
             return this.conn.createClob();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -135,7 +135,7 @@ public class Connection implements java.sql.Connection {
         try {
             return this.conn.createNClob();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -149,7 +149,7 @@ public class Connection implements java.sql.Connection {
         try {
             return this.conn.createSQLXML();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -164,7 +164,7 @@ public class Connection implements java.sql.Connection {
             java.sql.Statement stmt = this.conn.createStatement();
             return new Statement(stmt);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -179,7 +179,7 @@ public class Connection implements java.sql.Connection {
             java.sql.Statement stmt = this.conn.createStatement(resultSetType, resultSetConcurrency);
             return new Statement(stmt);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -194,7 +194,7 @@ public class Connection implements java.sql.Connection {
             java.sql.Statement stmt = this.conn.createStatement(resultSetType, resultSetConcurrency, resultSetHoldability);
             return new Statement(stmt);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -208,7 +208,7 @@ public class Connection implements java.sql.Connection {
         try {
             return this.conn.createStruct(typeName, attributes);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -222,7 +222,7 @@ public class Connection implements java.sql.Connection {
         try {
             return this.conn.getAutoCommit();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -236,7 +236,7 @@ public class Connection implements java.sql.Connection {
         try {
             return this.conn.getCatalog();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -250,7 +250,7 @@ public class Connection implements java.sql.Connection {
         try {
             return this.conn.getClientInfo();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -264,7 +264,7 @@ public class Connection implements java.sql.Connection {
         try {
             return this.conn.getClientInfo(name);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -278,7 +278,7 @@ public class Connection implements java.sql.Connection {
         try {
             return this.conn.getHoldability();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -292,7 +292,7 @@ public class Connection implements java.sql.Connection {
         try {
             return this.conn.getMetaData();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -306,7 +306,7 @@ public class Connection implements java.sql.Connection {
         try {
             return this.conn.getNetworkTimeout();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -320,7 +320,7 @@ public class Connection implements java.sql.Connection {
         try {
             return this.conn.getSchema();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -334,7 +334,7 @@ public class Connection implements java.sql.Connection {
         try {
             return this.conn.getTransactionIsolation();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -348,7 +348,7 @@ public class Connection implements java.sql.Connection {
         try {
             return this.conn.getTypeMap();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -362,7 +362,7 @@ public class Connection implements java.sql.Connection {
         try {
             return this.conn.getWarnings();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -376,7 +376,7 @@ public class Connection implements java.sql.Connection {
         try {
             return this.conn.isClosed();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -390,7 +390,7 @@ public class Connection implements java.sql.Connection {
         try {
             return this.conn.isReadOnly();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -404,7 +404,7 @@ public class Connection implements java.sql.Connection {
         try {
             return this.conn.isValid(timeout);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -418,7 +418,7 @@ public class Connection implements java.sql.Connection {
         try {
             return this.conn.nativeSQL(SQL);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -433,7 +433,7 @@ public class Connection implements java.sql.Connection {
             java.sql.CallableStatement cstmt = this.conn.prepareCall(SQL);
             return new CallableStatement(cstmt);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -448,7 +448,7 @@ public class Connection implements java.sql.Connection {
             java.sql.CallableStatement cstmt = this.conn.prepareCall(SQL, resultSetType, resultSetConcurrency);
             return new CallableStatement(cstmt);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -463,7 +463,7 @@ public class Connection implements java.sql.Connection {
             java.sql.CallableStatement cstmt = this.conn.prepareCall(SQL, resultSetType, resultSetConcurrency, resultSetHoldability);
             return new CallableStatement(cstmt);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -480,7 +480,7 @@ public class Connection implements java.sql.Connection {
             java.sql.PreparedStatement pstmt = this.conn.prepareStatement(SQL);
             return new PreparedStatement(pstmt);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -495,7 +495,7 @@ public class Connection implements java.sql.Connection {
             java.sql.PreparedStatement pstmt = this.conn.prepareStatement(SQL, autoGeneratedKeys);
             return new PreparedStatement(pstmt);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -510,7 +510,7 @@ public class Connection implements java.sql.Connection {
             java.sql.PreparedStatement pstmt = this.conn.prepareStatement(SQL, columnIndices);
             return new PreparedStatement(pstmt);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -525,7 +525,7 @@ public class Connection implements java.sql.Connection {
             java.sql.PreparedStatement pstmt = this.conn.prepareStatement(SQL, columnNames);
             return new PreparedStatement(pstmt);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -540,7 +540,7 @@ public class Connection implements java.sql.Connection {
             java.sql.PreparedStatement pstmt = this.conn.prepareStatement(SQL, resultSetType, resultSetConcurrency);
             return new PreparedStatement(pstmt);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -555,7 +555,7 @@ public class Connection implements java.sql.Connection {
             java.sql.PreparedStatement pstmt = this.conn.prepareStatement(SQL, resultSetType, resultSetConcurrency, resultSetHoldability);
             return new PreparedStatement(pstmt);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -569,7 +569,7 @@ public class Connection implements java.sql.Connection {
         try {
             this.conn.releaseSavepoint(savepoint);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -583,7 +583,7 @@ public class Connection implements java.sql.Connection {
         try {
             this.conn.rollback();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -597,7 +597,7 @@ public class Connection implements java.sql.Connection {
         try {
             this.conn.rollback(savepoint);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -611,7 +611,7 @@ public class Connection implements java.sql.Connection {
         try {
             this.conn.setAutoCommit(autoCommit);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -625,7 +625,7 @@ public class Connection implements java.sql.Connection {
         try {
             this.conn.setCatalog(catalog);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -639,7 +639,7 @@ public class Connection implements java.sql.Connection {
         try {
             this.conn.setClientInfo(properties);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -653,7 +653,7 @@ public class Connection implements java.sql.Connection {
         try {
             this.conn.setClientInfo(name, value);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -667,7 +667,7 @@ public class Connection implements java.sql.Connection {
         try {
             this.conn.setHoldability(holdability);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -681,7 +681,7 @@ public class Connection implements java.sql.Connection {
         try {
             this.conn.setNetworkTimeout(executor, milliseconds);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -695,7 +695,7 @@ public class Connection implements java.sql.Connection {
         try {
             this.conn.setReadOnly(readOnly);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -709,7 +709,7 @@ public class Connection implements java.sql.Connection {
         try {
             return this.conn.setSavepoint();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -723,7 +723,7 @@ public class Connection implements java.sql.Connection {
         try {
             return this.conn.setSavepoint(name);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -737,7 +737,7 @@ public class Connection implements java.sql.Connection {
         try {
             this.conn.setSchema(schema);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -751,7 +751,7 @@ public class Connection implements java.sql.Connection {
         try {
             this.conn.setTransactionIsolation(level);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -765,7 +765,7 @@ public class Connection implements java.sql.Connection {
         try {
             this.conn.setTypeMap(map);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();

@@ -32,7 +32,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             this.pstmt.addBatch();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -46,7 +46,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             this.pstmt.addBatch(SQL);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -60,7 +60,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             this.pstmt.cancel();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -74,7 +74,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             this.pstmt.clearBatch();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -88,7 +88,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             this.pstmt.clearWarnings();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -103,7 +103,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             this.pstmt.clearParameters();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -117,7 +117,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             this.pstmt.close();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -131,7 +131,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             this.pstmt.closeOnCompletion();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -145,7 +145,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             return this.pstmt.execute();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -159,7 +159,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             return this.pstmt.execute(SQL);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -173,7 +173,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             return this.pstmt.execute(SQL, columnNames);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -187,7 +187,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             return this.pstmt.execute(SQL, columnIndices);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -201,7 +201,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             return this.pstmt.execute(SQL, autoGeneratedKeys);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -215,7 +215,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             return this.pstmt.executeBatch();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -229,7 +229,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             return this.pstmt.executeQuery(SQL);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -243,7 +243,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             return this.pstmt.executeUpdate(SQL);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -257,7 +257,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             return this.pstmt.executeUpdate(SQL, autoGeneratedKeys);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -271,7 +271,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             return this.pstmt.executeUpdate(SQL, columnIndices);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -285,7 +285,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             return this.pstmt.executeUpdate(SQL, columnNames);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -299,7 +299,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             return this.pstmt.executeQuery();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -313,7 +313,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             return this.pstmt.executeUpdate();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -327,7 +327,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             return this.pstmt.getFetchDirection();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -341,7 +341,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             return this.pstmt.getFetchSize();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -355,7 +355,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             return this.pstmt.getGeneratedKeys();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -369,7 +369,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             return this.pstmt.getMaxFieldSize();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -383,7 +383,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             return this.pstmt.getMaxRows();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -397,7 +397,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             return this.pstmt.getMetaData();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -411,7 +411,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             return this.pstmt.getMoreResults(current);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -425,7 +425,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             return this.pstmt.getMoreResults();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -439,7 +439,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             return this.pstmt.getResultSet();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -453,7 +453,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             return this.pstmt.getResultSetConcurrency();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -467,7 +467,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             return this.pstmt.getQueryTimeout();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -486,7 +486,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             return this.pstmt.getParameterMetaData();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -500,7 +500,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             return this.pstmt.getResultSetHoldability();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -514,7 +514,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             return this.pstmt.getResultSetType();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -528,7 +528,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             return this.pstmt.getUpdateCount();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -542,7 +542,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             return this.pstmt.getWarnings();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -556,7 +556,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             this.pstmt.setArray(parameterIndex, x);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -570,7 +570,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             this.pstmt.setAsciiStream(parameterIndex, stream);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -584,7 +584,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             this.pstmt.setAsciiStream(parameterIndex, stream, length);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -598,7 +598,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             this.pstmt.setAsciiStream(parameterIndex, stream, length);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -612,7 +612,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             this.pstmt.setBigDecimal(parameterIndex, x);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -626,7 +626,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             this.pstmt.setBinaryStream(parameterIndex, stream);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -640,7 +640,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             this.pstmt.setBinaryStream(parameterIndex, stream, length);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -654,7 +654,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             this.pstmt.setBinaryStream(parameterIndex, stream, length);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -668,7 +668,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             this.pstmt.setBlob(parameterIndex, x);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -682,7 +682,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             this.pstmt.setBlob(parameterIndex, x);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -696,7 +696,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             this.pstmt.setBlob(parameterIndex, inputStream, length);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -710,7 +710,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             this.pstmt.setBoolean(parameterIndex, x);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -724,7 +724,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             this.pstmt.setByte(parameterIndex, x);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -738,7 +738,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             this.pstmt.setBytes(parameterIndex, x);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -752,7 +752,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             this.pstmt.setCharacterStream(parameterIndex, reader);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -766,7 +766,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             this.pstmt.setCharacterStream(parameterIndex, reader, length);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -780,7 +780,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             this.pstmt.setCharacterStream(parameterIndex, reader, length);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -794,7 +794,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             this.pstmt.setClob(parameterIndex, x);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -808,7 +808,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             this.pstmt.setClob(parameterIndex, reader);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -822,7 +822,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             this.pstmt.setClob(parameterIndex, reader, length);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -836,7 +836,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             this.pstmt.setDate(parameterIndex, x);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -850,7 +850,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             this.pstmt.setDate(parameterIndex, x, cal);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -864,7 +864,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             this.pstmt.setDouble(parameterIndex, x);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -878,7 +878,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             this.pstmt.setFloat(parameterIndex, x);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -892,7 +892,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             this.pstmt.setFloat(parameterIndex, x);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -906,7 +906,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             this.pstmt.setLong(parameterIndex, x);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -920,7 +920,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             this.pstmt.setNCharacterStream(parameterIndex, value);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -934,7 +934,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             this.pstmt.setNCharacterStream(parameterIndex, value, length);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -948,7 +948,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             this.pstmt.setNClob(parameterIndex, value);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -962,7 +962,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             this.pstmt.setNClob(parameterIndex, reader);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -976,7 +976,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             this.pstmt.setNClob(parameterIndex, reader, length);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -990,7 +990,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             this.pstmt.setNString(parameterIndex, value);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1004,7 +1004,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             this.pstmt.setNull(parameterIndex, sqlType);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1018,7 +1018,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             this.pstmt.setNull(parameterIndex, sqlType, typeName);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1032,7 +1032,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             this.pstmt.setObject(parameterIndex, x);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1046,7 +1046,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             this.pstmt.setObject(parameterIndex, x, targetSqlType);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1060,7 +1060,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             this.pstmt.setObject(parameterIndex, x, targetSqlType, scaleOrLength);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1074,7 +1074,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             this.pstmt.setRef(parameterIndex, x);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1088,7 +1088,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             this.pstmt.setRowId(parameterIndex, x);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1102,7 +1102,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             this.pstmt.setShort(parameterIndex, x);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1116,7 +1116,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             this.pstmt.setSQLXML(parameterIndex, xmlObject);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1130,7 +1130,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             this.pstmt.setString(parameterIndex, x);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1144,7 +1144,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             this.pstmt.setTime(parameterIndex, x);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1158,7 +1158,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             this.pstmt.setTime(parameterIndex, x, cal);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1172,7 +1172,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             this.pstmt.setTimestamp(parameterIndex, x);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1186,7 +1186,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             this.pstmt.setTimestamp(parameterIndex, x, cal);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1200,7 +1200,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             this.pstmt.setUnicodeStream(parameterIndex, x, length);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1214,7 +1214,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             this.pstmt.setURL(parameterIndex, x);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1228,7 +1228,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             return this.pstmt.isClosed();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1242,7 +1242,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             return this.pstmt.isCloseOnCompletion();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1256,7 +1256,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             return this.pstmt.isPoolable();
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1270,7 +1270,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             this.pstmt.setCursorName(cursorName);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1284,7 +1284,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             this.pstmt.setEscapeProcessing(enable);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1298,7 +1298,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             this.pstmt.setFetchDirection(direction);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1312,7 +1312,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             this.pstmt.setFetchSize(rows);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1326,7 +1326,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             this.pstmt.setMaxFieldSize(max);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1340,7 +1340,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             this.pstmt.setMaxRows(max);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1354,7 +1354,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             this.pstmt.setPoolable(poolable);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
@@ -1368,7 +1368,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
         try {
             this.pstmt.setQueryTimeout(seconds);
         } catch (Exception e) {
-            span.recordStatWithTags(Observability.mErrors, 1, Observability.tagKeyPair(Observability.keyReason, e.toString()));
+            span.recordException(e);
             throw e;
         } finally {
             span.close();
