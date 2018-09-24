@@ -188,6 +188,14 @@ public class Observability {
         return new TagKeyPair(key, value);
     }
 
+    private static List<TagKey> addMandatorySystemTagKeys(TagKey ...customTagKeys) {
+        List<TagKey> out = Arrays.asList(customTagKeys);
+        for (TagKeyPair kvp : mandatorySystemTagKeyPairs) {
+            out.add(kvp.key);
+        }
+        return out;
+    }
+
     public static void registerAllViews() {
         Aggregation defaultBytesDistribution = Distribution.create(BucketBoundaries.create(
                     Arrays.asList(
@@ -210,35 +218,35 @@ public class Observability {
                     "The distribution of the latencies of various calls in milliseconds",
                     mLatencyMs,
                     defaultMillisecondsDistribution,
-                    Collections.unmodifiableList(Arrays.asList(keyMethod, keyPhase, keyReason, keyType))),
+                    addMandatorySystemTagKeys(keyMethod, keyPhase, keyReason, keyType)),
 
             View.create(
                     Name.create("java.sql/client/calls"),
                     "The number of various calls of methods",
                     mCalls,
                     countAggregation,
-                    Collections.unmodifiableList(Arrays.asList(keyMethod, keyPhase, keyReason, keyType))),
+                    addMandatorySystemTagKeys(keyMethod, keyPhase, keyReason, keyType)),
 
             View.create(
                     Name.create("java.sql/client/errors"),
                     "The number of errors encountered",
                     mErrors,
                     countAggregation,
-                    Collections.unmodifiableList(Arrays.asList(keyMethod, keyPhase, keyReason, keyType))),
+                    addMandatorySystemTagKeys(keyMethod, keyPhase, keyReason, keyType)),
 
             View.create(
                     Name.create("java.sql/client/key_length"),
                     "The distribution of lengths of keys",
                     mKeyLength,
                     defaultBytesDistribution,
-                    Collections.unmodifiableList(Arrays.asList(keyMethod, keyPhase, keyReason, keyType))),
+                    addMandatorySystemTagKeys(keyMethod, keyPhase, keyReason, keyType)),
 
             View.create(
                     Name.create("java.sql/client/value_length"),
                     "The distribution of lengths of values",
                     mValueLength,
                     defaultBytesDistribution,
-                    Collections.unmodifiableList(Arrays.asList(keyMethod, keyPhase, keyReason, keyType)))
+                    addMandatorySystemTagKeys(keyMethod, keyPhase, keyReason, keyType))
         };
 
         ViewManager vmgr = Stats.getViewManager();
