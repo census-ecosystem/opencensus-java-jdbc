@@ -1,0 +1,111 @@
+description = 'OpenCensus instrumented JDBC wrapper'
+
+apply plugin: 'idea'
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: "signing"
+
+group = "io.opencensus"
+version = "0.0.1" // CURRENT_OCJDBC_VERSION
+
+sourceCompatibility = 1.6
+targetCompatibility = 1.6
+
+repositories {
+    maven { url "https://plugins.gradle.org/m2/" }
+}
+
+jar.manifest {
+    attributes('Implementation-Title': name,
+            'Implementation-Version': version,
+            'Built-By': System.getProperty('user.name'),
+            'Built-JDK': System.getProperty('java.version'),
+            'Source-Compatibility': sourceCompatibility,
+            'Target-Compatibility': targetCompatibility)
+}
+
+def opencensusVersion = '0.16.1'
+
+dependencies {
+    compile "io.opencensus:opencensus-api:${opencensusVersion}"
+    runtime "io.opencensus:opencensus-impl:${opencensusVersion}"
+}
+
+compileJava {
+    options.compilerArgs += ["-Xlint:none"]
+    options.encoding = "UTF-8"
+}
+
+signing {
+    required false
+    sign configurations.archives
+}
+
+javadoc.options {
+    encoding = 'UTF-8'
+    links 'https://docs.oracle.com/javase/8/docs/api/'
+}
+
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+uploadArchives {
+        repositories {
+            mavenDeployer {
+                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+                def configureAuth = {
+                    if (rootProject.hasProperty('ossrhUsername') && rootProject.hasProperty('ossrhPassword')) {
+                        authentication(userName:rootProject.ossrhUsername, password: rootProject.ossrhPassword)
+                    }
+                }
+
+                repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/", configureAuth)
+
+                snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/", configureAuth)
+
+                pom.project {
+                    name "OpenCensus"
+                    packaging 'jar'
+                    description project.description
+                    url 'https://github.com/opencensus-integrations/ocjdbc'
+
+                    scm {
+                        connection 'scm:svn:https://github.com/opencensus-integrations/ocjdbc'
+                        developerConnection 'scm:git:git@github.com/opencensus-integrations/ocjdbc'
+                        url 'https://github.com/opencensus-integrations/ocjdbc'
+                    }
+
+                    licenses {
+                        license {
+                            name 'The Apache License, Version 2.0'
+                            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        }
+                    }
+
+                    developers {
+                        developer {
+                            id 'io.opencensus'
+                            name 'OpenCensus Contributors'
+                            email 'census-developers@googlegroups.com'
+                            url 'opencensus.io'
+                            // https://issues.gradle.org/browse/GRADLE-2719
+                            organization = 'OpenCensus Authors'
+                            organizationUrl 'https://www.opencensus.io'
+                        }
+                    }
+                }
+            }
+        }
+    }
