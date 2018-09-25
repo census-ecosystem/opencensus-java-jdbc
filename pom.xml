@@ -6,6 +6,14 @@
     <version>0.0.1</version>
     <name>ocjdbc</name>
     <url>http://maven.apache.org</url>
+    <description>OpenCensus instrumented JDBC wrappers to provide tracing and metrics per connection</description>
+
+    <licenses>
+        <license>
+            <name>The Apache License, Version 2.0</version>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -65,4 +73,10 @@
             </plugin>
         </plugins>
     </build>
+
+    <scm>
+        <connection>scm:git:git://github.com/opencensus-integrations/ocjdbc.git</connection>
+        <developerConnection>scm:git:ssh://github.com:opencensus-integrations/ocjdbc.git</developerConnection>
+        <url>https://github.com/opencensus-integrations/ocjdbc/tree/master</url>
+    </scm>
 </project>
