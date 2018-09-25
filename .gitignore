@@ -31,3 +31,14 @@ gradle.properties
 .gradle
 local.properties
 out/
+
+# IntelliJ IDEA
+.idea
+*.iml
+.editorconfig
+
+# Eclipse
+.classpath
+.project
+.settings
+bin

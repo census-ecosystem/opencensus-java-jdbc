@@ -24,6 +24,12 @@ jar.manifest {
             'Target-Compatibility': targetCompatibility)
 }
 
+buildscript {
+    repositories {
+        maven { url "https://plugins.gradle.org/m2/" }
+    }
+}
+
 def opencensusVersion = '0.16.1'
 
 dependencies {
@@ -76,7 +82,7 @@ uploadArchives {
                 snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/", configureAuth)
 
                 pom.project {
-                    name "OpenCensus"
+                    name "ocjdbc"
                     packaging 'jar'
                     description project.description
                     url 'https://github.com/opencensus-integrations/ocjdbc'
