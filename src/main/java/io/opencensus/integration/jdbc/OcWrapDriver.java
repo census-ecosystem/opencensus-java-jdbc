@@ -23,13 +23,13 @@ import java.util.Properties;
 import io.opencensus.integration.jdbc.Observability;
 
 /*
- * Driver is a class that wraps and instruments a sql.Driver
+ * OcWrapDriver is a class that wraps and instruments a sql.Driver
  * instance wit htracing and metrics using OpenCensus.
  */
-public class Driver implements java.sql.Driver {
+public class OcWrapDriver implements java.sql.Driver {
     private java.sql.Driver driver;
 
-    public Driver(java.sql.Driver driver) throws SQLException {
+    public OcWrapDriver(java.sql.Driver driver) throws SQLException {
         this.driver = driver;
     }
 
@@ -46,7 +46,7 @@ public class Driver implements java.sql.Driver {
             // Retrieve the raw connection then wrap it with the OpenCensus instrumented
             // Connection class instance to provide metrics and traces per call.
             java.sql.Connection conn = this.driver.connect(url, info);
-            return new Connection(conn);
+            return new OcWrapConnection(conn);
         } catch (Exception e) {
             span.recordException(e);
             throw e;

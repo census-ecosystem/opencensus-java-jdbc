@@ -18,12 +18,12 @@ import java.sql.SQLException;
 
 import io.opencensus.integration.jdbc.Observability;
 
-public class Statement implements java.sql.Statement, java.sql.Wrapper {
+public class OcWrapStatement implements java.sql.Statement, java.sql.Wrapper {
     private java.sql.Statement stmt;
     private boolean shouldAnnotateSpansWithSQL;
     private Observability.TraceOption[] startOptions;
 
-    public Statement(java.sql.Statement stmt, Observability.TraceOption ...opts) throws SQLException {
+    public OcWrapStatement(java.sql.Statement stmt, Observability.TraceOption ...opts) throws SQLException {
         this.stmt = stmt;
         this.shouldAnnotateSpansWithSQL = Observability.shouldAnnotateSpansWithSQL(opts);
         this.startOptions = opts;
@@ -207,7 +207,7 @@ public class Statement implements java.sql.Statement, java.sql.Wrapper {
 
         try {
             java.sql.ResultSet rs = this.stmt.executeQuery(SQL);
-            return new ResultSet(rs);
+            return new OcWrapResultSet(rs);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -323,7 +323,7 @@ public class Statement implements java.sql.Statement, java.sql.Wrapper {
 
         try {
             java.sql.ResultSet rs = this.stmt.getGeneratedKeys();
-            return new ResultSet(rs);
+            return new OcWrapResultSet(rs);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -408,7 +408,7 @@ public class Statement implements java.sql.Statement, java.sql.Wrapper {
 
         try {
             java.sql.ResultSet rs = this.stmt.getResultSet();
-            return new ResultSet(rs);
+            return new OcWrapResultSet(rs);
         } catch (Exception e) {
             span.recordException(e);
             throw e;

@@ -18,18 +18,18 @@ import java.sql.SQLException;
 
 import io.opencensus.integration.jdbc.Observability;
 
-public class PreparedStatement implements java.sql.PreparedStatement {
+public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
     private java.sql.PreparedStatement pstmt;
     private boolean shouldAnnotateSpansWithSQL;
     private Observability.TraceOption[] startOptions;
 
-    public PreparedStatement(java.sql.PreparedStatement pstmt, Observability.TraceOption ...opts) throws SQLException {
+    public OcWrapPreparedStatement(java.sql.PreparedStatement pstmt, Observability.TraceOption ...opts) throws SQLException {
         this.pstmt = pstmt;
         this.shouldAnnotateSpansWithSQL = Observability.shouldAnnotateSpansWithSQL(opts);
         this.startOptions = opts;
     }
 
-    public PreparedStatement(java.sql.PreparedStatement pstmt, boolean shouldAnnotateSpansWithSQL) throws SQLException {
+    public OcWrapPreparedStatement(java.sql.PreparedStatement pstmt, boolean shouldAnnotateSpansWithSQL) throws SQLException {
         this.pstmt = pstmt;
         this.shouldAnnotateSpansWithSQL = shouldAnnotateSpansWithSQL;
     }
@@ -249,7 +249,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
                                                                                              SQL);
         try {
             java.sql.ResultSet rs = this.pstmt.executeQuery(SQL);
-            return new ResultSet(rs);
+            return new OcWrapResultSet(rs);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -329,7 +329,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
 
         try {
             java.sql.ResultSet rs = this.pstmt.executeQuery();
-            return new ResultSet(rs);
+            return new OcWrapResultSet(rs);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -386,7 +386,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
 
         try {
             java.sql.ResultSet rs = this.pstmt.getGeneratedKeys();
-            return new ResultSet(rs);
+            return new OcWrapResultSet(rs);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -471,7 +471,7 @@ public class PreparedStatement implements java.sql.PreparedStatement {
 
         try {
             java.sql.ResultSet rs = this.pstmt.getResultSet();
-            return new ResultSet(rs);
+            return new OcWrapResultSet(rs);
         } catch (Exception e) {
             span.recordException(e);
             throw e;

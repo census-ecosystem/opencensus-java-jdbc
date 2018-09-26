@@ -18,10 +18,10 @@ import java.sql.SQLException;
 
 import io.opencensus.integration.jdbc.Observability;
 
-public class ResultSet implements java.sql.ResultSet {
+public class OcWrapResultSet implements java.sql.ResultSet {
     private java.sql.ResultSet rs;
 
-    public ResultSet(java.sql.ResultSet rs) throws SQLException {
+    public OcWrapResultSet(java.sql.ResultSet rs) throws SQLException {
         this.rs = rs;
     }
 

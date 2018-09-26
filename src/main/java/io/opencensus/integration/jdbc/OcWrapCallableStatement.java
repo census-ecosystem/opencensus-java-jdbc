@@ -18,12 +18,12 @@ import java.sql.SQLException;
 
 import io.opencensus.integration.jdbc.Observability;
 
-public class CallableStatement implements java.sql.CallableStatement {
+public class OcWrapCallableStatement implements java.sql.CallableStatement {
     private java.sql.CallableStatement cstmt;
     private boolean shouldAnnotateSpansWithSQL;
     private Observability.TraceOption[] startOptions;
 
-    public CallableStatement(java.sql.CallableStatement cstmt, Observability.TraceOption ...opts) throws SQLException {
+    public OcWrapCallableStatement(java.sql.CallableStatement cstmt, Observability.TraceOption ...opts) throws SQLException {
         this.cstmt = cstmt;
         this.shouldAnnotateSpansWithSQL = Observability.shouldAnnotateSpansWithSQL(opts);
         this.startOptions = opts;
@@ -250,7 +250,7 @@ public class CallableStatement implements java.sql.CallableStatement {
 
         try {
             java.sql.ResultSet rs = this.cstmt.executeQuery(SQL);
-            return new ResultSet(rs);
+            return new OcWrapResultSet(rs);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -333,7 +333,7 @@ public class CallableStatement implements java.sql.CallableStatement {
 
         try {
             java.sql.ResultSet rs = this.cstmt.executeQuery();
-            return new ResultSet(rs);
+            return new OcWrapResultSet(rs);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -390,7 +390,7 @@ public class CallableStatement implements java.sql.CallableStatement {
 
         try {
             java.sql.ResultSet rs = this.cstmt.getGeneratedKeys();
-            return new ResultSet(rs);
+            return new OcWrapResultSet(rs);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -475,7 +475,7 @@ public class CallableStatement implements java.sql.CallableStatement {
 
         try {
             java.sql.ResultSet rs = this.cstmt.getResultSet();
-            return new ResultSet(rs);
+            return new OcWrapResultSet(rs);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
