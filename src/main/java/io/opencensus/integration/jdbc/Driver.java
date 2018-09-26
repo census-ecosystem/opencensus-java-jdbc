@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.opencensus.integration.ocjdbc;
+package io.opencensus.integration.jdbc;
 
 import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
@@ -20,7 +20,7 @@ import java.sql.SQLFeatureNotSupportedException;
 import java.util.logging.Logger;
 import java.util.Properties;
 
-import io.opencensus.integration.ocjdbc.Observability;
+import io.opencensus.integration.jdbc.Observability;
 
 /*
  * Driver is a class that wraps and instruments a sql.Driver

@@ -1,10 +1,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.opencensus.integraion</groupId>
-    <artifactId>opencensus-ocjdbc</artifactId>
+    <artifactId>opencensus-jdbc</artifactId>
     <packaging>jar</packaging>
     <version>0.0.2</version>
-    <name>opencensus-ocjdbc</name>
+    <name>opencensus-jdbc</name>
     <url>http://maven.apache.org</url>
     <description>OpenCensus instrumented JDBC wrappers to provide tracing and metrics per connection</description>
 
@@ -66,7 +66,7 @@
                     <programs>
                         <program>
                             <id>Driver</id>
-                            <mainClass>io.opencensus.ocjdbc.Driver</mainClass>
+                            <mainClass>io.opencensus.integration.jdbc.Driver</mainClass>
                         </program>
                     </programs>
                 </configuration>

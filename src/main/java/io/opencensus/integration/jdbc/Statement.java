@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.opencensus.integration.ocjdbc;
+package io.opencensus.integration.jdbc;
 
 import java.sql.SQLException;
 
-import io.opencensus.integration.ocjdbc.Observability;
+import io.opencensus.integration.jdbc.Observability;
 
 public class Statement implements java.sql.Statement, java.sql.Wrapper {
     private java.sql.Statement stmt;
