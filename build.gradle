@@ -82,7 +82,7 @@ uploadArchives {
                 snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/", configureAuth)
 
                 pom.project {
-                    name "opencensus-ocjdbc"
+                    name "opencensus-jdbc"
                     packaging 'jar'
                     description project.description
                     url 'https://github.com/opencensus-integrations/ocjdbc'
