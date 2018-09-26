@@ -118,6 +118,23 @@ public class Observability {
         ss.close();
     }
 
+    public enum TraceOption {
+        NONE,
+        ANNOTATE_TRACES_WITH_SQL;
+    }
+
+    public static final TraceOption OPTION_ANNOTATE_TRACES_WITH_SQL = TraceOption.ANNOTATE_TRACES_WITH_SQL;
+
+    public static boolean shouldAnnotateSpansWithSQL(TraceOption ...opts) {
+        for (TraceOption opt : opts) {
+            if (opt == TraceOption.ANNOTATE_TRACES_WITH_SQL) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     // RoundtripTrackingSpan records both the metric latency in
     // milliseconds, and the span created by tracing the calling function.
     public static class RoundtripTrackingSpan implements AutoCloseable {
@@ -132,6 +149,12 @@ public class Observability {
             this.spanScope = tracer.spanBuilder(name).startScopedSpan();
             this.span = tracer.getCurrentSpan();
             this.method = method;
+        }
+
+        public RoundtripTrackingSpan(String name, String method, boolean shouldAnnotateWithSQL, String SQL) {
+            this(name, method);
+            if (shouldAnnotateWithSQL)
+                this.span.putAttribute("sql", AttributeValue.stringAttributeValue(SQL));
         }
 
         public void end() {
@@ -172,6 +195,10 @@ public class Observability {
 
     public static RoundtripTrackingSpan createRoundtripTrackingSpan(String spanName, String method) {
         return new RoundtripTrackingSpan(spanName, method);
+    }
+
+    public static RoundtripTrackingSpan createRoundtripTrackingSpan(String spanName, String method, boolean canRecordSQL, String SQL) {
+        return new RoundtripTrackingSpan(spanName, method, canRecordSQL, SQL);
     }
 
     public static class TagKeyPair {

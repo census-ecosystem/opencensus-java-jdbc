@@ -25,9 +25,13 @@ import java.util.concurrent.Executor;
  */
 public class Connection implements java.sql.Connection {
     private java.sql.Connection conn;
+    private boolean shouldAnnotateSpansWithSQL;
+    private Observability.TraceOption[] startOptions;
 
-    public Connection(java.sql.Connection conn) {
+    public Connection(java.sql.Connection conn, Observability.TraceOption ...opts) {
         this.conn = conn;
+        this.shouldAnnotateSpansWithSQL = Observability.shouldAnnotateSpansWithSQL(opts);
+        this.startOptions = opts;
     }
 
     @Override
@@ -162,7 +166,7 @@ public class Connection implements java.sql.Connection {
 
         try {
             java.sql.Statement stmt = this.conn.createStatement();
-            return new Statement(stmt);
+            return new Statement(stmt, this.startOptions);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -177,7 +181,7 @@ public class Connection implements java.sql.Connection {
 
         try {
             java.sql.Statement stmt = this.conn.createStatement(resultSetType, resultSetConcurrency);
-            return new Statement(stmt);
+            return new Statement(stmt, this.startOptions);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -192,7 +196,7 @@ public class Connection implements java.sql.Connection {
 
         try {
             java.sql.Statement stmt = this.conn.createStatement(resultSetType, resultSetConcurrency, resultSetHoldability);
-            return new Statement(stmt);
+            return new Statement(stmt, this.startOptions);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -413,7 +417,10 @@ public class Connection implements java.sql.Connection {
 
     @Override
     public String nativeSQL(String SQL) throws SQLException {
-        Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Connection.nativeSQL", "nativeSQL");
+        Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Connection.nativeSQL",
+                                                                                             "nativeSQL",
+                                                                                             this.shouldAnnotateSpansWithSQL,
+                                                                                             SQL);
 
         try {
             return this.conn.nativeSQL(SQL);
@@ -427,11 +434,14 @@ public class Connection implements java.sql.Connection {
 
     @Override
     public java.sql.CallableStatement prepareCall(String SQL) throws SQLException {
-        Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Connection.prepareCall", "prepareCall");
+        Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Connection.prepareCall",
+                                                                                             "prepareCall",
+                                                                                             this.shouldAnnotateSpansWithSQL,
+                                                                                             SQL);
 
         try {
             java.sql.CallableStatement cstmt = this.conn.prepareCall(SQL);
-            return new CallableStatement(cstmt);
+            return new CallableStatement(cstmt, this.startOptions);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -442,11 +452,14 @@ public class Connection implements java.sql.Connection {
 
     @Override
     public java.sql.CallableStatement prepareCall(String SQL, int resultSetType, int resultSetConcurrency) throws SQLException {
-        Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Connection.prepareCall", "prepareCall");
+        Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Connection.prepareCall",
+                                                                                             "prepareCall",
+                                                                                             this.shouldAnnotateSpansWithSQL,
+                                                                                             SQL);
 
         try {
             java.sql.CallableStatement cstmt = this.conn.prepareCall(SQL, resultSetType, resultSetConcurrency);
-            return new CallableStatement(cstmt);
+            return new CallableStatement(cstmt, this.startOptions);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -457,11 +470,14 @@ public class Connection implements java.sql.Connection {
 
     @Override
     public java.sql.CallableStatement prepareCall(String SQL, int resultSetType, int resultSetConcurrency, int resultSetHoldability) throws SQLException {
-        Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Connection.prepareCall", "prepareCall");
+        Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Connection.prepareCall",
+                                                                                             "prepareCall",
+                                                                                             this.shouldAnnotateSpansWithSQL,
+                                                                                             SQL);
 
         try {
             java.sql.CallableStatement cstmt = this.conn.prepareCall(SQL, resultSetType, resultSetConcurrency, resultSetHoldability);
-            return new CallableStatement(cstmt);
+            return new CallableStatement(cstmt, this.startOptions);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -474,11 +490,14 @@ public class Connection implements java.sql.Connection {
 
     @Override
     public java.sql.PreparedStatement prepareStatement(String SQL) throws SQLException {
-        Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Connection.prepareStatement", "prepareStatement");
+        Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Connection.prepareStatement",
+                                                                                             "prepareStatement",
+                                                                                             this.shouldAnnotateSpansWithSQL,
+                                                                                             SQL);
 
         try {
             java.sql.PreparedStatement pstmt = this.conn.prepareStatement(SQL);
-            return new PreparedStatement(pstmt);
+            return new PreparedStatement(pstmt, this.startOptions);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -489,11 +508,14 @@ public class Connection implements java.sql.Connection {
 
     @Override
     public java.sql.PreparedStatement prepareStatement(String SQL, int autoGeneratedKeys) throws SQLException {
-        Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Connection.prepareStatement", "prepareStatement");
+        Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Connection.prepareStatement",
+                                                                                             "prepareStatement",
+                                                                                             this.shouldAnnotateSpansWithSQL,
+                                                                                             SQL);
 
         try {
             java.sql.PreparedStatement pstmt = this.conn.prepareStatement(SQL, autoGeneratedKeys);
-            return new PreparedStatement(pstmt);
+            return new PreparedStatement(pstmt, this.startOptions);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -504,11 +526,14 @@ public class Connection implements java.sql.Connection {
 
     @Override
     public java.sql.PreparedStatement prepareStatement(String SQL, int[] columnIndices) throws SQLException {
-        Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Connection.prepareStatement", "prepareStatement");
+        Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Connection.prepareStatement",
+                                                                                             "prepareStatement",
+                                                                                             this.shouldAnnotateSpansWithSQL,
+                                                                                             SQL);
 
         try {
             java.sql.PreparedStatement pstmt = this.conn.prepareStatement(SQL, columnIndices);
-            return new PreparedStatement(pstmt);
+            return new PreparedStatement(pstmt, this.startOptions);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -519,11 +544,14 @@ public class Connection implements java.sql.Connection {
 
     @Override
     public java.sql.PreparedStatement prepareStatement(String SQL, String[] columnNames) throws SQLException {
-        Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Connection.prepareStatement", "prepareStatement");
+        Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Connection.prepareStatement",
+                                                                                             "prepareStatement",
+                                                                                             this.shouldAnnotateSpansWithSQL,
+                                                                                             SQL);
 
         try {
             java.sql.PreparedStatement pstmt = this.conn.prepareStatement(SQL, columnNames);
-            return new PreparedStatement(pstmt);
+            return new PreparedStatement(pstmt, this.startOptions);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -534,11 +562,14 @@ public class Connection implements java.sql.Connection {
 
     @Override
     public java.sql.PreparedStatement prepareStatement(String SQL, int resultSetType, int resultSetConcurrency) throws SQLException {
-        Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Connection.prepareStatement", "prepareStatement");
+        Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Connection.prepareStatement",
+                                                                                             "prepareStatement",
+                                                                                             this.shouldAnnotateSpansWithSQL,
+                                                                                             SQL);
 
         try {
             java.sql.PreparedStatement pstmt = this.conn.prepareStatement(SQL, resultSetType, resultSetConcurrency);
-            return new PreparedStatement(pstmt);
+            return new PreparedStatement(pstmt, this.startOptions);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -549,11 +580,14 @@ public class Connection implements java.sql.Connection {
 
     @Override
     public java.sql.PreparedStatement prepareStatement(String SQL, int resultSetType, int resultSetConcurrency, int resultSetHoldability) throws SQLException {
-        Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Connection.prepareStatement", "prepareStatement");
+        Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Connection.prepareStatement",
+                                                                                             "prepareStatement",
+                                                                                             this.shouldAnnotateSpansWithSQL,
+                                                                                             SQL);
 
         try {
             java.sql.PreparedStatement pstmt = this.conn.prepareStatement(SQL, resultSetType, resultSetConcurrency, resultSetHoldability);
-            return new PreparedStatement(pstmt);
+            return new PreparedStatement(pstmt, this.startOptions);
         } catch (Exception e) {
             span.recordException(e);
             throw e;

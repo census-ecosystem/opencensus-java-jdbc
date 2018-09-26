@@ -3,7 +3,7 @@
     <groupId>io.opencensus</groupId>
     <artifactId>ocjdbc</artifactId>
     <packaging>jar</packaging>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
     <name>ocjdbc</name>
     <url>http://maven.apache.org</url>
     <description>OpenCensus instrumented JDBC wrappers to provide tracing and metrics per connection</description>
