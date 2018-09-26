@@ -5,7 +5,7 @@ apply plugin: 'java'
 apply plugin: 'maven'
 apply plugin: "signing"
 
-group = "io.opencensus"
+group = "io.opencensus.integration"
 version = "0.0.2" // CURRENT_OCJDBC_VERSION
 
 sourceCompatibility = 1.7
@@ -82,7 +82,7 @@ uploadArchives {
                 snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/", configureAuth)
 
                 pom.project {
-                    name "ocjdbc"
+                    name "opencensus-ocjdbc"
                     packaging 'jar'
                     description project.description
                     url 'https://github.com/opencensus-integrations/ocjdbc'
