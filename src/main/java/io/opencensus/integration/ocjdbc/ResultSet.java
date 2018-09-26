@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.opencensus.ocjdbc;
+package io.opencensus.integration.ocjdbc;
 
 import java.sql.SQLException;
 
-import io.opencensus.ocjdbc.Observability;
+import io.opencensus.integration.ocjdbc.Observability;
 
 public class ResultSet implements java.sql.ResultSet {
     private java.sql.ResultSet rs;
@@ -2008,7 +2008,7 @@ public class ResultSet implements java.sql.ResultSet {
             span.close();
         }
     }
-      
+
     @Override
     public void updateAsciiStream(int columnIndex, java.io.InputStream x) throws SQLException {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateAsciiStream", "updateAsciiStream");

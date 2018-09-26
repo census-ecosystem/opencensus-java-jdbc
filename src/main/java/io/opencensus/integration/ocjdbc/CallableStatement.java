@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.opencensus.ocjdbc;
+package io.opencensus.integration.ocjdbc;
 
 import java.sql.SQLException;
 
-import io.opencensus.ocjdbc.Observability;
+import io.opencensus.integration.ocjdbc.Observability;
 
 public class CallableStatement implements java.sql.CallableStatement {
     private java.sql.CallableStatement cstmt;

@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package io.opencensus.ocjdbc;
+package io.opencensus.integration.ocjdbc;
 
-import io.opencensus.ocjdbc.Observability;
+import io.opencensus.integration.ocjdbc.Observability;
 
 import java.sql.SQLException;
 import java.util.concurrent.Executor;
