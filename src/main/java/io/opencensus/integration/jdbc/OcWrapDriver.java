@@ -16,67 +16,66 @@ package io.opencensus.integration.jdbc;
 
 import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
-
-import java.util.logging.Logger;
 import java.util.Properties;
-
-import io.opencensus.integration.jdbc.Observability;
+import java.util.logging.Logger;
 
 /*
  * OcWrapDriver is a class that wraps and instruments a sql.Driver
  * instance wit htracing and metrics using OpenCensus.
  */
 public class OcWrapDriver implements java.sql.Driver {
-    private final java.sql.Driver driver;
+  private final java.sql.Driver driver;
 
-    public OcWrapDriver(java.sql.Driver driver) throws SQLException {
-        this.driver = driver;
+  public OcWrapDriver(java.sql.Driver driver) throws SQLException {
+    this.driver = driver;
+  }
+
+  @Override
+  public boolean acceptsURL(String url) throws SQLException {
+    return this.driver.acceptsURL(url);
+  }
+
+  @Override
+  public java.sql.Connection connect(String url, Properties info) throws SQLException {
+    Observability.RoundtripTrackingSpan span =
+        Observability.createRoundtripTrackingSpan("java.sql.Driver.connect", "connect");
+
+    try {
+      // Retrieve the raw connection then wrap it with the OpenCensus instrumented
+      // Connection class instance to provide metrics and traces per call.
+      java.sql.Connection conn = this.driver.connect(url, info);
+      return new OcWrapConnection(conn);
+    } catch (Exception e) {
+      span.recordException(e);
+      throw e;
+    } finally {
+      span.close();
     }
+  }
 
-    @Override
-    public boolean acceptsURL(String url) throws SQLException {
-        return this.driver.acceptsURL(url);
-    }
+  @Override
+  public boolean jdbcCompliant() {
+    return this.driver.jdbcCompliant();
+  }
 
-    @Override
-    public java.sql.Connection connect(String url, Properties info) throws SQLException {
-        Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Driver.connect", "connect");
+  @Override
+  public int getMajorVersion() {
+    return this.driver.getMajorVersion();
+  }
 
-        try {
-            // Retrieve the raw connection then wrap it with the OpenCensus instrumented
-            // Connection class instance to provide metrics and traces per call.
-            java.sql.Connection conn = this.driver.connect(url, info);
-            return new OcWrapConnection(conn);
-        } catch (Exception e) {
-            span.recordException(e);
-            throw e;
-        } finally {
-            span.close();
-        }
-    }
+  @Override
+  public int getMinorVersion() {
+    return this.driver.getMinorVersion();
+  }
 
-    @Override
-    public boolean jdbcCompliant() {
-        return this.driver.jdbcCompliant();
-    }
+  @Override
+  public Logger getParentLogger() throws SQLFeatureNotSupportedException {
+    return this.driver.getParentLogger();
+  }
 
-    @Override
-    public int getMajorVersion() {
-        return this.driver.getMajorVersion();
-    }
-
-    @Override
-    public int getMinorVersion() {
-        return this.driver.getMinorVersion();
-    }
-
-    @Override
-    public Logger getParentLogger() throws SQLFeatureNotSupportedException {
-        return this.driver.getParentLogger();
-    }
-
-    @Override
-    public java.sql.DriverPropertyInfo[] getPropertyInfo(String url, Properties info) throws SQLException {
-        return this.driver.getPropertyInfo(url, info);
-    }
+  @Override
+  public java.sql.DriverPropertyInfo[] getPropertyInfo(String url, Properties info)
+      throws SQLException {
+    return this.driver.getPropertyInfo(url, info);
+  }
 }

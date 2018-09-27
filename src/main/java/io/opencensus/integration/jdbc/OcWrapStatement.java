@@ -16,638 +16,695 @@ package io.opencensus.integration.jdbc;
 
 import java.sql.SQLException;
 
-import io.opencensus.integration.jdbc.Observability;
-
 public class OcWrapStatement implements java.sql.Statement, java.sql.Wrapper {
-    private final java.sql.Statement statement;
-    private final boolean shouldAnnotateSpansWithSQL;
-    private final Observability.TraceOption[] startOptions;
+  private final java.sql.Statement statement;
+  private final boolean shouldAnnotateSpansWithSQL;
+  private final Observability.TraceOption[] startOptions;
 
-    public OcWrapStatement(java.sql.Statement stmt, Observability.TraceOption ...opts) throws SQLException {
-        this.statement = stmt;
-        this.shouldAnnotateSpansWithSQL = Observability.shouldAnnotateSpansWithSQL(opts);
-        this.startOptions = opts;
+  public OcWrapStatement(java.sql.Statement stmt, Observability.TraceOption... opts)
+      throws SQLException {
+    this.statement = stmt;
+    this.shouldAnnotateSpansWithSQL = Observability.shouldAnnotateSpansWithSQL(opts);
+    this.startOptions = opts;
+  }
+
+  @Override
+  public void addBatch(String SQL) throws SQLException {
+    Observability.RoundtripTrackingSpan span =
+        Observability.createRoundtripTrackingSpan(
+            "java.sql.Statement.addBatch", "addBatch", this.shouldAnnotateSpansWithSQL, SQL);
+
+    try {
+      this.statement.addBatch(SQL);
+    } catch (Exception e) {
+      span.recordException(e);
+      throw e;
+    } finally {
+      span.close();
     }
+  }
 
-    @Override
-    public void addBatch(String SQL) throws SQLException {
-        Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Statement.addBatch",
-                                                                                             "addBatch",
-                                                                                             this.shouldAnnotateSpansWithSQL,
-                                                                                             SQL);
+  @Override
+  public void cancel() throws SQLException {
+    Observability.RoundtripTrackingSpan span =
+        Observability.createRoundtripTrackingSpan("java.sql.Statement.cancel", "cancel");
 
-        try {
-            this.statement.addBatch(SQL);
-        } catch (Exception e) {
-            span.recordException(e);
-            throw e;
-        } finally {
-            span.close();
-        }
+    try {
+      this.statement.cancel();
+    } catch (Exception e) {
+      span.recordException(e);
+      throw e;
+    } finally {
+      span.close();
     }
+  }
 
-    @Override
-    public void cancel() throws SQLException {
-        Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Statement.cancel", "cancel");
+  @Override
+  public void clearBatch() throws SQLException {
+    Observability.RoundtripTrackingSpan span =
+        Observability.createRoundtripTrackingSpan("java.sql.Statement.createBatch", "createBatch");
 
-        try {
-            this.statement.cancel();
-        } catch (Exception e) {
-            span.recordException(e);
-            throw e;
-        } finally {
-            span.close();
-        }
+    try {
+      this.statement.clearBatch();
+    } catch (Exception e) {
+      span.recordException(e);
+      throw e;
+    } finally {
+      span.close();
     }
+  }
 
-    @Override
-    public void clearBatch() throws SQLException {
-        Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Statement.createBatch", "createBatch");
+  @Override
+  public void clearWarnings() throws SQLException {
+    Observability.RoundtripTrackingSpan span =
+        Observability.createRoundtripTrackingSpan(
+            "java.sql.Statement.clearWarnings", "clearWarnings");
 
-        try {
-            this.statement.clearBatch();
-        } catch (Exception e) {
-            span.recordException(e);
-            throw e;
-        } finally {
-            span.close();
-        }
+    try {
+      this.statement.clearWarnings();
+    } catch (Exception e) {
+      span.recordException(e);
+      throw e;
+    } finally {
+      span.close();
     }
+  }
 
-    @Override
-    public void clearWarnings() throws SQLException {
-        Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Statement.clearWarnings", "clearWarnings");
+  @Override
+  public void close() throws SQLException {
+    Observability.RoundtripTrackingSpan span =
+        Observability.createRoundtripTrackingSpan("java.sql.Statement.close", "close");
 
-        try {
-            this.statement.clearWarnings();
-        } catch (Exception e) {
-            span.recordException(e);
-            throw e;
-        } finally {
-            span.close();
-        }
+    try {
+      this.statement.close();
+    } catch (Exception e) {
+      span.recordException(e);
+      throw e;
+    } finally {
+      span.close();
     }
+  }
 
-    @Override
-    public void close() throws SQLException {
-        Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Statement.close", "close");
+  @Override
+  public void closeOnCompletion() throws SQLException {
+    Observability.RoundtripTrackingSpan span =
+        Observability.createRoundtripTrackingSpan(
+            "java.sql.Statement.closeOnCompletion", "closeOnCompletion");
 
-        try {
-            this.statement.close();
-        } catch (Exception e) {
-            span.recordException(e);
-            throw e;
-        } finally {
-            span.close();
-        }
+    try {
+      this.statement.closeOnCompletion();
+    } catch (Exception e) {
+      span.recordException(e);
+      throw e;
+    } finally {
+      span.close();
     }
+  }
 
-    @Override
-    public void closeOnCompletion() throws SQLException {
-        Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Statement.closeOnCompletion", "closeOnCompletion");
+  @Override
+  public boolean execute(String SQL) throws SQLException {
+    Observability.RoundtripTrackingSpan span =
+        Observability.createRoundtripTrackingSpan(
+            "java.sql.Statement.execute", "execute", this.shouldAnnotateSpansWithSQL, SQL);
 
-        try {
-            this.statement.closeOnCompletion();
-        } catch (Exception e) {
-            span.recordException(e);
-            throw e;
-        } finally {
-            span.close();
-        }
+    try {
+      return this.statement.execute(SQL);
+    } catch (Exception e) {
+      span.recordException(e);
+      throw e;
+    } finally {
+      span.close();
     }
+  }
 
-    @Override
-    public boolean execute(String SQL) throws SQLException {
-        Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Statement.execute",
-                                                                                             "execute",
-                                                                                             this.shouldAnnotateSpansWithSQL,
-                                                                                             SQL);
+  @Override
+  public boolean execute(String SQL, int autoGeneratedKeys) throws SQLException {
+    Observability.RoundtripTrackingSpan span =
+        Observability.createRoundtripTrackingSpan(
+            "java.sql.Statement.execute", "execute", this.shouldAnnotateSpansWithSQL, SQL);
 
-        try {
-            return this.statement.execute(SQL);
-        } catch (Exception e) {
-            span.recordException(e);
-            throw e;
-        } finally {
-            span.close();
-        }
+    try {
+      return this.statement.execute(SQL, autoGeneratedKeys);
+    } catch (Exception e) {
+      span.recordException(e);
+      throw e;
+    } finally {
+      span.close();
     }
+  }
 
-    @Override
-    public boolean execute(String SQL, int autoGeneratedKeys) throws SQLException {
-        Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Statement.execute",
-                                                                                             "execute",
-                                                                                             this.shouldAnnotateSpansWithSQL,
-                                                                                             SQL);
+  @Override
+  public boolean execute(String SQL, int[] columnIndices) throws SQLException {
+    Observability.RoundtripTrackingSpan span =
+        Observability.createRoundtripTrackingSpan(
+            "java.sql.Statement.execute", "execute", this.shouldAnnotateSpansWithSQL, SQL);
 
-        try {
-            return this.statement.execute(SQL, autoGeneratedKeys);
-        } catch (Exception e) {
-            span.recordException(e);
-            throw e;
-        } finally {
-            span.close();
-        }
+    try {
+      return this.statement.execute(SQL, columnIndices);
+    } catch (Exception e) {
+      span.recordException(e);
+      throw e;
+    } finally {
+      span.close();
     }
+  }
 
-    @Override
-    public boolean execute(String SQL, int[] columnIndices) throws SQLException {
-        Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Statement.execute",
-                                                                                             "execute",
-                                                                                             this.shouldAnnotateSpansWithSQL,
-                                                                                             SQL);
+  @Override
+  public boolean execute(String SQL, String[] columnNames) throws SQLException {
+    Observability.RoundtripTrackingSpan span =
+        Observability.createRoundtripTrackingSpan(
+            "java.sql.Statement.execute", "execute", this.shouldAnnotateSpansWithSQL, SQL);
 
-        try {
-            return this.statement.execute(SQL, columnIndices);
-        } catch (Exception e) {
-            span.recordException(e);
-            throw e;
-        } finally {
-            span.close();
-        }
+    try {
+      return this.statement.execute(SQL, columnNames);
+    } catch (Exception e) {
+      span.recordException(e);
+      throw e;
+    } finally {
+      span.close();
     }
+  }
 
-    @Override
-    public boolean execute(String SQL, String[] columnNames) throws SQLException {
-        Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Statement.execute",
-                                                                                             "execute",
-                                                                                             this.shouldAnnotateSpansWithSQL,
-                                                                                             SQL);
+  @Override
+  public int[] executeBatch() throws SQLException {
+    Observability.RoundtripTrackingSpan span =
+        Observability.createRoundtripTrackingSpan(
+            "java.sql.Statement.executeBatch", "executeBatch");
 
-        try {
-            return this.statement.execute(SQL, columnNames);
-        } catch (Exception e) {
-            span.recordException(e);
-            throw e;
-        } finally {
-            span.close();
-        }
+    try {
+      return this.statement.executeBatch();
+    } catch (Exception e) {
+      span.recordException(e);
+      throw e;
+    } finally {
+      span.close();
     }
+  }
 
-    @Override
-    public int[] executeBatch() throws SQLException {
-        Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Statement.executeBatch", "executeBatch");
+  @Override
+  public java.sql.ResultSet executeQuery(String SQL) throws SQLException {
+    Observability.RoundtripTrackingSpan span =
+        Observability.createRoundtripTrackingSpan(
+            "java.sql.Statement.executeQuery",
+            "executeQuery",
+            this.shouldAnnotateSpansWithSQL,
+            SQL);
 
-        try {
-            return this.statement.executeBatch();
-        } catch (Exception e) {
-            span.recordException(e);
-            throw e;
-        } finally {
-            span.close();
-        }
+    try {
+      java.sql.ResultSet rs = this.statement.executeQuery(SQL);
+      return new OcWrapResultSet(rs);
+    } catch (Exception e) {
+      span.recordException(e);
+      throw e;
+    } finally {
+      span.close();
     }
+  }
 
-    @Override
-    public java.sql.ResultSet executeQuery(String SQL) throws SQLException {
-        Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Statement.executeQuery",
-                                                                                             "executeQuery",
-                                                                                             this.shouldAnnotateSpansWithSQL,
-                                                                                             SQL);
+  @Override
+  public int executeUpdate(String SQL) throws SQLException {
+    Observability.RoundtripTrackingSpan span =
+        Observability.createRoundtripTrackingSpan(
+            "java.sql.Statement.executeUpdate",
+            "executeUpdate",
+            this.shouldAnnotateSpansWithSQL,
+            SQL);
 
-        try {
-            java.sql.ResultSet rs = this.statement.executeQuery(SQL);
-            return new OcWrapResultSet(rs);
-        } catch (Exception e) {
-            span.recordException(e);
-            throw e;
-        } finally {
-            span.close();
-        }
+    try {
+      return this.statement.executeUpdate(SQL);
+    } catch (Exception e) {
+      span.recordException(e);
+      throw e;
+    } finally {
+      span.close();
     }
+  }
 
-    @Override
-    public int executeUpdate(String SQL) throws SQLException {
-        Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Statement.executeUpdate",
-                                                                                             "executeUpdate",
-                                                                                             this.shouldAnnotateSpansWithSQL,
-                                                                                             SQL);
+  @Override
+  public int executeUpdate(String SQL, int autoGeneratedKeys) throws SQLException {
+    Observability.RoundtripTrackingSpan span =
+        Observability.createRoundtripTrackingSpan(
+            "java.sql.Statement.executeUpdate",
+            "executeUpdate",
+            this.shouldAnnotateSpansWithSQL,
+            SQL);
 
-        try {
-            return this.statement.executeUpdate(SQL);
-        } catch (Exception e) {
-            span.recordException(e);
-            throw e;
-        } finally {
-            span.close();
-        }
+    try {
+      return this.statement.executeUpdate(SQL, autoGeneratedKeys);
+    } catch (Exception e) {
+      span.recordException(e);
+      throw e;
+    } finally {
+      span.close();
     }
+  }
 
-    @Override
-    public int executeUpdate(String SQL, int autoGeneratedKeys) throws SQLException {
-        Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Statement.executeUpdate",
-                                                                                             "executeUpdate",
-                                                                                             this.shouldAnnotateSpansWithSQL,
-                                                                                             SQL);
+  @Override
+  public int executeUpdate(String SQL, int[] columnIndices) throws SQLException {
+    Observability.RoundtripTrackingSpan span =
+        Observability.createRoundtripTrackingSpan(
+            "java.sql.Statement.executeUpdate",
+            "executeUpdate",
+            this.shouldAnnotateSpansWithSQL,
+            SQL);
 
-        try {
-            return this.statement.executeUpdate(SQL, autoGeneratedKeys);
-        } catch (Exception e) {
-            span.recordException(e);
-            throw e;
-        } finally {
-            span.close();
-        }
+    try {
+      return this.statement.executeUpdate(SQL, columnIndices);
+    } catch (Exception e) {
+      span.recordException(e);
+      throw e;
+    } finally {
+      span.close();
     }
+  }
 
-    @Override
-    public int executeUpdate(String SQL, int[] columnIndices) throws SQLException {
-        Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Statement.executeUpdate",
-                                                                                             "executeUpdate",
-                                                                                             this.shouldAnnotateSpansWithSQL,
-                                                                                             SQL);
+  @Override
+  public int executeUpdate(String SQL, String[] columnNames) throws SQLException {
+    Observability.RoundtripTrackingSpan span =
+        Observability.createRoundtripTrackingSpan(
+            "java.sql.Statement.executeUpdate",
+            "executeUpdate",
+            this.shouldAnnotateSpansWithSQL,
+            SQL);
 
-        try {
-            return this.statement.executeUpdate(SQL, columnIndices);
-        } catch (Exception e) {
-            span.recordException(e);
-            throw e;
-        } finally {
-            span.close();
-        }
+    try {
+      return this.statement.executeUpdate(SQL, columnNames);
+    } catch (Exception e) {
+      span.recordException(e);
+      throw e;
+    } finally {
+      span.close();
     }
+  }
 
-    @Override
-    public int executeUpdate(String SQL, String[] columnNames) throws SQLException {
-        Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Statement.executeUpdate",
-                                                                                             "executeUpdate",
-                                                                                             this.shouldAnnotateSpansWithSQL,
-                                                                                             SQL);
+  @Override
+  public java.sql.Connection getConnection() throws SQLException {
+    return this.statement.getConnection();
+  }
 
-        try {
-            return this.statement.executeUpdate(SQL, columnNames);
-        } catch (Exception e) {
-            span.recordException(e);
-            throw e;
-        } finally {
-            span.close();
-        }
+  @Override
+  public int getFetchDirection() throws SQLException {
+    Observability.RoundtripTrackingSpan span =
+        Observability.createRoundtripTrackingSpan(
+            "java.sql.Statement.getFetchDirection", "getFetchDirection");
+
+    try {
+      return this.statement.getFetchDirection();
+    } catch (Exception e) {
+      span.recordException(e);
+      throw e;
+    } finally {
+      span.close();
     }
+  }
 
-    @Override
-    public java.sql.Connection getConnection() throws SQLException {
-        return this.statement.getConnection();
+  @Override
+  public int getFetchSize() throws SQLException {
+    Observability.RoundtripTrackingSpan span =
+        Observability.createRoundtripTrackingSpan(
+            "java.sql.Statement.getFetchSize", "getFetchSize");
+
+    try {
+      return this.statement.getFetchSize();
+    } catch (Exception e) {
+      span.recordException(e);
+      throw e;
+    } finally {
+      span.close();
     }
+  }
 
-    @Override
-    public int getFetchDirection() throws SQLException {
-        Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Statement.getFetchDirection", "getFetchDirection");
+  @Override
+  public java.sql.ResultSet getGeneratedKeys() throws SQLException {
+    Observability.RoundtripTrackingSpan span =
+        Observability.createRoundtripTrackingSpan(
+            "java.sql.Statement.getGeneratedKeys", "getGeneratedKeys");
 
-        try {
-            return this.statement.getFetchDirection();
-        } catch (Exception e) {
-            span.recordException(e);
-            throw e;
-        } finally {
-            span.close();
-        }
+    try {
+      java.sql.ResultSet rs = this.statement.getGeneratedKeys();
+      return new OcWrapResultSet(rs);
+    } catch (Exception e) {
+      span.recordException(e);
+      throw e;
+    } finally {
+      span.close();
     }
+  }
 
-    @Override
-    public int getFetchSize() throws SQLException {
-        Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Statement.getFetchSize", "getFetchSize");
+  @Override
+  public int getMaxFieldSize() throws SQLException {
+    Observability.RoundtripTrackingSpan span =
+        Observability.createRoundtripTrackingSpan(
+            "java.sql.Statement.getMaxFieldSize", "getMaxFieldSize");
 
-        try {
-            return this.statement.getFetchSize();
-        } catch (Exception e) {
-            span.recordException(e);
-            throw e;
-        } finally {
-            span.close();
-        }
+    try {
+      return this.statement.getMaxFieldSize();
+    } catch (Exception e) {
+      span.recordException(e);
+      throw e;
+    } finally {
+      span.close();
     }
+  }
 
-    @Override
-    public java.sql.ResultSet getGeneratedKeys() throws SQLException {
-        Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Statement.getGeneratedKeys", "getGeneratedKeys");
+  @Override
+  public int getMaxRows() throws SQLException {
+    Observability.RoundtripTrackingSpan span =
+        Observability.createRoundtripTrackingSpan("java.sql.Statement.getMaxRows", "getMaxRows");
 
-        try {
-            java.sql.ResultSet rs = this.statement.getGeneratedKeys();
-            return new OcWrapResultSet(rs);
-        } catch (Exception e) {
-            span.recordException(e);
-            throw e;
-        } finally {
-            span.close();
-        }
+    try {
+      return this.statement.getMaxRows();
+    } catch (Exception e) {
+      span.recordException(e);
+      throw e;
+    } finally {
+      span.close();
     }
+  }
 
-    @Override
-    public int getMaxFieldSize() throws SQLException {
-        Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Statement.getMaxFieldSize", "getMaxFieldSize");
+  @Override
+  public boolean getMoreResults(int current) throws SQLException {
+    Observability.RoundtripTrackingSpan span =
+        Observability.createRoundtripTrackingSpan(
+            "java.sql.Statement.getMoreResults", "getMoreResults");
 
-        try {
-            return this.statement.getMaxFieldSize();
-        } catch (Exception e) {
-            span.recordException(e);
-            throw e;
-        } finally {
-            span.close();
-        }
+    try {
+      return this.statement.getMoreResults(current);
+    } catch (Exception e) {
+      span.recordException(e);
+      throw e;
+    } finally {
+      span.close();
     }
+  }
 
-    @Override
-    public int getMaxRows() throws SQLException {
-        Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Statement.getMaxRows", "getMaxRows");
+  @Override
+  public boolean getMoreResults() throws SQLException {
+    Observability.RoundtripTrackingSpan span =
+        Observability.createRoundtripTrackingSpan(
+            "java.sql.Statement.getMoreResults", "getMoreResults");
 
-        try {
-            return this.statement.getMaxRows();
-        } catch (Exception e) {
-            span.recordException(e);
-            throw e;
-        } finally {
-            span.close();
-        }
+    try {
+      return this.statement.getMoreResults();
+    } catch (Exception e) {
+      span.recordException(e);
+      throw e;
+    } finally {
+      span.close();
     }
+  }
 
-    @Override
-    public boolean getMoreResults(int current) throws SQLException {
-        Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Statement.getMoreResults", "getMoreResults");
+  @Override
+  public int getQueryTimeout() throws SQLException {
+    Observability.RoundtripTrackingSpan span =
+        Observability.createRoundtripTrackingSpan(
+            "java.sql.Statement.getQueryTimeout", "getQueryTimeout");
 
-        try {
-            return this.statement.getMoreResults(current);
-        } catch (Exception e) {
-            span.recordException(e);
-            throw e;
-        } finally {
-            span.close();
-        }
+    try {
+      return this.statement.getQueryTimeout();
+    } catch (Exception e) {
+      span.recordException(e);
+      throw e;
+    } finally {
+      span.close();
     }
+  }
 
-    @Override
-    public boolean getMoreResults() throws SQLException {
-        Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Statement.getMoreResults", "getMoreResults");
+  @Override
+  public java.sql.ResultSet getResultSet() throws SQLException {
+    Observability.RoundtripTrackingSpan span =
+        Observability.createRoundtripTrackingSpan(
+            "java.sql.Statement.getResultSet", "getResultSet");
 
-        try {
-            return this.statement.getMoreResults();
-        } catch (Exception e) {
-            span.recordException(e);
-            throw e;
-        } finally {
-            span.close();
-        }
+    try {
+      java.sql.ResultSet rs = this.statement.getResultSet();
+      return new OcWrapResultSet(rs);
+    } catch (Exception e) {
+      span.recordException(e);
+      throw e;
+    } finally {
+      span.close();
     }
+  }
 
-    @Override
-    public int getQueryTimeout() throws SQLException {
-        Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Statement.getQueryTimeout", "getQueryTimeout");
+  @Override
+  public int getResultSetConcurrency() throws SQLException {
+    Observability.RoundtripTrackingSpan span =
+        Observability.createRoundtripTrackingSpan(
+            "java.sql.Statement.getResultSetConcurrency", "getResultSetConcurrency");
 
-        try {
-            return this.statement.getQueryTimeout();
-        } catch (Exception e) {
-            span.recordException(e);
-            throw e;
-        } finally {
-            span.close();
-        }
+    try {
+      return this.statement.getResultSetConcurrency();
+    } catch (Exception e) {
+      span.recordException(e);
+      throw e;
+    } finally {
+      span.close();
     }
+  }
 
-    @Override
-    public java.sql.ResultSet getResultSet() throws SQLException {
-        Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Statement.getResultSet", "getResultSet");
+  @Override
+  public int getResultSetHoldability() throws SQLException {
+    Observability.RoundtripTrackingSpan span =
+        Observability.createRoundtripTrackingSpan(
+            "java.sql.Statement.getResultSetHoldability", "getResultSetHoldability");
 
-        try {
-            java.sql.ResultSet rs = this.statement.getResultSet();
-            return new OcWrapResultSet(rs);
-        } catch (Exception e) {
-            span.recordException(e);
-            throw e;
-        } finally {
-            span.close();
-        }
+    try {
+      return this.statement.getResultSetHoldability();
+    } catch (Exception e) {
+      span.recordException(e);
+      throw e;
+    } finally {
+      span.close();
     }
+  }
 
-    @Override
-    public int getResultSetConcurrency() throws SQLException {
-        Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Statement.getResultSetConcurrency", "getResultSetConcurrency");
+  @Override
+  public int getResultSetType() throws SQLException {
+    Observability.RoundtripTrackingSpan span =
+        Observability.createRoundtripTrackingSpan(
+            "java.sql.Statement.getResultSetType", "getResultSetType");
 
-        try {
-            return this.statement.getResultSetConcurrency();
-        } catch (Exception e) {
-            span.recordException(e);
-            throw e;
-        } finally {
-            span.close();
-        }
+    try {
+      return this.statement.getResultSetType();
+    } catch (Exception e) {
+      span.recordException(e);
+      throw e;
+    } finally {
+      span.close();
     }
+  }
 
-    @Override
-    public int getResultSetHoldability() throws SQLException {
-        Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Statement.getResultSetHoldability", "getResultSetHoldability");
+  @Override
+  public int getUpdateCount() throws SQLException {
+    Observability.RoundtripTrackingSpan span =
+        Observability.createRoundtripTrackingSpan(
+            "java.sql.Statement.getUpdateCount", "getUpdateCount");
 
-        try {
-            return this.statement.getResultSetHoldability();
-        } catch (Exception e) {
-            span.recordException(e);
-            throw e;
-        } finally {
-            span.close();
-        }
+    try {
+      return this.statement.getUpdateCount();
+    } catch (Exception e) {
+      span.recordException(e);
+      throw e;
+    } finally {
+      span.close();
     }
+  }
 
-    @Override
-    public int getResultSetType() throws SQLException {
-        Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Statement.getResultSetType", "getResultSetType");
+  @Override
+  public java.sql.SQLWarning getWarnings() throws SQLException {
+    Observability.RoundtripTrackingSpan span =
+        Observability.createRoundtripTrackingSpan("java.sql.Statement.getWarnings", "getWarnings");
 
-        try {
-            return this.statement.getResultSetType();
-        } catch (Exception e) {
-            span.recordException(e);
-            throw e;
-        } finally {
-            span.close();
-        }
+    try {
+      return this.statement.getWarnings();
+    } catch (Exception e) {
+      span.recordException(e);
+      throw e;
+    } finally {
+      span.close();
     }
+  }
 
-    @Override
-    public int getUpdateCount() throws SQLException {
-        Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Statement.getUpdateCount", "getUpdateCount");
+  @Override
+  public boolean isClosed() throws SQLException {
+    Observability.RoundtripTrackingSpan span =
+        Observability.createRoundtripTrackingSpan("java.sql.Statement.isClosed", "isClosed");
 
-        try {
-            return this.statement.getUpdateCount();
-        } catch (Exception e) {
-            span.recordException(e);
-            throw e;
-        } finally {
-            span.close();
-        }
+    try {
+      return this.statement.isClosed();
+    } catch (Exception e) {
+      span.recordException(e);
+      throw e;
+    } finally {
+      span.close();
     }
+  }
 
-    @Override
-    public java.sql.SQLWarning getWarnings() throws SQLException {
-        Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Statement.getWarnings", "getWarnings");
+  @Override
+  public boolean isCloseOnCompletion() throws SQLException {
+    Observability.RoundtripTrackingSpan span =
+        Observability.createRoundtripTrackingSpan(
+            "java.sql.Statement.isCloseOnCompletion", "isCloseOnCompletion");
 
-        try {
-            return this.statement.getWarnings();
-        } catch (Exception e) {
-            span.recordException(e);
-            throw e;
-        } finally {
-            span.close();
-        }
+    try {
+      return this.statement.isCloseOnCompletion();
+    } catch (Exception e) {
+      span.recordException(e);
+      throw e;
+    } finally {
+      span.close();
     }
+  }
 
-    @Override
-    public boolean isClosed() throws SQLException {
-        Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Statement.isClosed", "isClosed");
+  @Override
+  public boolean isPoolable() throws SQLException {
+    Observability.RoundtripTrackingSpan span =
+        Observability.createRoundtripTrackingSpan("java.sql.Statement.isPoolable", "isPoolable");
 
-        try {
-            return this.statement.isClosed();
-        } catch (Exception e) {
-            span.recordException(e);
-            throw e;
-        } finally {
-            span.close();
-        }
+    try {
+      return this.statement.isPoolable();
+    } catch (Exception e) {
+      span.recordException(e);
+      throw e;
+    } finally {
+      span.close();
     }
+  }
 
-    @Override
-    public boolean isCloseOnCompletion() throws SQLException {
-        Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Statement.isCloseOnCompletion", "isCloseOnCompletion");
+  @Override
+  public void setCursorName(String cursorName) throws SQLException {
+    Observability.RoundtripTrackingSpan span =
+        Observability.createRoundtripTrackingSpan(
+            "java.sql.Statement.setCursorName", "setCursorName");
 
-        try {
-            return this.statement.isCloseOnCompletion();
-        } catch (Exception e) {
-            span.recordException(e);
-            throw e;
-        } finally {
-            span.close();
-        }
+    try {
+      this.statement.setCursorName(cursorName);
+    } catch (Exception e) {
+      span.recordException(e);
+      throw e;
+    } finally {
+      span.close();
     }
+  }
 
-    @Override
-    public boolean isPoolable() throws SQLException {
-        Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Statement.isPoolable", "isPoolable");
+  @Override
+  public void setEscapeProcessing(boolean enable) throws SQLException {
+    Observability.RoundtripTrackingSpan span =
+        Observability.createRoundtripTrackingSpan(
+            "java.sql.Statement.setEscapeProcessing", "setEscapeProcessing");
 
-        try {
-            return this.statement.isPoolable();
-        } catch (Exception e) {
-            span.recordException(e);
-            throw e;
-        } finally {
-            span.close();
-        }
+    try {
+      this.statement.setEscapeProcessing(enable);
+    } catch (Exception e) {
+      span.recordException(e);
+      throw e;
+    } finally {
+      span.close();
     }
+  }
 
-    @Override
-    public void setCursorName(String cursorName) throws SQLException {
-        Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Statement.setCursorName", "setCursorName");
+  @Override
+  public void setFetchDirection(int direction) throws SQLException {
+    Observability.RoundtripTrackingSpan span =
+        Observability.createRoundtripTrackingSpan(
+            "java.sql.Statement.setFetchDirection", "setFetchDirection");
 
-        try {
-            this.statement.setCursorName(cursorName);
-        } catch (Exception e) {
-            span.recordException(e);
-            throw e;
-        } finally {
-            span.close();
-        }
+    try {
+      this.statement.setFetchDirection(direction);
+    } catch (Exception e) {
+      span.recordException(e);
+      throw e;
+    } finally {
+      span.close();
     }
+  }
 
-    @Override
-    public void setEscapeProcessing(boolean enable) throws SQLException {
-        Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Statement.setEscapeProcessing", "setEscapeProcessing");
+  @Override
+  public void setFetchSize(int rows) throws SQLException {
+    Observability.RoundtripTrackingSpan span =
+        Observability.createRoundtripTrackingSpan(
+            "java.sql.Statement.setFetchSize", "setFetchSize");
 
-        try {
-            this.statement.setEscapeProcessing(enable);
-        } catch (Exception e) {
-            span.recordException(e);
-            throw e;
-        } finally {
-            span.close();
-        }
+    try {
+      this.statement.setFetchSize(rows);
+    } catch (Exception e) {
+      span.recordException(e);
+      throw e;
+    } finally {
+      span.close();
     }
+  }
 
-    @Override
-    public void setFetchDirection(int direction) throws SQLException {
-        Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Statement.setFetchDirection", "setFetchDirection");
+  @Override
+  public void setMaxFieldSize(int max) throws SQLException {
+    Observability.RoundtripTrackingSpan span =
+        Observability.createRoundtripTrackingSpan(
+            "java.sql.Statement.setMaxFieldSize", "setMaxFieldSize");
 
-        try {
-            this.statement.setFetchDirection(direction);
-        } catch (Exception e) {
-            span.recordException(e);
-            throw e;
-        } finally {
-            span.close();
-        }
+    try {
+      this.statement.setMaxFieldSize(max);
+    } catch (Exception e) {
+      span.recordException(e);
+      throw e;
+    } finally {
+      span.close();
     }
+  }
 
-    @Override
-    public void setFetchSize(int rows) throws SQLException {
-        Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Statement.setFetchSize", "setFetchSize");
+  @Override
+  public void setMaxRows(int max) throws SQLException {
+    Observability.RoundtripTrackingSpan span =
+        Observability.createRoundtripTrackingSpan("java.sql.Statement.setMaxRows", "setMaxRows");
 
-        try {
-            this.statement.setFetchSize(rows);
-        } catch (Exception e) {
-            span.recordException(e);
-            throw e;
-        } finally {
-            span.close();
-        }
+    try {
+      this.statement.setMaxRows(max);
+    } catch (Exception e) {
+      span.recordException(e);
+      throw e;
+    } finally {
+      span.close();
     }
+  }
 
-    @Override
-    public void setMaxFieldSize(int max) throws SQLException {
-        Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Statement.setMaxFieldSize", "setMaxFieldSize");
+  @Override
+  public void setPoolable(boolean poolable) throws SQLException {
+    Observability.RoundtripTrackingSpan span =
+        Observability.createRoundtripTrackingSpan("java.sql.Statement.setPoolable", "setPoolable");
 
-        try {
-            this.statement.setMaxFieldSize(max);
-        } catch (Exception e) {
-            span.recordException(e);
-            throw e;
-        } finally {
-            span.close();
-        }
+    try {
+      this.statement.setPoolable(poolable);
+    } catch (Exception e) {
+      span.recordException(e);
+      throw e;
+    } finally {
+      span.close();
     }
+  }
 
-    @Override
-    public void setMaxRows(int max) throws SQLException {
-        Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Statement.setMaxRows", "setMaxRows");
+  @Override
+  public void setQueryTimeout(int seconds) throws SQLException {
+    Observability.RoundtripTrackingSpan span =
+        Observability.createRoundtripTrackingSpan(
+            "java.sql.Statement.setQueryTimeout", "setQueryTimeout");
 
-        try {
-            this.statement.setMaxRows(max);
-        } catch (Exception e) {
-            span.recordException(e);
-            throw e;
-        } finally {
-            span.close();
-        }
+    try {
+      this.statement.setQueryTimeout(seconds);
+    } catch (Exception e) {
+      span.recordException(e);
+      throw e;
+    } finally {
+      span.close();
     }
+  }
 
-    @Override
-    public void setPoolable(boolean poolable) throws SQLException {
-        Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Statement.setPoolable", "setPoolable");
+  @Override
+  public boolean isWrapperFor(Class<?> iface) throws SQLException {
+    return this.statement.isWrapperFor(iface);
+  }
 
-        try {
-            this.statement.setPoolable(poolable);
-        } catch (Exception e) {
-            span.recordException(e);
-            throw e;
-        } finally {
-            span.close();
-        }
-    }
-
-    @Override
-    public void setQueryTimeout(int seconds) throws SQLException {
-        Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Statement.setQueryTimeout", "setQueryTimeout");
-
-        try {
-            this.statement.setQueryTimeout(seconds);
-        } catch (Exception e) {
-            span.recordException(e);
-            throw e;
-        } finally {
-            span.close();
-        }
-    }
-
-    @Override
-    public boolean isWrapperFor(Class<?> iface) throws SQLException {
-        return this.statement.isWrapperFor(iface);
-    }
-
-    @Override
-    public <T> T unwrap(Class<T> iface) throws SQLException {
-        return this.statement.unwrap(iface);
-    }
+  @Override
+  public <T> T unwrap(Class<T> iface) throws SQLException {
+    return this.statement.unwrap(iface);
+  }
 }
