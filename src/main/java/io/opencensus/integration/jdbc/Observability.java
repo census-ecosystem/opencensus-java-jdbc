@@ -25,6 +25,7 @@ import io.opencensus.stats.StatsRecorder;
 import io.opencensus.stats.View;
 import io.opencensus.stats.View.Name;
 import io.opencensus.stats.ViewManager;
+import io.opencensus.tags.TagContext;
 import io.opencensus.tags.TagContextBuilder;
 import io.opencensus.tags.TagKey;
 import io.opencensus.tags.TagValue;
@@ -155,46 +156,42 @@ public final class Observability {
                   200000.0,
                   500000.0)));
 
-  private static Scope buildTagContextAndScopeWithSystemProperties(Map<TagKey, TagValue> tags) {
-    TagContextBuilder tb = tagger.emptyBuilder();
+  private static TagContext buildTagContextWithSystemProperties(Map<TagKey, TagValue> tags) {
+    TagContextBuilder tagContextBuilder = tagger.currentBuilder();
     for (Map.Entry<TagKey, TagValue> tag : tags.entrySet()) {
-      tb.put(tag.getKey(), tag.getValue());
+      tagContextBuilder.put(tag.getKey(), tag.getValue());
     }
 
     // It is imperative that we record the various mandatory OS and System identifiers.
     // See Issue https://github.com/opencensus-integrations/ocjdbc/issues/4
     // As they are very useful in helping disambiguate between processes.
     for (Map.Entry<TagKey, TagValue> tag : mandatorySystemTags.entrySet()) {
-      tb.put(tag.getKey(), tag.getValue());
+      tagContextBuilder.put(tag.getKey(), tag.getValue());
     }
-    return tagger.withTagContext(tb.build());
+    return tagContextBuilder.build();
   }
 
-  private static void recordTaggedStat(TagKey key, String value, MeasureLong ml, int i) {
-    recordTaggedStat(key, value, ml, Long.valueOf(i));
+  static void recordTaggedStat(
+      TagKey tagKey, String tagValue, MeasureLong measureLong, long value) {
+    recordStatWithTags(
+        measureLong, value, Collections.singletonMap(tagKey, TagValue.create(tagValue)));
   }
 
-  private static void recordTaggedStat(TagKey key, String value, MeasureLong ml, Long l) {
-
-    Scope ss =
-        buildTagContextAndScopeWithSystemProperties(
-            Collections.singletonMap(key, TagValue.create(value)));
-    statsRecorder.newMeasureMap().put(ml, l).record();
-    ss.close();
+  static void recordTaggedStat(
+      TagKey tagKey, String tagValue, MeasureDouble measureDouble, double value) {
+    statsRecorder
+        .newMeasureMap()
+        .put(measureDouble, value)
+        .record(
+            buildTagContextWithSystemProperties(
+                Collections.singletonMap(tagKey, TagValue.create(tagValue))));
   }
 
-  private static void recordTaggedStat(TagKey key, String value, MeasureDouble md, Double d) {
-    Scope ss =
-        buildTagContextAndScopeWithSystemProperties(
-            Collections.singletonMap(key, TagValue.create(value)));
-    statsRecorder.newMeasureMap().put(md, d).record();
-    ss.close();
-  }
-
-  private static void recordStatWithTags(MeasureLong ml, long l, Map<TagKey, TagValue> tags) {
-    Scope ss = buildTagContextAndScopeWithSystemProperties(tags);
-    statsRecorder.newMeasureMap().put(ml, l).record();
-    ss.close();
+  static void recordStatWithTags(MeasureLong measureLong, long value, Map<TagKey, TagValue> tags) {
+    statsRecorder
+        .newMeasureMap()
+        .put(measureLong, value)
+        .record(buildTagContextWithSystemProperties(tags));
   }
 
   public enum TraceOption {
@@ -241,7 +238,7 @@ public final class Observability {
 
       try {
         // Record the number of calls of the made method.
-        recordTaggedStat(KEY_METHOD, this.method, MEASURE_CALLS, 1);
+        recordTaggedStat(KEY_METHOD, this.method, MEASURE_CALLS, 1L);
 
         long totalTimeNs = System.nanoTime() - this.startTimeNs;
         double timeSpentMs = ((double) totalTimeNs) / 1e6;
@@ -274,8 +271,8 @@ public final class Observability {
   }
 
   static RoundtripTrackingSpan createRoundtripTrackingSpan(
-      String spanName, String method, boolean canRecordSQL, String SQL) {
-    return new RoundtripTrackingSpan(spanName, method, canRecordSQL, SQL);
+      String spanName, String method, boolean canRecordSQL, String sql) {
+    return new RoundtripTrackingSpan(spanName, method, canRecordSQL, sql);
   }
 
   private static List<TagKey> addMandatorySystemTagKeys(List<TagKey> customTagKeys) {
@@ -329,10 +326,10 @@ public final class Observability {
               addMandatorySystemTagKeys(Arrays.asList(KEY_METHOD, KEY_PHASE, KEY_REASON, KEY_TYPE)))
         };
 
-    ViewManager vmgr = Stats.getViewManager();
+    ViewManager viewManager = Stats.getViewManager();
 
     for (View v : views) {
-      vmgr.registerView(v);
+      viewManager.registerView(v);
     }
   }
 }
