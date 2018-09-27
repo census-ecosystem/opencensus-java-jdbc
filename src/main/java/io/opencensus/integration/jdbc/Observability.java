@@ -171,12 +171,14 @@ public final class Observability {
     return tagContextBuilder.build();
   }
 
-  static void recordTaggedStat(TagKey tagKey, String tagValue, MeasureLong measureLong, long value) {
-    recordStatWithTags(measureLong, value, Collections.singletonMap(tagKey, TagValue.create(tagValue)));
+  static void recordTaggedStat(
+      TagKey tagKey, String tagValue, MeasureLong measureLong, long value) {
+    recordStatWithTags(
+        measureLong, value, Collections.singletonMap(tagKey, TagValue.create(tagValue)));
   }
 
-  static void recordTaggedStat(TagKey tagKey, String tagValue, MeasureDouble measureDouble,
-      double value) {
+  static void recordTaggedStat(
+      TagKey tagKey, String tagValue, MeasureDouble measureDouble, double value) {
     statsRecorder
         .newMeasureMap()
         .put(measureDouble, value)
@@ -186,7 +188,10 @@ public final class Observability {
   }
 
   static void recordStatWithTags(MeasureLong measureLong, long value, Map<TagKey, TagValue> tags) {
-    statsRecorder.newMeasureMap().put(measureLong, value).record(buildTagContextWithSystemProperties(tags));
+    statsRecorder
+        .newMeasureMap()
+        .put(measureLong, value)
+        .record(buildTagContextWithSystemProperties(tags));
   }
 
   public enum TraceOption {
