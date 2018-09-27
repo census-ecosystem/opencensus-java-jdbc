@@ -35,21 +35,20 @@ import io.opencensus.trace.Span;
 import io.opencensus.trace.Status;
 import io.opencensus.trace.Tracer;
 import io.opencensus.trace.Tracing;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.List;
+import java.util.*;
 
 public class Observability {
   private static final StatsRecorder statsRecorder = Stats.getStatsRecorder();
   private static final Tagger tagger = Tags.getTagger();
   private static final Tracer tracer = Tracing.getTracer();
 
-  private static final String DETECTED_OS_NAME = System.getProperty("os.name", "");
-  private static final String DETECTED_ARCH = System.getProperty("os.arch", "");
-  private static final String DETECTED_OS_VERSION = System.getProperty("os.version", "");
-  private static final String DETECTED_JAVA_VERSION = System.getProperty("java.version", "");
+  private static final TagValue DETECTED_OS_NAME =
+      TagValue.create(System.getProperty("os.name", ""));
+  private static final TagValue DETECTED_ARCH = TagValue.create(System.getProperty("os.arch", ""));
+  private static final TagValue DETECTED_OS_VERSION =
+      TagValue.create(System.getProperty("os.version", ""));
+  private static final TagValue DETECTED_JAVA_VERSION =
+      TagValue.create(System.getProperty("java.version", ""));
 
   // Units of measurement
   private static final String BYTES = "By";
@@ -66,12 +65,14 @@ public class Observability {
   private static final TagKey keyOSName = TagKey.create("os_name");
   private static final TagKey keyOSVersion = TagKey.create("os_version");
 
-  private static List<TagKeyPair> mandatorySystemTagKeyPairs =
-      Arrays.asList(
-          tagKeyPair(keyArchitecture, DETECTED_ARCH),
-          tagKeyPair(keyJavaVersion, DETECTED_JAVA_VERSION),
-          tagKeyPair(keyOSName, DETECTED_OS_NAME),
-          tagKeyPair(keyOSVersion, DETECTED_OS_VERSION));
+  private static final Map<TagKey, TagValue> mandatorySystemTags = new HashMap<TagKey, TagValue>();
+
+  static {
+    mandatorySystemTags.put(keyArchitecture, DETECTED_ARCH);
+    mandatorySystemTags.put(keyJavaVersion, DETECTED_JAVA_VERSION);
+    mandatorySystemTags.put(keyOSName, DETECTED_OS_NAME);
+    mandatorySystemTags.put(keyOSVersion, DETECTED_OS_VERSION);
+  }
 
   // Measures
   public static final MeasureLong mCalls =
@@ -86,17 +87,17 @@ public class Observability {
   public static final MeasureLong mValueLength =
       MeasureLong.create("java.sql/value_length", "Records the lengths of values", DIMENSIONLESS);
 
-  private static Scope buildTagContextAndScopeWithSystemProperties(List<TagKeyPair> pairs) {
+  private static Scope buildTagContextAndScopeWithSystemProperties(Map<TagKey, TagValue> tags) {
     TagContextBuilder tb = tagger.emptyBuilder();
-    for (TagKeyPair kvp : pairs) {
-      tb.put(kvp.key, TagValue.create(kvp.value));
+    for (Map.Entry<TagKey, TagValue> tag : tags.entrySet()) {
+      tb.put(tag.getKey(), tag.getValue());
     }
 
     // It is imperative that we record the various mandatory OS and System identifiers.
     // See Issue https://github.com/opencensus-integrations/ocjdbc/issues/4
     // As they are very useful in helping disambiguate between processes.
-    for (TagKeyPair mandatoryKVP : mandatorySystemTagKeyPairs) {
-      tb.put(mandatoryKVP.key, TagValue.create(mandatoryKVP.value));
+    for (Map.Entry<TagKey, TagValue> tag : mandatorySystemTags.entrySet()) {
+      tb.put(tag.getKey(), tag.getValue());
     }
     return tagger.withTagContext(tb.build());
   }
@@ -108,7 +109,7 @@ public class Observability {
   public static void recordTaggedStat(TagKey key, String value, MeasureLong ml, Long l) {
     Scope ss =
         buildTagContextAndScopeWithSystemProperties(
-            Collections.singletonList(tagKeyPair(key, value)));
+            Collections.singletonMap(key, TagValue.create(value)));
     statsRecorder.newMeasureMap().put(ml, l).record();
     ss.close();
   }
@@ -116,13 +117,13 @@ public class Observability {
   public static void recordTaggedStat(TagKey key, String value, MeasureDouble md, Double d) {
     Scope ss =
         buildTagContextAndScopeWithSystemProperties(
-            Collections.singletonList(tagKeyPair(key, value)));
+            Collections.singletonMap(key, TagValue.create(value)));
     statsRecorder.newMeasureMap().put(md, d).record();
     ss.close();
   }
 
-  public static void recordStatWithTags(MeasureLong ml, long l, List<TagKeyPair> pairs) {
-    Scope ss = buildTagContextAndScopeWithSystemProperties(pairs);
+  public static void recordStatWithTags(MeasureLong ml, long l, Map<TagKey, TagValue> tags) {
+    Scope ss = buildTagContextAndScopeWithSystemProperties(tags);
     statsRecorder.newMeasureMap().put(ml, l).record();
     ss.close();
   }
@@ -200,10 +201,10 @@ public class Observability {
     public void recordException(Exception e) {
       String detail = e.toString();
       this.span.setStatus(Status.INTERNAL.withDescription(detail));
-      recordStatWithTags(
-          mErrors,
-          1,
-          Arrays.asList(tagKeyPair(keyReason, detail), tagKeyPair(keyMethod, this.method)));
+      Map<TagKey, TagValue> tags = new HashMap<TagKey, TagValue>();
+      tags.put(keyReason, TagValue.create(detail));
+      tags.put(keyMethod, TagValue.create(this.method));
+      recordStatWithTags(mErrors, 1, tags);
     }
   }
 
@@ -216,25 +217,15 @@ public class Observability {
     return new RoundtripTrackingSpan(spanName, method, canRecordSQL, SQL);
   }
 
-  public static class TagKeyPair {
-    private TagKey key;
-    private String value;
-
-    public TagKeyPair(TagKey key, String value) {
-      this.key = key;
-      this.value = value;
-    }
-  }
-
-  public static TagKeyPair tagKeyPair(TagKey key, String value) {
-    return new TagKeyPair(key, value);
-  }
-
   private static List<TagKey> addMandatorySystemTagKeys(List<TagKey> customTagKeys) {
     List<TagKey> out = new ArrayList<TagKey>();
-    for (TagKey tagKey : customTagKeys) out.add(tagKey);
+    for (TagKey tagKey : customTagKeys) {
+      out.add(tagKey);
+    }
 
-    for (TagKeyPair kvp : mandatorySystemTagKeyPairs) out.add(kvp.key);
+    for (Map.Entry<TagKey, TagValue> tag : mandatorySystemTags.entrySet()) {
+      out.add(tag.getKey());
+    }
 
     return out;
   }
