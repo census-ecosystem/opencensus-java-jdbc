@@ -16,12 +16,14 @@ package io.opencensus.integration.jdbc;
 
 import io.opencensus.common.Scope;
 import io.opencensus.integration.jdbc.Observability.TrackingOperation;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class OcWrapResultSet implements java.sql.ResultSet {
-  private final java.sql.ResultSet resultSet;
+/** Wraps and instruments a {@link ResultSet} instance with tracing and metrics using OpenCensus. */
+public class OcWrapResultSet implements ResultSet {
+  private final ResultSet resultSet;
 
-  public OcWrapResultSet(java.sql.ResultSet rs) {
+  public OcWrapResultSet(ResultSet rs) {
     this.resultSet = rs;
   }
 

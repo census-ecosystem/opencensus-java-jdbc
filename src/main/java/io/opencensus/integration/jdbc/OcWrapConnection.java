@@ -17,20 +17,20 @@ package io.opencensus.integration.jdbc;
 import io.opencensus.common.Scope;
 import io.opencensus.integration.jdbc.Observability.TraceOption;
 import io.opencensus.integration.jdbc.Observability.TrackingOperation;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.EnumSet;
 import java.util.concurrent.Executor;
 
-/*
- * OcWrapConnection is a class that wraps a java.sql.Connection and instruments
- * each of its methods with tracing and metrixs using OpenCensus
+/**
+ * Wraps and instruments a {@link Connection} instance with tracing and metrics using OpenCensus.
  */
-public class OcWrapConnection implements java.sql.Connection {
-  private final java.sql.Connection connection;
+public class OcWrapConnection implements Connection {
+  private final Connection connection;
   private final boolean shouldAnnotateSpansWithSQL;
   private EnumSet<TraceOption> startOptions;
 
-  public OcWrapConnection(java.sql.Connection connection, EnumSet<TraceOption> opts) {
+  public OcWrapConnection(Connection connection, EnumSet<TraceOption> opts) {
     this.connection = connection;
     this.shouldAnnotateSpansWithSQL = Observability.shouldAnnotateSpansWithSQL(opts);
     this.startOptions = opts;

@@ -17,15 +17,19 @@ package io.opencensus.integration.jdbc;
 import io.opencensus.common.Scope;
 import io.opencensus.integration.jdbc.Observability.TraceOption;
 import io.opencensus.integration.jdbc.Observability.TrackingOperation;
+import java.sql.CallableStatement;
 import java.sql.SQLException;
 import java.util.EnumSet;
 
-public class OcWrapCallableStatement implements java.sql.CallableStatement {
-  private final java.sql.CallableStatement callableStatement;
+/**
+ * Wraps and instruments a {@link CallableStatement} instance with tracing and metrics using
+ * OpenCensus.
+ */
+public class OcWrapCallableStatement implements CallableStatement {
+  private final CallableStatement callableStatement;
   private final boolean shouldAnnotateSpansWithSQL;
 
-  public OcWrapCallableStatement(
-      java.sql.CallableStatement callableStatement, EnumSet<TraceOption> opts) {
+  public OcWrapCallableStatement(CallableStatement callableStatement, EnumSet<TraceOption> opts) {
     this.callableStatement = callableStatement;
     this.shouldAnnotateSpansWithSQL = Observability.shouldAnnotateSpansWithSQL(opts);
   }

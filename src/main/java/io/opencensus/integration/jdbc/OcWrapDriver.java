@@ -17,20 +17,18 @@ package io.opencensus.integration.jdbc;
 import io.opencensus.common.Scope;
 import io.opencensus.integration.jdbc.Observability.TraceOption;
 import io.opencensus.integration.jdbc.Observability.TrackingOperation;
+import java.sql.Driver;
 import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
 import java.util.EnumSet;
 import java.util.Properties;
 import java.util.logging.Logger;
 
-/*
- * OcWrapDriver is a class that wraps and instruments a sql.Driver
- * instance wit htracing and metrics using OpenCensus.
- */
-public class OcWrapDriver implements java.sql.Driver {
-  private final java.sql.Driver driver;
+/** Wraps and instruments a {@link Driver} instance with tracing and metrics using OpenCensus. */
+public class OcWrapDriver implements Driver {
+  private final Driver driver;
 
-  public OcWrapDriver(java.sql.Driver driver) throws SQLException {
+  public OcWrapDriver(Driver driver) {
     this.driver = driver;
   }
 

@@ -18,13 +18,15 @@ import io.opencensus.common.Scope;
 import io.opencensus.integration.jdbc.Observability.TraceOption;
 import io.opencensus.integration.jdbc.Observability.TrackingOperation;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.EnumSet;
 
-public class OcWrapStatement implements java.sql.Statement, java.sql.Wrapper {
-  private final java.sql.Statement statement;
+/** Wraps and instruments a {@link Statement} instance with tracing and metrics using OpenCensus. */
+public class OcWrapStatement implements Statement {
+  private final Statement statement;
   private final boolean shouldAnnotateSpansWithSQL;
 
-  public OcWrapStatement(java.sql.Statement stmt, EnumSet<TraceOption> opts) {
+  public OcWrapStatement(Statement stmt, EnumSet<TraceOption> opts) {
     this.statement = stmt;
     this.shouldAnnotateSpansWithSQL = Observability.shouldAnnotateSpansWithSQL(opts);
   }
