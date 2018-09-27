@@ -1227,6 +1227,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         }
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void setUnicodeStream(int parameterIndex, java.io.InputStream x, int length) throws SQLException {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setUnicodeStream", "setUnicodeStream");

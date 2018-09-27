@@ -725,6 +725,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         }
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public java.math.BigDecimal getBigDecimal(int columnIndex, int scale) throws SQLException {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getBigDecimal", "getBigDecimal");
@@ -753,6 +754,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         }
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public java.math.BigDecimal getBigDecimal(String columnLabel, int scale) throws SQLException {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getBigDecimal", "getBigDecimal");
@@ -1565,6 +1567,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         }
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public java.io.InputStream getUnicodeStream(int columnIndex) throws SQLException {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getUnicodeStream", "getUnicodeBinaryStream");
@@ -1579,6 +1582,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         }
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public java.io.InputStream getUnicodeStream(String columnLabel) throws SQLException {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getUnicodeStream", "getUnicodeBinaryStream");

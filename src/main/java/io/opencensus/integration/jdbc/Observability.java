@@ -24,7 +24,6 @@ import io.opencensus.stats.Stats;
 import io.opencensus.stats.StatsRecorder;
 import io.opencensus.stats.View;
 import io.opencensus.stats.View.Name;
-import io.opencensus.stats.View.AggregationWindow.Cumulative;
 import io.opencensus.stats.ViewManager;
 import io.opencensus.tags.TagContext;
 import io.opencensus.tags.TagContextBuilder;
@@ -144,6 +143,7 @@ public class Observability {
         private String method;
         private boolean closed;
 
+        @SuppressWarnings("MustBeClosedChecker")  // Span closed in end().
         public RoundtripTrackingSpan(String name, String method) {
             this.startTimeNs = System.nanoTime();
             this.spanScope = tracer.spanBuilder(name).startScopedSpan();

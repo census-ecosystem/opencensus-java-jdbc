@@ -727,6 +727,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         }
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public java.math.BigDecimal getBigDecimal(int parameterIndex, int scale) throws SQLException {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getBigDecimal", "getBigDecimal");
@@ -2452,6 +2453,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         }
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void setUnicodeStream(int parameterIndex, java.io.InputStream x, int length) throws SQLException {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setUnicodeStream", "setUnicodeStream");
