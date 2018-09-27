@@ -14,6 +14,7 @@
 
 package io.opencensus.integration.jdbc;
 
+import com.sun.istack.internal.Nullable;
 import io.opencensus.common.Scope;
 import io.opencensus.stats.Aggregation;
 import io.opencensus.stats.Aggregation.Distribution;
@@ -149,13 +150,13 @@ public final class Observability {
     return tagContextBuilder.build();
   }
 
-  static void recordTaggedStat(
+  private static void recordTaggedStat(
       TagKey tagKey, String tagValue, MeasureLong measureLong, long value) {
     recordStatWithTags(
         measureLong, value, Collections.singletonMap(tagKey, TagValue.create(tagValue)));
   }
 
-  static void recordTaggedStat(
+  private static void recordTaggedStat(
       TagKey tagKey, String tagValue, MeasureDouble measureDouble, double value) {
     statsRecorder
         .newMeasureMap()
@@ -165,7 +166,8 @@ public final class Observability {
                 Collections.singletonMap(tagKey, TagValue.create(tagValue))));
   }
 
-  static void recordStatWithTags(MeasureLong measureLong, long value, Map<TagKey, TagValue> tags) {
+  private static void recordStatWithTags(
+      MeasureLong measureLong, long value, Map<TagKey, TagValue> tags) {
     statsRecorder
         .newMeasureMap()
         .put(measureLong, value)
@@ -190,22 +192,22 @@ public final class Observability {
   // TrackingOperation records both the metric latency in milliseconds, and the span created by
   // tracing the calling function.
   static final class TrackingOperation {
-    private Span span;
-    private long startTimeNs;
-    private String method;
+    private final Span span;
+    private final long startTimeNs;
+    private final String method;
     private boolean closed;
 
-    @SuppressWarnings("MustBeClosedChecker") // Span closed in end().
     TrackingOperation(String name, String method) {
-      this.startTimeNs = System.nanoTime();
-      this.span = tracer.spanBuilder(name).startSpan();
-      this.method = method;
+      this(name, method, null);
     }
 
-    TrackingOperation(String name, String method, boolean shouldAnnotateWithSQL, String SQL) {
-      this(name, method);
-      if (shouldAnnotateWithSQL)
-        this.span.putAttribute("sql", AttributeValue.stringAttributeValue(SQL));
+    TrackingOperation(String name, String method, @Nullable String sql) {
+      startTimeNs = System.nanoTime();
+      span = tracer.spanBuilder(name).startSpan();
+      this.method = method;
+      if (sql != null) {
+        span.putAttribute("sql", AttributeValue.stringAttributeValue(sql));
+      }
     }
 
     Scope withSpan() {
@@ -213,7 +215,7 @@ public final class Observability {
     }
 
     void end() {
-      if (this.closed) return;
+      if (closed) return;
 
       try {
         // Record the number of calls of the made method.
@@ -225,7 +227,7 @@ public final class Observability {
         // Finally record the latency of the entire call.
         recordTaggedStat(KEY_METHOD, this.method, MEASURE_LATENCY_MS, timeSpentMs);
       } finally {
-        this.closed = true;
+        closed = true;
       }
     }
 
@@ -234,7 +236,7 @@ public final class Observability {
     // adding tags: "method", "reason" to the recorded metric.
     void endWithException(Exception e) {
       String detail = e.toString();
-      this.span.setStatus(Status.INTERNAL.withDescription(detail));
+      span.setStatus(Status.INTERNAL.withDescription(detail));
       Map<TagKey, TagValue> tags = new HashMap<>();
       tags.put(KEY_REASON, TagValue.create(detail));
       tags.put(KEY_METHOD, TagValue.create(this.method));
@@ -247,8 +249,8 @@ public final class Observability {
   }
 
   static TrackingOperation createRoundtripTrackingSpan(
-      String spanName, String method, boolean canRecordSQL, String SQL) {
-    return new TrackingOperation(spanName, method, canRecordSQL, SQL);
+      String spanName, String method, boolean canRecordSQL, String sql) {
+    return new TrackingOperation(spanName, method, canRecordSQL ? sql : null);
   }
 
   public static void registerAllViews() {

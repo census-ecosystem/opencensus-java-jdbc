@@ -43,7 +43,8 @@ public class OcWrapDriver implements Driver {
         Observability.createRoundtripTrackingSpan("java.sql.Driver.connect", "connect");
 
     try (Scope ws = trackingOperation.withSpan()) {
-      return new OcWrapConnection(this.driver.connect(url, info), EnumSet.noneOf(TraceOption.class));
+      return new OcWrapConnection(
+          this.driver.connect(url, info), EnumSet.noneOf(TraceOption.class));
     } catch (Exception e) {
       trackingOperation.endWithException(e);
       throw e;
