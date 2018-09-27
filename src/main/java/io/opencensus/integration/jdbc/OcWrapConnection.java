@@ -14,7 +14,9 @@
 
 package io.opencensus.integration.jdbc;
 
+import io.opencensus.integration.jdbc.Observability.TraceOption;
 import java.sql.SQLException;
+import java.util.EnumSet;
 import java.util.concurrent.Executor;
 
 /*
@@ -24,9 +26,9 @@ import java.util.concurrent.Executor;
 public class OcWrapConnection implements java.sql.Connection {
   private final java.sql.Connection connection;
   private final boolean shouldAnnotateSpansWithSQL;
-  private Observability.TraceOption[] startOptions;
+  private EnumSet<TraceOption> startOptions;
 
-  public OcWrapConnection(java.sql.Connection connection, Observability.TraceOption... opts) {
+  public OcWrapConnection(java.sql.Connection connection, EnumSet<TraceOption> opts) {
     this.connection = connection;
     this.shouldAnnotateSpansWithSQL = Observability.shouldAnnotateSpansWithSQL(opts);
     this.startOptions = opts;
