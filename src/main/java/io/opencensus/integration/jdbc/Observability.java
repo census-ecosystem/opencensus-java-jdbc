@@ -187,31 +187,32 @@ public final class Observability {
     return false;
   }
 
-  // RoundtripTrackingSpan records both the metric latency in
-  // milliseconds, and the span created by tracing the calling function.
-  static final class RoundtripTrackingSpan implements AutoCloseable {
+  // TrackingOperation records both the metric latency in milliseconds, and the span created by
+  // tracing the calling function.
+  static final class TrackingOperation {
     private Span span;
-    private Scope spanScope;
     private long startTimeNs;
     private String method;
     private boolean closed;
 
     @SuppressWarnings("MustBeClosedChecker") // Span closed in end().
-    RoundtripTrackingSpan(String name, String method) {
+    TrackingOperation(String name, String method) {
       this.startTimeNs = System.nanoTime();
-      this.spanScope = tracer.spanBuilder(name).startScopedSpan();
-      this.span = tracer.getCurrentSpan();
+      this.span = tracer.spanBuilder(name).startSpan();
       this.method = method;
     }
 
-    RoundtripTrackingSpan(String name, String method, boolean shouldAnnotateWithSQL, String SQL) {
+    TrackingOperation(String name, String method, boolean shouldAnnotateWithSQL, String SQL) {
       this(name, method);
       if (shouldAnnotateWithSQL)
         this.span.putAttribute("sql", AttributeValue.stringAttributeValue(SQL));
     }
 
-    @Override
-    public void close() {
+    Scope withSpan() {
+      return tracer.withSpan(span);
+    }
+
+    void end() {
       if (this.closed) return;
 
       try {
@@ -224,17 +225,14 @@ public final class Observability {
         // Finally record the latency of the entire call.
         recordTaggedStat(KEY_METHOD, this.method, MEASURE_LATENCY_MS, timeSpentMs);
       } finally {
-        this.spanScope.close();
         this.closed = true;
       }
     }
 
-    /*
-     * recordException annotates the underlying span with the description of the exception
-     * and also sets its status to indicate the exception but it also increments the number
-     * of errors by 1, adding tags: "method", "reason" to the recorded metric.
-     * */
-    void recordException(Exception e) {
+    // Ends and Annotates the underlying span with the description of the exception and also sets
+    // its status to indicate the exception but it also increments the number of errors by 1,
+    // adding tags: "method", "reason" to the recorded metric.
+    void endWithException(Exception e) {
       String detail = e.toString();
       this.span.setStatus(Status.INTERNAL.withDescription(detail));
       Map<TagKey, TagValue> tags = new HashMap<>();
@@ -244,13 +242,13 @@ public final class Observability {
     }
   }
 
-  static RoundtripTrackingSpan createRoundtripTrackingSpan(String spanName, String method) {
-    return new RoundtripTrackingSpan(spanName, method);
+  static TrackingOperation createRoundtripTrackingSpan(String spanName, String method) {
+    return new TrackingOperation(spanName, method);
   }
 
-  static RoundtripTrackingSpan createRoundtripTrackingSpan(
-      String spanName, String method, boolean canRecordSQL, String sql) {
-    return new RoundtripTrackingSpan(spanName, method, canRecordSQL, sql);
+  static TrackingOperation createRoundtripTrackingSpan(
+      String spanName, String method, boolean canRecordSQL, String SQL) {
+    return new TrackingOperation(spanName, method, canRecordSQL, SQL);
   }
 
   public static void registerAllViews() {

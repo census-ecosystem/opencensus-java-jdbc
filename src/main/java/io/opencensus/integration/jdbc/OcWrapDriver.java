@@ -14,7 +14,9 @@
 
 package io.opencensus.integration.jdbc;
 
+import io.opencensus.common.Scope;
 import io.opencensus.integration.jdbc.Observability.TraceOption;
+import io.opencensus.integration.jdbc.Observability.TrackingOperation;
 import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
 import java.util.EnumSet;
@@ -39,19 +41,19 @@ public class OcWrapDriver implements java.sql.Driver {
 
   @Override
   public java.sql.Connection connect(String url, Properties info) throws SQLException {
-    Observability.RoundtripTrackingSpan span =
+    TrackingOperation trackingOperation =
         Observability.createRoundtripTrackingSpan("java.sql.Driver.connect", "connect");
 
-    try {
+    try (Scope ws = trackingOperation.withSpan()) {
       // Retrieve the raw connection then wrap it with the OpenCensus instrumented
       // Connection class instance to provide metrics and traces per call.
       java.sql.Connection conn = this.driver.connect(url, info);
       return new OcWrapConnection(conn, EnumSet.noneOf(TraceOption.class));
     } catch (Exception e) {
-      span.recordException(e);
+      trackingOperation.endWithException(e);
       throw e;
     } finally {
-      span.close();
+      trackingOperation.end();
     }
   }
 

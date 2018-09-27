@@ -14,7 +14,9 @@
 
 package io.opencensus.integration.jdbc;
 
+import io.opencensus.common.Scope;
 import io.opencensus.integration.jdbc.Observability.TraceOption;
+import io.opencensus.integration.jdbc.Observability.TrackingOperation;
 import java.sql.SQLException;
 import java.util.EnumSet;
 import java.util.concurrent.Executor;
@@ -36,479 +38,479 @@ public class OcWrapConnection implements java.sql.Connection {
 
   @Override
   public void abort(Executor executor) throws SQLException {
-    Observability.RoundtripTrackingSpan span =
+    TrackingOperation trackingOperation =
         Observability.createRoundtripTrackingSpan("java.sql.Connection.abort", "abort");
 
-    try {
+    try (Scope ws = trackingOperation.withSpan()) {
       this.connection.abort(executor);
     } catch (Exception e) {
-      span.recordException(e);
+      trackingOperation.endWithException(e);
       throw e;
     } finally {
-      span.close();
+      trackingOperation.end();
     }
   }
 
   @Override
   public void clearWarnings() throws SQLException {
-    Observability.RoundtripTrackingSpan span =
+    TrackingOperation trackingOperation =
         Observability.createRoundtripTrackingSpan(
             "java.sql.Connection.clearWarnings", "clearWarnings");
 
-    try {
+    try (Scope ws = trackingOperation.withSpan()) {
       this.connection.clearWarnings();
     } catch (Exception e) {
-      span.recordException(e);
+      trackingOperation.endWithException(e);
       throw e;
     } finally {
-      span.close();
+      trackingOperation.end();
     }
   }
 
   @Override
   public void close() throws SQLException {
-    Observability.RoundtripTrackingSpan span =
+    TrackingOperation trackingOperation =
         Observability.createRoundtripTrackingSpan("java.sql.Connection.close", "close");
 
-    try {
+    try (Scope ws = trackingOperation.withSpan()) {
       this.connection.close();
     } catch (Exception e) {
-      span.recordException(e);
+      trackingOperation.endWithException(e);
       throw e;
     } finally {
-      span.close();
+      trackingOperation.end();
     }
   }
 
   @Override
   public void commit() throws SQLException {
-    Observability.RoundtripTrackingSpan span =
+    TrackingOperation trackingOperation =
         Observability.createRoundtripTrackingSpan("java.sql.Connection.commit", "commit");
 
-    try {
+    try (Scope ws = trackingOperation.withSpan()) {
       this.connection.commit();
     } catch (Exception e) {
-      span.recordException(e);
+      trackingOperation.endWithException(e);
       throw e;
     } finally {
-      span.close();
+      trackingOperation.end();
     }
   }
 
   @Override
   public java.sql.Array createArrayOf(String typeName, Object[] elements) throws SQLException {
-    Observability.RoundtripTrackingSpan span =
+    TrackingOperation trackingOperation =
         Observability.createRoundtripTrackingSpan(
             "java.sql.Connection.createArrayOf", "createArrayOf");
 
-    try {
+    try (Scope ws = trackingOperation.withSpan()) {
       return this.connection.createArrayOf(typeName, elements);
     } catch (Exception e) {
-      span.recordException(e);
+      trackingOperation.endWithException(e);
       throw e;
     } finally {
-      span.close();
+      trackingOperation.end();
     }
   }
 
   @Override
   public java.sql.Blob createBlob() throws SQLException {
-    Observability.RoundtripTrackingSpan span =
+    TrackingOperation trackingOperation =
         Observability.createRoundtripTrackingSpan("java.sql.Connection.createBlob", "createBlob");
 
-    try {
+    try (Scope ws = trackingOperation.withSpan()) {
       return this.connection.createBlob();
     } catch (Exception e) {
-      span.recordException(e);
+      trackingOperation.endWithException(e);
       throw e;
     } finally {
-      span.close();
+      trackingOperation.end();
     }
   }
 
   @Override
   public java.sql.Clob createClob() throws SQLException {
-    Observability.RoundtripTrackingSpan span =
+    TrackingOperation trackingOperation =
         Observability.createRoundtripTrackingSpan("java.sql.Connection.createClob", "createClob");
 
-    try {
+    try (Scope ws = trackingOperation.withSpan()) {
       return this.connection.createClob();
     } catch (Exception e) {
-      span.recordException(e);
+      trackingOperation.endWithException(e);
       throw e;
     } finally {
-      span.close();
+      trackingOperation.end();
     }
   }
 
   @Override
   public java.sql.NClob createNClob() throws SQLException {
-    Observability.RoundtripTrackingSpan span =
+    TrackingOperation trackingOperation =
         Observability.createRoundtripTrackingSpan("java.sql.Connection.createNClob", "createNClob");
 
-    try {
+    try (Scope ws = trackingOperation.withSpan()) {
       return this.connection.createNClob();
     } catch (Exception e) {
-      span.recordException(e);
+      trackingOperation.endWithException(e);
       throw e;
     } finally {
-      span.close();
+      trackingOperation.end();
     }
   }
 
   @Override
   public java.sql.SQLXML createSQLXML() throws SQLException {
-    Observability.RoundtripTrackingSpan span =
+    TrackingOperation trackingOperation =
         Observability.createRoundtripTrackingSpan(
             "java.sql.Connection.createSQLXML", "createSQLXML");
 
-    try {
+    try (Scope ws = trackingOperation.withSpan()) {
       return this.connection.createSQLXML();
     } catch (Exception e) {
-      span.recordException(e);
+      trackingOperation.endWithException(e);
       throw e;
     } finally {
-      span.close();
+      trackingOperation.end();
     }
   }
 
   @Override
   public java.sql.Statement createStatement() throws SQLException {
-    Observability.RoundtripTrackingSpan span =
+    TrackingOperation trackingOperation =
         Observability.createRoundtripTrackingSpan(
             "java.sql.Connection.createStatement", "createStatement");
 
-    try {
+    try (Scope ws = trackingOperation.withSpan()) {
       java.sql.Statement stmt = this.connection.createStatement();
       return new OcWrapStatement(stmt, this.startOptions);
     } catch (Exception e) {
-      span.recordException(e);
+      trackingOperation.endWithException(e);
       throw e;
     } finally {
-      span.close();
+      trackingOperation.end();
     }
   }
 
   @Override
   public java.sql.Statement createStatement(int resultSetType, int resultSetConcurrency)
       throws SQLException {
-    Observability.RoundtripTrackingSpan span =
+    TrackingOperation trackingOperation =
         Observability.createRoundtripTrackingSpan(
             "java.sql.Connection.createStatement", "createStatement");
 
-    try {
+    try (Scope ws = trackingOperation.withSpan()) {
       java.sql.Statement stmt =
           this.connection.createStatement(resultSetType, resultSetConcurrency);
       return new OcWrapStatement(stmt, this.startOptions);
     } catch (Exception e) {
-      span.recordException(e);
+      trackingOperation.endWithException(e);
       throw e;
     } finally {
-      span.close();
+      trackingOperation.end();
     }
   }
 
   @Override
   public java.sql.Statement createStatement(
       int resultSetType, int resultSetConcurrency, int resultSetHoldability) throws SQLException {
-    Observability.RoundtripTrackingSpan span =
+    TrackingOperation trackingOperation =
         Observability.createRoundtripTrackingSpan(
             "java.sql.Connection.createStatement", "createStatement");
 
-    try {
+    try (Scope ws = trackingOperation.withSpan()) {
       java.sql.Statement stmt =
           this.connection.createStatement(
               resultSetType, resultSetConcurrency, resultSetHoldability);
       return new OcWrapStatement(stmt, this.startOptions);
     } catch (Exception e) {
-      span.recordException(e);
+      trackingOperation.endWithException(e);
       throw e;
     } finally {
-      span.close();
+      trackingOperation.end();
     }
   }
 
   @Override
   public java.sql.Struct createStruct(String typeName, Object[] attributes) throws SQLException {
-    Observability.RoundtripTrackingSpan span =
+    TrackingOperation trackingOperation =
         Observability.createRoundtripTrackingSpan(
             "java.sql.Connection.createStruct", "createStruct");
 
-    try {
+    try (Scope ws = trackingOperation.withSpan()) {
       return this.connection.createStruct(typeName, attributes);
     } catch (Exception e) {
-      span.recordException(e);
+      trackingOperation.endWithException(e);
       throw e;
     } finally {
-      span.close();
+      trackingOperation.end();
     }
   }
 
   @Override
   public boolean getAutoCommit() throws SQLException {
-    Observability.RoundtripTrackingSpan span =
+    TrackingOperation trackingOperation =
         Observability.createRoundtripTrackingSpan(
             "java.sql.Connection.getAutoCommit", "getAutoCommit");
 
-    try {
+    try (Scope ws = trackingOperation.withSpan()) {
       return this.connection.getAutoCommit();
     } catch (Exception e) {
-      span.recordException(e);
+      trackingOperation.endWithException(e);
       throw e;
     } finally {
-      span.close();
+      trackingOperation.end();
     }
   }
 
   @Override
   public String getCatalog() throws SQLException {
-    Observability.RoundtripTrackingSpan span =
+    TrackingOperation trackingOperation =
         Observability.createRoundtripTrackingSpan("java.sql.Connection.getCatalog", "getCatalog");
 
-    try {
+    try (Scope ws = trackingOperation.withSpan()) {
       return this.connection.getCatalog();
     } catch (Exception e) {
-      span.recordException(e);
+      trackingOperation.endWithException(e);
       throw e;
     } finally {
-      span.close();
+      trackingOperation.end();
     }
   }
 
   @Override
   public java.util.Properties getClientInfo() throws SQLException {
-    Observability.RoundtripTrackingSpan span =
+    TrackingOperation trackingOperation =
         Observability.createRoundtripTrackingSpan(
             "java.sql.Connection.getClientInfo", "getClientInfo");
 
-    try {
+    try (Scope ws = trackingOperation.withSpan()) {
       return this.connection.getClientInfo();
     } catch (Exception e) {
-      span.recordException(e);
+      trackingOperation.endWithException(e);
       throw e;
     } finally {
-      span.close();
+      trackingOperation.end();
     }
   }
 
   @Override
   public String getClientInfo(String name) throws SQLException {
-    Observability.RoundtripTrackingSpan span =
+    TrackingOperation trackingOperation =
         Observability.createRoundtripTrackingSpan(
             "java.sql.Connection.getClientInfo", "getClientInfo");
 
-    try {
+    try (Scope ws = trackingOperation.withSpan()) {
       return this.connection.getClientInfo(name);
     } catch (Exception e) {
-      span.recordException(e);
+      trackingOperation.endWithException(e);
       throw e;
     } finally {
-      span.close();
+      trackingOperation.end();
     }
   }
 
   @Override
   public int getHoldability() throws SQLException {
-    Observability.RoundtripTrackingSpan span =
+    TrackingOperation trackingOperation =
         Observability.createRoundtripTrackingSpan(
             "java.sql.Connection.getHoldability", "getHoldability");
 
-    try {
+    try (Scope ws = trackingOperation.withSpan()) {
       return this.connection.getHoldability();
     } catch (Exception e) {
-      span.recordException(e);
+      trackingOperation.endWithException(e);
       throw e;
     } finally {
-      span.close();
+      trackingOperation.end();
     }
   }
 
   @Override
   public java.sql.DatabaseMetaData getMetaData() throws SQLException {
-    Observability.RoundtripTrackingSpan span =
+    TrackingOperation trackingOperation =
         Observability.createRoundtripTrackingSpan("java.sql.Connection.getMetaData", "getMetaData");
 
-    try {
+    try (Scope ws = trackingOperation.withSpan()) {
       return this.connection.getMetaData();
     } catch (Exception e) {
-      span.recordException(e);
+      trackingOperation.endWithException(e);
       throw e;
     } finally {
-      span.close();
+      trackingOperation.end();
     }
   }
 
   @Override
   public int getNetworkTimeout() throws SQLException {
-    Observability.RoundtripTrackingSpan span =
+    TrackingOperation trackingOperation =
         Observability.createRoundtripTrackingSpan(
             "java.sql.Connection.getNetworkTimeout", "getNetworkTimeout");
 
-    try {
+    try (Scope ws = trackingOperation.withSpan()) {
       return this.connection.getNetworkTimeout();
     } catch (Exception e) {
-      span.recordException(e);
+      trackingOperation.endWithException(e);
       throw e;
     } finally {
-      span.close();
+      trackingOperation.end();
     }
   }
 
   @Override
   public String getSchema() throws SQLException {
-    Observability.RoundtripTrackingSpan span =
+    TrackingOperation trackingOperation =
         Observability.createRoundtripTrackingSpan("java.sql.Connection.getSchema", "getSchema");
 
-    try {
+    try (Scope ws = trackingOperation.withSpan()) {
       return this.connection.getSchema();
     } catch (Exception e) {
-      span.recordException(e);
+      trackingOperation.endWithException(e);
       throw e;
     } finally {
-      span.close();
+      trackingOperation.end();
     }
   }
 
   @Override
   public int getTransactionIsolation() throws SQLException {
-    Observability.RoundtripTrackingSpan span =
+    TrackingOperation trackingOperation =
         Observability.createRoundtripTrackingSpan(
             "java.sql.Connection.getTransactionIsolation", "getTransactionIsolation");
 
-    try {
+    try (Scope ws = trackingOperation.withSpan()) {
       return this.connection.getTransactionIsolation();
     } catch (Exception e) {
-      span.recordException(e);
+      trackingOperation.endWithException(e);
       throw e;
     } finally {
-      span.close();
+      trackingOperation.end();
     }
   }
 
   @Override
   public java.util.Map<String, Class<?>> getTypeMap() throws SQLException {
-    Observability.RoundtripTrackingSpan span =
+    TrackingOperation trackingOperation =
         Observability.createRoundtripTrackingSpan("java.sql.Connection.getTypeMap", "getTypeMap");
 
-    try {
+    try (Scope ws = trackingOperation.withSpan()) {
       return this.connection.getTypeMap();
     } catch (Exception e) {
-      span.recordException(e);
+      trackingOperation.endWithException(e);
       throw e;
     } finally {
-      span.close();
+      trackingOperation.end();
     }
   }
 
   @Override
   public java.sql.SQLWarning getWarnings() throws SQLException {
-    Observability.RoundtripTrackingSpan span =
+    TrackingOperation trackingOperation =
         Observability.createRoundtripTrackingSpan("java.sql.Connection.getWarnings", "getWarnings");
 
-    try {
+    try (Scope ws = trackingOperation.withSpan()) {
       return this.connection.getWarnings();
     } catch (Exception e) {
-      span.recordException(e);
+      trackingOperation.endWithException(e);
       throw e;
     } finally {
-      span.close();
+      trackingOperation.end();
     }
   }
 
   @Override
   public boolean isClosed() throws SQLException {
-    Observability.RoundtripTrackingSpan span =
+    TrackingOperation trackingOperation =
         Observability.createRoundtripTrackingSpan("java.sql.Connection.isClosed", "isClosed");
 
-    try {
+    try (Scope ws = trackingOperation.withSpan()) {
       return this.connection.isClosed();
     } catch (Exception e) {
-      span.recordException(e);
+      trackingOperation.endWithException(e);
       throw e;
     } finally {
-      span.close();
+      trackingOperation.end();
     }
   }
 
   @Override
   public boolean isReadOnly() throws SQLException {
-    Observability.RoundtripTrackingSpan span =
+    TrackingOperation trackingOperation =
         Observability.createRoundtripTrackingSpan("java.sql.Connection.isReadOnly", "isReadOnly");
 
-    try {
+    try (Scope ws = trackingOperation.withSpan()) {
       return this.connection.isReadOnly();
     } catch (Exception e) {
-      span.recordException(e);
+      trackingOperation.endWithException(e);
       throw e;
     } finally {
-      span.close();
+      trackingOperation.end();
     }
   }
 
   @Override
   public boolean isValid(int timeout) throws SQLException {
-    Observability.RoundtripTrackingSpan span =
+    TrackingOperation trackingOperation =
         Observability.createRoundtripTrackingSpan("java.sql.Connection.isValid", "isValid");
 
-    try {
+    try (Scope ws = trackingOperation.withSpan()) {
       return this.connection.isValid(timeout);
     } catch (Exception e) {
-      span.recordException(e);
+      trackingOperation.endWithException(e);
       throw e;
     } finally {
-      span.close();
+      trackingOperation.end();
     }
   }
 
   @Override
   public String nativeSQL(String SQL) throws SQLException {
-    Observability.RoundtripTrackingSpan span =
+    TrackingOperation trackingOperation =
         Observability.createRoundtripTrackingSpan(
             "java.sql.Connection.nativeSQL", "nativeSQL", this.shouldAnnotateSpansWithSQL, SQL);
 
-    try {
+    try (Scope ws = trackingOperation.withSpan()) {
       return this.connection.nativeSQL(SQL);
     } catch (Exception e) {
-      span.recordException(e);
+      trackingOperation.endWithException(e);
       throw e;
     } finally {
-      span.close();
+      trackingOperation.end();
     }
   }
 
   @Override
   public java.sql.CallableStatement prepareCall(String SQL) throws SQLException {
-    Observability.RoundtripTrackingSpan span =
+    TrackingOperation trackingOperation =
         Observability.createRoundtripTrackingSpan(
             "java.sql.Connection.prepareCall", "prepareCall", this.shouldAnnotateSpansWithSQL, SQL);
 
-    try {
+    try (Scope ws = trackingOperation.withSpan()) {
       java.sql.CallableStatement cstmt = this.connection.prepareCall(SQL);
       return new OcWrapCallableStatement(cstmt, this.startOptions);
     } catch (Exception e) {
-      span.recordException(e);
+      trackingOperation.endWithException(e);
       throw e;
     } finally {
-      span.close();
+      trackingOperation.end();
     }
   }
 
   @Override
   public java.sql.CallableStatement prepareCall(
       String SQL, int resultSetType, int resultSetConcurrency) throws SQLException {
-    Observability.RoundtripTrackingSpan span =
+    TrackingOperation trackingOperation =
         Observability.createRoundtripTrackingSpan(
             "java.sql.Connection.prepareCall", "prepareCall", this.shouldAnnotateSpansWithSQL, SQL);
 
-    try {
+    try (Scope ws = trackingOperation.withSpan()) {
       java.sql.CallableStatement cstmt =
           this.connection.prepareCall(SQL, resultSetType, resultSetConcurrency);
       return new OcWrapCallableStatement(cstmt, this.startOptions);
     } catch (Exception e) {
-      span.recordException(e);
+      trackingOperation.endWithException(e);
       throw e;
     } finally {
-      span.close();
+      trackingOperation.end();
     }
   }
 
@@ -516,125 +518,125 @@ public class OcWrapConnection implements java.sql.Connection {
   public java.sql.CallableStatement prepareCall(
       String SQL, int resultSetType, int resultSetConcurrency, int resultSetHoldability)
       throws SQLException {
-    Observability.RoundtripTrackingSpan span =
+    TrackingOperation trackingOperation =
         Observability.createRoundtripTrackingSpan(
             "java.sql.Connection.prepareCall", "prepareCall", this.shouldAnnotateSpansWithSQL, SQL);
 
-    try {
+    try (Scope ws = trackingOperation.withSpan()) {
       java.sql.CallableStatement cstmt =
           this.connection.prepareCall(
               SQL, resultSetType, resultSetConcurrency, resultSetHoldability);
       return new OcWrapCallableStatement(cstmt, this.startOptions);
     } catch (Exception e) {
-      span.recordException(e);
+      trackingOperation.endWithException(e);
       throw e;
     } finally {
-      span.close();
+      trackingOperation.end();
     }
   }
 
   @Override
   public java.sql.PreparedStatement prepareStatement(String SQL) throws SQLException {
-    Observability.RoundtripTrackingSpan span =
+    TrackingOperation trackingOperation =
         Observability.createRoundtripTrackingSpan(
             "java.sql.Connection.prepareStatement",
             "prepareStatement",
             this.shouldAnnotateSpansWithSQL,
             SQL);
 
-    try {
+    try (Scope ws = trackingOperation.withSpan()) {
       java.sql.PreparedStatement pstmt = this.connection.prepareStatement(SQL);
       return new OcWrapPreparedStatement(pstmt, this.startOptions);
     } catch (Exception e) {
-      span.recordException(e);
+      trackingOperation.endWithException(e);
       throw e;
     } finally {
-      span.close();
+      trackingOperation.end();
     }
   }
 
   @Override
   public java.sql.PreparedStatement prepareStatement(String SQL, int autoGeneratedKeys)
       throws SQLException {
-    Observability.RoundtripTrackingSpan span =
+    TrackingOperation trackingOperation =
         Observability.createRoundtripTrackingSpan(
             "java.sql.Connection.prepareStatement",
             "prepareStatement",
             this.shouldAnnotateSpansWithSQL,
             SQL);
 
-    try {
+    try (Scope ws = trackingOperation.withSpan()) {
       java.sql.PreparedStatement pstmt = this.connection.prepareStatement(SQL, autoGeneratedKeys);
       return new OcWrapPreparedStatement(pstmt, this.startOptions);
     } catch (Exception e) {
-      span.recordException(e);
+      trackingOperation.endWithException(e);
       throw e;
     } finally {
-      span.close();
+      trackingOperation.end();
     }
   }
 
   @Override
   public java.sql.PreparedStatement prepareStatement(String SQL, int[] columnIndices)
       throws SQLException {
-    Observability.RoundtripTrackingSpan span =
+    TrackingOperation trackingOperation =
         Observability.createRoundtripTrackingSpan(
             "java.sql.Connection.prepareStatement",
             "prepareStatement",
             this.shouldAnnotateSpansWithSQL,
             SQL);
 
-    try {
+    try (Scope ws = trackingOperation.withSpan()) {
       java.sql.PreparedStatement pstmt = this.connection.prepareStatement(SQL, columnIndices);
       return new OcWrapPreparedStatement(pstmt, this.startOptions);
     } catch (Exception e) {
-      span.recordException(e);
+      trackingOperation.endWithException(e);
       throw e;
     } finally {
-      span.close();
+      trackingOperation.end();
     }
   }
 
   @Override
   public java.sql.PreparedStatement prepareStatement(String SQL, String[] columnNames)
       throws SQLException {
-    Observability.RoundtripTrackingSpan span =
+    TrackingOperation trackingOperation =
         Observability.createRoundtripTrackingSpan(
             "java.sql.Connection.prepareStatement",
             "prepareStatement",
             this.shouldAnnotateSpansWithSQL,
             SQL);
 
-    try {
+    try (Scope ws = trackingOperation.withSpan()) {
       java.sql.PreparedStatement pstmt = this.connection.prepareStatement(SQL, columnNames);
       return new OcWrapPreparedStatement(pstmt, this.startOptions);
     } catch (Exception e) {
-      span.recordException(e);
+      trackingOperation.endWithException(e);
       throw e;
     } finally {
-      span.close();
+      trackingOperation.end();
     }
   }
 
   @Override
   public java.sql.PreparedStatement prepareStatement(
       String SQL, int resultSetType, int resultSetConcurrency) throws SQLException {
-    Observability.RoundtripTrackingSpan span =
+    TrackingOperation trackingOperation =
         Observability.createRoundtripTrackingSpan(
             "java.sql.Connection.prepareStatement",
             "prepareStatement",
             this.shouldAnnotateSpansWithSQL,
             SQL);
 
-    try {
+    try (Scope ws = trackingOperation.withSpan()) {
       java.sql.PreparedStatement pstmt =
           this.connection.prepareStatement(SQL, resultSetType, resultSetConcurrency);
       return new OcWrapPreparedStatement(pstmt, this.startOptions);
     } catch (Exception e) {
-      span.recordException(e);
+      trackingOperation.endWithException(e);
       throw e;
     } finally {
-      span.close();
+      trackingOperation.end();
     }
   }
 
@@ -642,260 +644,260 @@ public class OcWrapConnection implements java.sql.Connection {
   public java.sql.PreparedStatement prepareStatement(
       String SQL, int resultSetType, int resultSetConcurrency, int resultSetHoldability)
       throws SQLException {
-    Observability.RoundtripTrackingSpan span =
+    TrackingOperation trackingOperation =
         Observability.createRoundtripTrackingSpan(
             "java.sql.Connection.prepareStatement",
             "prepareStatement",
             this.shouldAnnotateSpansWithSQL,
             SQL);
 
-    try {
+    try (Scope ws = trackingOperation.withSpan()) {
       java.sql.PreparedStatement pstmt =
           this.connection.prepareStatement(
               SQL, resultSetType, resultSetConcurrency, resultSetHoldability);
       return new OcWrapPreparedStatement(pstmt, this.startOptions);
     } catch (Exception e) {
-      span.recordException(e);
+      trackingOperation.endWithException(e);
       throw e;
     } finally {
-      span.close();
+      trackingOperation.end();
     }
   }
 
   @Override
   public void releaseSavepoint(java.sql.Savepoint savepoint) throws SQLException {
-    Observability.RoundtripTrackingSpan span =
+    TrackingOperation trackingOperation =
         Observability.createRoundtripTrackingSpan(
             "java.sql.Connection.releaseSavepoint", "releaseSavepoint");
 
-    try {
+    try (Scope ws = trackingOperation.withSpan()) {
       this.connection.releaseSavepoint(savepoint);
     } catch (Exception e) {
-      span.recordException(e);
+      trackingOperation.endWithException(e);
       throw e;
     } finally {
-      span.close();
+      trackingOperation.end();
     }
   }
 
   @Override
   public void rollback() throws SQLException {
-    Observability.RoundtripTrackingSpan span =
+    TrackingOperation trackingOperation =
         Observability.createRoundtripTrackingSpan("java.sql.Connection.rollback", "rollback");
 
-    try {
+    try (Scope ws = trackingOperation.withSpan()) {
       this.connection.rollback();
     } catch (Exception e) {
-      span.recordException(e);
+      trackingOperation.endWithException(e);
       throw e;
     } finally {
-      span.close();
+      trackingOperation.end();
     }
   }
 
   @Override
   public void rollback(java.sql.Savepoint savepoint) throws SQLException {
-    Observability.RoundtripTrackingSpan span =
+    TrackingOperation trackingOperation =
         Observability.createRoundtripTrackingSpan("java.sql.Connection.rollback", "rollback");
 
-    try {
+    try (Scope ws = trackingOperation.withSpan()) {
       this.connection.rollback(savepoint);
     } catch (Exception e) {
-      span.recordException(e);
+      trackingOperation.endWithException(e);
       throw e;
     } finally {
-      span.close();
+      trackingOperation.end();
     }
   }
 
   @Override
   public void setAutoCommit(boolean autoCommit) throws SQLException {
-    Observability.RoundtripTrackingSpan span =
+    TrackingOperation trackingOperation =
         Observability.createRoundtripTrackingSpan(
             "java.sql.Connection.setAutoCommit", "setAutoCommit");
 
-    try {
+    try (Scope ws = trackingOperation.withSpan()) {
       this.connection.setAutoCommit(autoCommit);
     } catch (Exception e) {
-      span.recordException(e);
+      trackingOperation.endWithException(e);
       throw e;
     } finally {
-      span.close();
+      trackingOperation.end();
     }
   }
 
   @Override
   public void setCatalog(String catalog) throws SQLException {
-    Observability.RoundtripTrackingSpan span =
+    TrackingOperation trackingOperation =
         Observability.createRoundtripTrackingSpan("java.sql.Connection.setCatalog", "setCatalog");
 
-    try {
+    try (Scope ws = trackingOperation.withSpan()) {
       this.connection.setCatalog(catalog);
     } catch (Exception e) {
-      span.recordException(e);
+      trackingOperation.endWithException(e);
       throw e;
     } finally {
-      span.close();
+      trackingOperation.end();
     }
   }
 
   @Override
   public void setClientInfo(java.util.Properties properties)
       throws java.sql.SQLClientInfoException {
-    Observability.RoundtripTrackingSpan span =
+    TrackingOperation trackingOperation =
         Observability.createRoundtripTrackingSpan(
             "java.sql.Connection.setClientInfo", "setClientInfo");
 
-    try {
+    try (Scope ws = trackingOperation.withSpan()) {
       this.connection.setClientInfo(properties);
     } catch (Exception e) {
-      span.recordException(e);
+      trackingOperation.endWithException(e);
       throw e;
     } finally {
-      span.close();
+      trackingOperation.end();
     }
   }
 
   @Override
   public void setClientInfo(String name, String value) throws java.sql.SQLClientInfoException {
-    Observability.RoundtripTrackingSpan span =
+    TrackingOperation trackingOperation =
         Observability.createRoundtripTrackingSpan(
             "java.sql.Connection.setClientInfo", "setClientInfo");
 
-    try {
+    try (Scope ws = trackingOperation.withSpan()) {
       this.connection.setClientInfo(name, value);
     } catch (Exception e) {
-      span.recordException(e);
+      trackingOperation.endWithException(e);
       throw e;
     } finally {
-      span.close();
+      trackingOperation.end();
     }
   }
 
   @Override
   public void setHoldability(int holdability) throws SQLException {
-    Observability.RoundtripTrackingSpan span =
+    TrackingOperation trackingOperation =
         Observability.createRoundtripTrackingSpan(
             "java.sql.Connection.setHoldability", "setHoldability");
 
-    try {
+    try (Scope ws = trackingOperation.withSpan()) {
       this.connection.setHoldability(holdability);
     } catch (Exception e) {
-      span.recordException(e);
+      trackingOperation.endWithException(e);
       throw e;
     } finally {
-      span.close();
+      trackingOperation.end();
     }
   }
 
   @Override
   public void setNetworkTimeout(java.util.concurrent.Executor executor, int milliseconds)
       throws SQLException {
-    Observability.RoundtripTrackingSpan span =
+    TrackingOperation trackingOperation =
         Observability.createRoundtripTrackingSpan(
             "java.sql.Connection.setNetowrkTimeout", "setNetowrkTimeout");
 
-    try {
+    try (Scope ws = trackingOperation.withSpan()) {
       this.connection.setNetworkTimeout(executor, milliseconds);
     } catch (Exception e) {
-      span.recordException(e);
+      trackingOperation.endWithException(e);
       throw e;
     } finally {
-      span.close();
+      trackingOperation.end();
     }
   }
 
   @Override
   public void setReadOnly(boolean readOnly) throws SQLException {
-    Observability.RoundtripTrackingSpan span =
+    TrackingOperation trackingOperation =
         Observability.createRoundtripTrackingSpan("java.sql.Connection.setReadOnly", "setReadOnly");
 
-    try {
+    try (Scope ws = trackingOperation.withSpan()) {
       this.connection.setReadOnly(readOnly);
     } catch (Exception e) {
-      span.recordException(e);
+      trackingOperation.endWithException(e);
       throw e;
     } finally {
-      span.close();
+      trackingOperation.end();
     }
   }
 
   @Override
   public java.sql.Savepoint setSavepoint() throws SQLException {
-    Observability.RoundtripTrackingSpan span =
+    TrackingOperation trackingOperation =
         Observability.createRoundtripTrackingSpan(
             "java.sql.Connection.setSavepoint", "setSavepoint");
 
-    try {
+    try (Scope ws = trackingOperation.withSpan()) {
       return this.connection.setSavepoint();
     } catch (Exception e) {
-      span.recordException(e);
+      trackingOperation.endWithException(e);
       throw e;
     } finally {
-      span.close();
+      trackingOperation.end();
     }
   }
 
   @Override
   public java.sql.Savepoint setSavepoint(String name) throws SQLException {
-    Observability.RoundtripTrackingSpan span =
+    TrackingOperation trackingOperation =
         Observability.createRoundtripTrackingSpan(
             "java.sql.Connection.setSavepoint", "setSavepoint");
 
-    try {
+    try (Scope ws = trackingOperation.withSpan()) {
       return this.connection.setSavepoint(name);
     } catch (Exception e) {
-      span.recordException(e);
+      trackingOperation.endWithException(e);
       throw e;
     } finally {
-      span.close();
+      trackingOperation.end();
     }
   }
 
   @Override
   public void setSchema(String schema) throws SQLException {
-    Observability.RoundtripTrackingSpan span =
+    TrackingOperation trackingOperation =
         Observability.createRoundtripTrackingSpan(
             "java.sql.Connection.setSavepoint", "setSavepoint");
 
-    try {
+    try (Scope ws = trackingOperation.withSpan()) {
       this.connection.setSchema(schema);
     } catch (Exception e) {
-      span.recordException(e);
+      trackingOperation.endWithException(e);
       throw e;
     } finally {
-      span.close();
+      trackingOperation.end();
     }
   }
 
   @Override
   public void setTransactionIsolation(int level) throws SQLException {
-    Observability.RoundtripTrackingSpan span =
+    TrackingOperation trackingOperation =
         Observability.createRoundtripTrackingSpan(
             "java.sql.Connection.setTransactionIsolation", "setTransactionIsolation");
 
-    try {
+    try (Scope ws = trackingOperation.withSpan()) {
       this.connection.setTransactionIsolation(level);
     } catch (Exception e) {
-      span.recordException(e);
+      trackingOperation.endWithException(e);
       throw e;
     } finally {
-      span.close();
+      trackingOperation.end();
     }
   }
 
   @Override
   public void setTypeMap(java.util.Map<String, Class<?>> map) throws SQLException {
-    Observability.RoundtripTrackingSpan span =
+    TrackingOperation trackingOperation =
         Observability.createRoundtripTrackingSpan("java.sql.Connection.setTypeMap", "setTypeMap");
 
-    try {
+    try (Scope ws = trackingOperation.withSpan()) {
       this.connection.setTypeMap(map);
     } catch (Exception e) {
-      span.recordException(e);
+      trackingOperation.endWithException(e);
       throw e;
     } finally {
-      span.close();
+      trackingOperation.end();
     }
   }
 
