@@ -1,0 +1,53 @@
+sudo: false
+
+language: java
+
+matrix:
+  fast_finish: true
+  include:
+  - jdk: openjdk7
+    env: TASK=BUILD
+    os: linux
+
+  - jdk: oraclejdk8
+    env: TASK=BUILD
+    os: linux
+    addons:
+      apt:
+        packages:
+          # Install the JREs that are used for integration tests in
+          # contrib/agent, but are not installed by default.
+          - openjdk-6-jdk
+
+   - jdk: oraclejdk9
+     env: TASK=BUILD
+     os: linux
+
+  # Work around https://github.com/travis-ci/travis-ci/issues/2317
+  - env: TASK=BUILD
+    os: osx
+
+  allow_failures:
+  # Allowing failures because osx builds are very slow.
+  - env: TASK=BUILD
+    os: osx
+
+# Skip Travis' default Gradle install step. See http://stackoverflow.com/a/26575080.
+install: true
+
+script:
+  - scripts/travis_script
+
+after_success:
+  - if \[ "$TASK" == "BUILD" \] && \[ "$TRAVIS_JDK_VERSION" == "oraclejdk8" \] && \[ "$TRAVIS_OS_NAME" = linux \]; then
+      bash <(curl -s https://codecov.io/bash) ;
+    fi
+
+before_cache:
+  - rm -fr $HOME/.gradle/caches/modules-2/modules-2.lock
+
+cache:
+  directories:
+    - $HOME/.gradle
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
