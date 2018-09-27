@@ -1,0 +1,40 @@
+sudo: false
+
+language: java
+
+matrix:
+  fast_finish: true
+  include:
+
+  - jdk: oraclejdk8
+    os: linux
+
+  - jdk: oraclejdk9
+    os: linux
+
+  # Work around https://github.com/travis-ci/travis-ci/issues/2317
+  - os: osx
+
+  allow_failures:
+  # Allowing failures because osx builds are very slow.
+  - os: osx
+
+# Skip Travis' default Gradle install step. See http://stackoverflow.com/a/26575080.
+install: true
+
+script:
+  - scripts/travis_script
+
+after_success:
+  - if \[ "$TRAVIS_JDK_VERSION" == "oraclejdk8" \] && \[ "$TRAVIS_OS_NAME" = linux \]; then
+      bash <(curl -s https://codecov.io/bash) ;
+    fi
+
+before_cache:
+  - rm -fr $HOME/.gradle/caches/modules-2/modules-2.lock
+
+cache:
+  directories:
+    - $HOME/.gradle
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
