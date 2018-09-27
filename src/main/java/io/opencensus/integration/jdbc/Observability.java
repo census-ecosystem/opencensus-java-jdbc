@@ -43,7 +43,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Observability {
+public final class Observability {
   private static final StatsRecorder statsRecorder = Stats.getStatsRecorder();
   private static final Tagger tagger = Tags.getTagger();
   private static final Tracer tracer = Tracing.getTracer();
@@ -62,35 +62,35 @@ public class Observability {
   private static final String MILLISECONDS = "ms";
 
   // Tag keys
-  public static final TagKey keyMethod = TagKey.create("method");
-  public static final TagKey keyPhase = TagKey.create("phase");
-  public static final TagKey keyReason = TagKey.create("reason");
-  public static final TagKey keyType = TagKey.create("type");
-  private static final TagKey keyArchitecture = TagKey.create("arch");
-  private static final TagKey keyJavaVersion = TagKey.create("java_version");
-  private static final TagKey keyOSName = TagKey.create("os_name");
-  private static final TagKey keyOSVersion = TagKey.create("os_version");
+  public static final TagKey KEY_METHOD = TagKey.create("method");
+  public static final TagKey KEY_PHASE = TagKey.create("phase");
+  public static final TagKey KEY_REASON = TagKey.create("reason");
+  public static final TagKey KEY_TYPE = TagKey.create("type");
+  private static final TagKey KEY_ARCHITECTURE = TagKey.create("arch");
+  private static final TagKey KEY_JAVA_VERSION = TagKey.create("java_version");
+  private static final TagKey KEY_OS_NAME = TagKey.create("os_name");
+  private static final TagKey KEY_OS_VERSION = TagKey.create("os_version");
 
   private static final Map<TagKey, TagValue> mandatorySystemTags = new HashMap<TagKey, TagValue>();
 
   static {
-    mandatorySystemTags.put(keyArchitecture, DETECTED_ARCH);
-    mandatorySystemTags.put(keyJavaVersion, DETECTED_JAVA_VERSION);
-    mandatorySystemTags.put(keyOSName, DETECTED_OS_NAME);
-    mandatorySystemTags.put(keyOSVersion, DETECTED_OS_VERSION);
+    mandatorySystemTags.put(KEY_ARCHITECTURE, DETECTED_ARCH);
+    mandatorySystemTags.put(KEY_JAVA_VERSION, DETECTED_JAVA_VERSION);
+    mandatorySystemTags.put(KEY_OS_NAME, DETECTED_OS_NAME);
+    mandatorySystemTags.put(KEY_OS_VERSION, DETECTED_OS_VERSION);
   }
 
   // Measures
-  public static final MeasureLong mCalls =
+  public static final MeasureLong MEASURE_CALLS =
       MeasureLong.create("java.sql/calls", "The number of calls to the server", DIMENSIONLESS);
-  public static final MeasureLong mErrors =
+  public static final MeasureLong MEASURE_ERRORS =
       MeasureLong.create("java.sql/errors", "The number of errors encountered", DIMENSIONLESS);
-  public static final MeasureLong mKeyLength =
+  public static final MeasureLong MEASURE_KEY_LENGTH =
       MeasureLong.create("java.sql/key_length", "Records the lengths of keys", DIMENSIONLESS);
-  public static final MeasureDouble mLatencyMs =
+  public static final MeasureDouble MEASURE_LATENCY_MS =
       MeasureDouble.create(
           "java.sql/latency", "The latency of calls in milliseconds", MILLISECONDS);
-  public static final MeasureLong mValueLength =
+  public static final MeasureLong MEASURE_VALUE_LENGTH =
       MeasureLong.create("java.sql/value_length", "Records the lengths of values", DIMENSIONLESS);
 
   private static Scope buildTagContextAndScopeWithSystemProperties(Map<TagKey, TagValue> tags) {
@@ -108,11 +108,11 @@ public class Observability {
     return tagger.withTagContext(tb.build());
   }
 
-  public static void recordTaggedStat(TagKey key, String value, MeasureLong ml, int i) {
+  static void recordTaggedStat(TagKey key, String value, MeasureLong ml, int i) {
     recordTaggedStat(key, value, ml, Long.valueOf(i));
   }
 
-  public static void recordTaggedStat(TagKey key, String value, MeasureLong ml, Long l) {
+  static void recordTaggedStat(TagKey key, String value, MeasureLong ml, Long l) {
     Scope ss =
         buildTagContextAndScopeWithSystemProperties(
             Collections.singletonMap(key, TagValue.create(value)));
@@ -120,7 +120,7 @@ public class Observability {
     ss.close();
   }
 
-  public static void recordTaggedStat(TagKey key, String value, MeasureDouble md, Double d) {
+  static void recordTaggedStat(TagKey key, String value, MeasureDouble md, Double d) {
     Scope ss =
         buildTagContextAndScopeWithSystemProperties(
             Collections.singletonMap(key, TagValue.create(value)));
@@ -128,7 +128,7 @@ public class Observability {
     ss.close();
   }
 
-  public static void recordStatWithTags(MeasureLong ml, long l, Map<TagKey, TagValue> tags) {
+  static void recordStatWithTags(MeasureLong ml, long l, Map<TagKey, TagValue> tags) {
     Scope ss = buildTagContextAndScopeWithSystemProperties(tags);
     statsRecorder.newMeasureMap().put(ml, l).record();
     ss.close();
@@ -142,7 +142,7 @@ public class Observability {
   public static final TraceOption OPTION_ANNOTATE_TRACES_WITH_SQL =
       TraceOption.ANNOTATE_TRACES_WITH_SQL;
 
-  public static boolean shouldAnnotateSpansWithSQL(EnumSet<TraceOption> opts) {
+  static boolean shouldAnnotateSpansWithSQL(EnumSet<TraceOption> opts) {
     for (TraceOption opt : opts) {
       if (opt == TraceOption.ANNOTATE_TRACES_WITH_SQL) {
         return true;
@@ -154,7 +154,7 @@ public class Observability {
 
   // RoundtripTrackingSpan records both the metric latency in
   // milliseconds, and the span created by tracing the calling function.
-  public static class RoundtripTrackingSpan implements AutoCloseable {
+  static final class RoundtripTrackingSpan implements AutoCloseable {
     private Span span;
     private Scope spanScope;
     private long startTimeNs;
@@ -162,41 +162,36 @@ public class Observability {
     private boolean closed;
 
     @SuppressWarnings("MustBeClosedChecker") // Span closed in end().
-    public RoundtripTrackingSpan(String name, String method) {
+    RoundtripTrackingSpan(String name, String method) {
       this.startTimeNs = System.nanoTime();
       this.spanScope = tracer.spanBuilder(name).startScopedSpan();
       this.span = tracer.getCurrentSpan();
       this.method = method;
     }
 
-    public RoundtripTrackingSpan(
-        String name, String method, boolean shouldAnnotateWithSQL, String SQL) {
+    RoundtripTrackingSpan(String name, String method, boolean shouldAnnotateWithSQL, String SQL) {
       this(name, method);
       if (shouldAnnotateWithSQL)
         this.span.putAttribute("sql", AttributeValue.stringAttributeValue(SQL));
     }
 
-    public void end() {
+    @Override
+    public void close() {
       if (this.closed) return;
 
       try {
         // Record the number of calls of the made method.
-        recordTaggedStat(keyMethod, this.method, mCalls, 1);
+        recordTaggedStat(KEY_METHOD, this.method, MEASURE_CALLS, 1);
 
         long totalTimeNs = System.nanoTime() - this.startTimeNs;
         double timeSpentMs = (Double.valueOf(totalTimeNs)) / 1e6;
 
         // Finally record the latency of the entire call.
-        recordTaggedStat(keyMethod, this.method, mLatencyMs, timeSpentMs);
+        recordTaggedStat(KEY_METHOD, this.method, MEASURE_LATENCY_MS, timeSpentMs);
       } finally {
         this.spanScope.close();
         this.closed = true;
       }
-    }
-
-    @Override
-    public void close() {
-      this.end();
     }
 
     /*
@@ -204,21 +199,21 @@ public class Observability {
      * and also sets its status to indicate the exception but it also increments the number
      * of errors by 1, adding tags: "method", "reason" to the recorded metric.
      * */
-    public void recordException(Exception e) {
+    void recordException(Exception e) {
       String detail = e.toString();
       this.span.setStatus(Status.INTERNAL.withDescription(detail));
       Map<TagKey, TagValue> tags = new HashMap<TagKey, TagValue>();
-      tags.put(keyReason, TagValue.create(detail));
-      tags.put(keyMethod, TagValue.create(this.method));
-      recordStatWithTags(mErrors, 1, tags);
+      tags.put(KEY_REASON, TagValue.create(detail));
+      tags.put(KEY_METHOD, TagValue.create(this.method));
+      recordStatWithTags(MEASURE_ERRORS, 1, tags);
     }
   }
 
-  public static RoundtripTrackingSpan createRoundtripTrackingSpan(String spanName, String method) {
+  static RoundtripTrackingSpan createRoundtripTrackingSpan(String spanName, String method) {
     return new RoundtripTrackingSpan(spanName, method);
   }
 
-  public static RoundtripTrackingSpan createRoundtripTrackingSpan(
+  static RoundtripTrackingSpan createRoundtripTrackingSpan(
       String spanName, String method, boolean canRecordSQL, String SQL) {
     return new RoundtripTrackingSpan(spanName, method, canRecordSQL, SQL);
   }
@@ -306,33 +301,37 @@ public class Observability {
           View.create(
               Name.create("java.sql/client/latency"),
               "The distribution of the latencies of various calls in milliseconds",
-              mLatencyMs,
+              MEASURE_LATENCY_MS,
               defaultMillisecondsDistribution,
-              addMandatorySystemTagKeys(Arrays.asList(keyMethod, keyPhase, keyReason, keyType))),
+              addMandatorySystemTagKeys(
+                  Arrays.asList(KEY_METHOD, KEY_PHASE, KEY_REASON, KEY_TYPE))),
           View.create(
               Name.create("java.sql/client/calls"),
               "The number of various calls of methods",
-              mCalls,
+              MEASURE_CALLS,
               countAggregation,
-              addMandatorySystemTagKeys(Arrays.asList(keyMethod, keyPhase, keyReason, keyType))),
+              addMandatorySystemTagKeys(
+                  Arrays.asList(KEY_METHOD, KEY_PHASE, KEY_REASON, KEY_TYPE))),
           View.create(
               Name.create("java.sql/client/errors"),
               "The number of errors encountered",
-              mErrors,
+              MEASURE_ERRORS,
               countAggregation,
-              addMandatorySystemTagKeys(Arrays.asList(keyMethod, keyPhase, keyReason, keyType))),
+              addMandatorySystemTagKeys(
+                  Arrays.asList(KEY_METHOD, KEY_PHASE, KEY_REASON, KEY_TYPE))),
           View.create(
               Name.create("java.sql/client/key_length"),
               "The distribution of lengths of keys",
-              mKeyLength,
+              MEASURE_KEY_LENGTH,
               defaultBytesDistribution,
-              addMandatorySystemTagKeys(Arrays.asList(keyMethod, keyPhase, keyReason, keyType))),
+              addMandatorySystemTagKeys(
+                  Arrays.asList(KEY_METHOD, KEY_PHASE, KEY_REASON, KEY_TYPE))),
           View.create(
               Name.create("java.sql/client/value_length"),
               "The distribution of lengths of values",
-              mValueLength,
+              MEASURE_VALUE_LENGTH,
               defaultBytesDistribution,
-              addMandatorySystemTagKeys(Arrays.asList(keyMethod, keyPhase, keyReason, keyType)))
+              addMandatorySystemTagKeys(Arrays.asList(KEY_METHOD, KEY_PHASE, KEY_REASON, KEY_TYPE)))
         };
 
     ViewManager vmgr = Stats.getViewManager();
