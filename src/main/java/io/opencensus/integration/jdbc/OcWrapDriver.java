@@ -43,10 +43,7 @@ public class OcWrapDriver implements Driver {
         Observability.createRoundtripTrackingSpan("java.sql.Driver.connect", "connect");
 
     try (Scope ws = trackingOperation.withSpan()) {
-      // Retrieve the raw connection then wrap it with the OpenCensus instrumented
-      // Connection class instance to provide metrics and traces per call.
-      java.sql.Connection conn = this.driver.connect(url, info);
-      return new OcWrapConnection(conn, EnumSet.noneOf(TraceOption.class));
+      return new OcWrapConnection(this.driver.connect(url, info), EnumSet.noneOf(TraceOption.class));
     } catch (Exception e) {
       trackingOperation.endWithException(e);
       throw e;
