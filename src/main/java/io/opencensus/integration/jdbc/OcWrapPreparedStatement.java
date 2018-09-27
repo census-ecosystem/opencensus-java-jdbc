@@ -14,18 +14,18 @@
 
 package io.opencensus.integration.jdbc;
 
+import io.opencensus.integration.jdbc.Observability.TraceOption;
 import java.sql.SQLException;
+import java.util.EnumSet;
 
 public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
   private final java.sql.PreparedStatement preparedStatement;
   private final boolean shouldAnnotateSpansWithSQL;
-  private Observability.TraceOption[] startOptions;
 
-  public OcWrapPreparedStatement(
-      java.sql.PreparedStatement pstmt, Observability.TraceOption... opts) throws SQLException {
+  public OcWrapPreparedStatement(java.sql.PreparedStatement pstmt, EnumSet<TraceOption> opts)
+      throws SQLException {
     this.preparedStatement = pstmt;
     this.shouldAnnotateSpansWithSQL = Observability.shouldAnnotateSpansWithSQL(opts);
-    this.startOptions = opts;
   }
 
   public OcWrapPreparedStatement(

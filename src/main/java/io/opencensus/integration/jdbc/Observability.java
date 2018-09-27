@@ -37,6 +37,8 @@ import io.opencensus.trace.Tracer;
 import io.opencensus.trace.Tracing;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.EnumSet;
 import java.util.List;
 
 public class Observability {
@@ -84,7 +86,7 @@ public class Observability {
   public static final MeasureLong mValueLength =
       MeasureLong.create("java.sql/value_length", "Records the lengths of values", DIMENSIONLESS);
 
-  private static Scope buildTagContextAndScopeWithSystemProperties(TagKeyPair... pairs) {
+  private static Scope buildTagContextAndScopeWithSystemProperties(List<TagKeyPair> pairs) {
     TagContextBuilder tb = tagger.emptyBuilder();
     for (TagKeyPair kvp : pairs) {
       tb.put(kvp.key, TagValue.create(kvp.value));
@@ -104,18 +106,22 @@ public class Observability {
   }
 
   public static void recordTaggedStat(TagKey key, String value, MeasureLong ml, Long l) {
-    Scope ss = buildTagContextAndScopeWithSystemProperties(tagKeyPair(key, value));
+    Scope ss =
+        buildTagContextAndScopeWithSystemProperties(
+            Collections.singletonList(tagKeyPair(key, value)));
     statsRecorder.newMeasureMap().put(ml, l).record();
     ss.close();
   }
 
   public static void recordTaggedStat(TagKey key, String value, MeasureDouble md, Double d) {
-    Scope ss = buildTagContextAndScopeWithSystemProperties(tagKeyPair(key, value));
+    Scope ss =
+        buildTagContextAndScopeWithSystemProperties(
+            Collections.singletonList(tagKeyPair(key, value)));
     statsRecorder.newMeasureMap().put(md, d).record();
     ss.close();
   }
 
-  public static void recordStatWithTags(MeasureLong ml, long l, TagKeyPair... pairs) {
+  public static void recordStatWithTags(MeasureLong ml, long l, List<TagKeyPair> pairs) {
     Scope ss = buildTagContextAndScopeWithSystemProperties(pairs);
     statsRecorder.newMeasureMap().put(ml, l).record();
     ss.close();
@@ -129,7 +135,7 @@ public class Observability {
   public static final TraceOption OPTION_ANNOTATE_TRACES_WITH_SQL =
       TraceOption.ANNOTATE_TRACES_WITH_SQL;
 
-  public static boolean shouldAnnotateSpansWithSQL(TraceOption... opts) {
+  public static boolean shouldAnnotateSpansWithSQL(EnumSet<TraceOption> opts) {
     for (TraceOption opt : opts) {
       if (opt == TraceOption.ANNOTATE_TRACES_WITH_SQL) {
         return true;
@@ -195,7 +201,9 @@ public class Observability {
       String detail = e.toString();
       this.span.setStatus(Status.INTERNAL.withDescription(detail));
       recordStatWithTags(
-          mErrors, 1, tagKeyPair(keyReason, detail), tagKeyPair(keyMethod, this.method));
+          mErrors,
+          1,
+          Arrays.asList(tagKeyPair(keyReason, detail), tagKeyPair(keyMethod, this.method)));
     }
   }
 
@@ -222,7 +230,7 @@ public class Observability {
     return new TagKeyPair(key, value);
   }
 
-  private static List<TagKey> addMandatorySystemTagKeys(TagKey... customTagKeys) {
+  private static List<TagKey> addMandatorySystemTagKeys(List<TagKey> customTagKeys) {
     List<TagKey> out = new ArrayList<TagKey>();
     for (TagKey tagKey : customTagKeys) out.add(tagKey);
 
@@ -303,31 +311,31 @@ public class Observability {
               "The distribution of the latencies of various calls in milliseconds",
               mLatencyMs,
               defaultMillisecondsDistribution,
-              addMandatorySystemTagKeys(keyMethod, keyPhase, keyReason, keyType)),
+              addMandatorySystemTagKeys(Arrays.asList(keyMethod, keyPhase, keyReason, keyType))),
           View.create(
               Name.create("java.sql/client/calls"),
               "The number of various calls of methods",
               mCalls,
               countAggregation,
-              addMandatorySystemTagKeys(keyMethod, keyPhase, keyReason, keyType)),
+              addMandatorySystemTagKeys(Arrays.asList(keyMethod, keyPhase, keyReason, keyType))),
           View.create(
               Name.create("java.sql/client/errors"),
               "The number of errors encountered",
               mErrors,
               countAggregation,
-              addMandatorySystemTagKeys(keyMethod, keyPhase, keyReason, keyType)),
+              addMandatorySystemTagKeys(Arrays.asList(keyMethod, keyPhase, keyReason, keyType))),
           View.create(
               Name.create("java.sql/client/key_length"),
               "The distribution of lengths of keys",
               mKeyLength,
               defaultBytesDistribution,
-              addMandatorySystemTagKeys(keyMethod, keyPhase, keyReason, keyType)),
+              addMandatorySystemTagKeys(Arrays.asList(keyMethod, keyPhase, keyReason, keyType))),
           View.create(
               Name.create("java.sql/client/value_length"),
               "The distribution of lengths of values",
               mValueLength,
               defaultBytesDistribution,
-              addMandatorySystemTagKeys(keyMethod, keyPhase, keyReason, keyType))
+              addMandatorySystemTagKeys(Arrays.asList(keyMethod, keyPhase, keyReason, keyType)))
         };
 
     ViewManager vmgr = Stats.getViewManager();
