@@ -27,7 +27,7 @@ import io.opencensus.integration.jdbc.Observability;
  * instance wit htracing and metrics using OpenCensus.
  */
 public class OcWrapDriver implements java.sql.Driver {
-    private java.sql.Driver driver;
+    private final java.sql.Driver driver;
 
     public OcWrapDriver(java.sql.Driver driver) throws SQLException {
         this.driver = driver;

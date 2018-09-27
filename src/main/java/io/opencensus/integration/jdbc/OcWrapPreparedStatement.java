@@ -19,18 +19,18 @@ import java.sql.SQLException;
 import io.opencensus.integration.jdbc.Observability;
 
 public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
-    private java.sql.PreparedStatement pstmt;
-    private boolean shouldAnnotateSpansWithSQL;
+    private final java.sql.PreparedStatement preparedStatement;
+    private final boolean shouldAnnotateSpansWithSQL;
     private Observability.TraceOption[] startOptions;
 
     public OcWrapPreparedStatement(java.sql.PreparedStatement pstmt, Observability.TraceOption ...opts) throws SQLException {
-        this.pstmt = pstmt;
+        this.preparedStatement = pstmt;
         this.shouldAnnotateSpansWithSQL = Observability.shouldAnnotateSpansWithSQL(opts);
         this.startOptions = opts;
     }
 
     public OcWrapPreparedStatement(java.sql.PreparedStatement pstmt, boolean shouldAnnotateSpansWithSQL) throws SQLException {
-        this.pstmt = pstmt;
+        this.preparedStatement = pstmt;
         this.shouldAnnotateSpansWithSQL = shouldAnnotateSpansWithSQL;
     }
 
@@ -39,7 +39,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.addBatch", "addBatch");
 
         try {
-            this.pstmt.addBatch();
+            this.preparedStatement.addBatch();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -55,7 +55,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
                                                                                              this.shouldAnnotateSpansWithSQL,
                                                                                              SQL);
         try {
-            this.pstmt.addBatch(SQL);
+            this.preparedStatement.addBatch(SQL);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -69,7 +69,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.cancel", "cancel");
 
         try {
-            this.pstmt.cancel();
+            this.preparedStatement.cancel();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -83,7 +83,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.createBatch", "createBatch");
 
         try {
-            this.pstmt.clearBatch();
+            this.preparedStatement.clearBatch();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -97,7 +97,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.clearWarnings", "clearWarnings");
 
         try {
-            this.pstmt.clearWarnings();
+            this.preparedStatement.clearWarnings();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -112,7 +112,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.clearParameters", "clearParameters");
 
         try {
-            this.pstmt.clearParameters();
+            this.preparedStatement.clearParameters();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -126,7 +126,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.close", "close");
 
         try {
-            this.pstmt.close();
+            this.preparedStatement.close();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -140,7 +140,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.closeOnCompletion", "closeOnCompletion");
 
         try {
-            this.pstmt.closeOnCompletion();
+            this.preparedStatement.closeOnCompletion();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -154,7 +154,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.execute", "execute");
 
         try {
-            return this.pstmt.execute();
+            return this.preparedStatement.execute();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -170,7 +170,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
                                                                                              this.shouldAnnotateSpansWithSQL,
                                                                                              SQL);
         try {
-            return this.pstmt.execute(SQL);
+            return this.preparedStatement.execute(SQL);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -186,7 +186,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
                                                                                              this.shouldAnnotateSpansWithSQL,
                                                                                              SQL);
         try {
-            return this.pstmt.execute(SQL, columnNames);
+            return this.preparedStatement.execute(SQL, columnNames);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -202,7 +202,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
                                                                                              this.shouldAnnotateSpansWithSQL,
                                                                                              SQL);
         try {
-            return this.pstmt.execute(SQL, columnIndices);
+            return this.preparedStatement.execute(SQL, columnIndices);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -218,7 +218,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
                                                                                              this.shouldAnnotateSpansWithSQL,
                                                                                              SQL);
         try {
-            return this.pstmt.execute(SQL, autoGeneratedKeys);
+            return this.preparedStatement.execute(SQL, autoGeneratedKeys);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -232,7 +232,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.executeBatch", "executeBatch");
 
         try {
-            return this.pstmt.executeBatch();
+            return this.preparedStatement.executeBatch();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -248,7 +248,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
                                                                                              this.shouldAnnotateSpansWithSQL,
                                                                                              SQL);
         try {
-            java.sql.ResultSet rs = this.pstmt.executeQuery(SQL);
+            java.sql.ResultSet rs = this.preparedStatement.executeQuery(SQL);
             return new OcWrapResultSet(rs);
         } catch (Exception e) {
             span.recordException(e);
@@ -265,7 +265,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
                                                                                              this.shouldAnnotateSpansWithSQL,
                                                                                              SQL);
         try {
-            return this.pstmt.executeUpdate(SQL);
+            return this.preparedStatement.executeUpdate(SQL);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -281,7 +281,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
                                                                                              this.shouldAnnotateSpansWithSQL,
                                                                                              SQL);
         try {
-            return this.pstmt.executeUpdate(SQL, autoGeneratedKeys);
+            return this.preparedStatement.executeUpdate(SQL, autoGeneratedKeys);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -297,7 +297,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
                                                                                              this.shouldAnnotateSpansWithSQL,
                                                                                              SQL);
         try {
-            return this.pstmt.executeUpdate(SQL, columnIndices);
+            return this.preparedStatement.executeUpdate(SQL, columnIndices);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -314,7 +314,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
                                                                                              SQL);
 
         try {
-            return this.pstmt.executeUpdate(SQL, columnNames);
+            return this.preparedStatement.executeUpdate(SQL, columnNames);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -328,7 +328,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.executeQuery", "executeQuery");
 
         try {
-            java.sql.ResultSet rs = this.pstmt.executeQuery();
+            java.sql.ResultSet rs = this.preparedStatement.executeQuery();
             return new OcWrapResultSet(rs);
         } catch (Exception e) {
             span.recordException(e);
@@ -343,7 +343,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.executeUpdate", "executeUpdate");
 
         try {
-            return this.pstmt.executeUpdate();
+            return this.preparedStatement.executeUpdate();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -357,7 +357,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.getFetchDirection", "getFetchDirection");
 
         try {
-            return this.pstmt.getFetchDirection();
+            return this.preparedStatement.getFetchDirection();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -371,7 +371,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.getFetchSize", "getFetchSize");
 
         try {
-            return this.pstmt.getFetchSize();
+            return this.preparedStatement.getFetchSize();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -385,7 +385,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.getGeneratedKeys", "getGeneratedKeys");
 
         try {
-            java.sql.ResultSet rs = this.pstmt.getGeneratedKeys();
+            java.sql.ResultSet rs = this.preparedStatement.getGeneratedKeys();
             return new OcWrapResultSet(rs);
         } catch (Exception e) {
             span.recordException(e);
@@ -400,7 +400,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.getMaxFieldSize", "getMaxFieldSize");
 
         try {
-            return this.pstmt.getMaxFieldSize();
+            return this.preparedStatement.getMaxFieldSize();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -414,7 +414,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.getMaxRows", "getMaxRows");
 
         try {
-            return this.pstmt.getMaxRows();
+            return this.preparedStatement.getMaxRows();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -428,7 +428,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.getMetaData", "getMetaData");
 
         try {
-            return this.pstmt.getMetaData();
+            return this.preparedStatement.getMetaData();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -442,7 +442,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.getMoreResults", "getMoreResults");
 
         try {
-            return this.pstmt.getMoreResults(current);
+            return this.preparedStatement.getMoreResults(current);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -456,7 +456,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.getMoreResults", "getMoreResults");
 
         try {
-            return this.pstmt.getMoreResults();
+            return this.preparedStatement.getMoreResults();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -470,7 +470,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.getResultSet", "getResultSet");
 
         try {
-            java.sql.ResultSet rs = this.pstmt.getResultSet();
+            java.sql.ResultSet rs = this.preparedStatement.getResultSet();
             return new OcWrapResultSet(rs);
         } catch (Exception e) {
             span.recordException(e);
@@ -485,7 +485,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.getResultSetConcurrency", "getResultSetConcurrency");
 
         try {
-            return this.pstmt.getResultSetConcurrency();
+            return this.preparedStatement.getResultSetConcurrency();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -499,7 +499,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.getQueryTimeout", "getQueryTimeout");
 
         try {
-            return this.pstmt.getQueryTimeout();
+            return this.preparedStatement.getQueryTimeout();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -510,7 +510,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
 
     @Override
     public java.sql.Connection getConnection() throws SQLException {
-        return this.pstmt.getConnection();
+        return this.preparedStatement.getConnection();
     }
 
     @Override
@@ -518,7 +518,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.getParameterMetaData", "getParameterMetaData");
 
         try {
-            return this.pstmt.getParameterMetaData();
+            return this.preparedStatement.getParameterMetaData();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -532,7 +532,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.getResultSetHoldability", "getResultSetHoldability");
 
         try {
-            return this.pstmt.getResultSetHoldability();
+            return this.preparedStatement.getResultSetHoldability();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -546,7 +546,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.getResultSetType", "getResultSetType");
 
         try {
-            return this.pstmt.getResultSetType();
+            return this.preparedStatement.getResultSetType();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -560,7 +560,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.getUpdateCount", "getUpdateCount");
 
         try {
-            return this.pstmt.getUpdateCount();
+            return this.preparedStatement.getUpdateCount();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -574,7 +574,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.getWarnings", "getWarnings");
 
         try {
-            return this.pstmt.getWarnings();
+            return this.preparedStatement.getWarnings();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -588,7 +588,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setArray", "setArray");
 
         try {
-            this.pstmt.setArray(parameterIndex, x);
+            this.preparedStatement.setArray(parameterIndex, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -602,7 +602,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setAsciiStream", "setAsciiStream");
 
         try {
-            this.pstmt.setAsciiStream(parameterIndex, stream);
+            this.preparedStatement.setAsciiStream(parameterIndex, stream);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -616,7 +616,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setAsciiStream", "setAsciiStream");
 
         try {
-            this.pstmt.setAsciiStream(parameterIndex, stream, length);
+            this.preparedStatement.setAsciiStream(parameterIndex, stream, length);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -630,7 +630,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setAsciiStream", "setAsciiStream");
 
         try {
-            this.pstmt.setAsciiStream(parameterIndex, stream, length);
+            this.preparedStatement.setAsciiStream(parameterIndex, stream, length);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -644,7 +644,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setBigDecimal", "setBigDecimal");
 
         try {
-            this.pstmt.setBigDecimal(parameterIndex, x);
+            this.preparedStatement.setBigDecimal(parameterIndex, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -658,7 +658,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setBinaryStream", "setBinaryStream");
 
         try {
-            this.pstmt.setBinaryStream(parameterIndex, stream);
+            this.preparedStatement.setBinaryStream(parameterIndex, stream);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -672,7 +672,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setBinaryStream", "setBinaryStream");
 
         try {
-            this.pstmt.setBinaryStream(parameterIndex, stream, length);
+            this.preparedStatement.setBinaryStream(parameterIndex, stream, length);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -686,7 +686,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setBinaryStream", "setBinaryStream");
 
         try {
-            this.pstmt.setBinaryStream(parameterIndex, stream, length);
+            this.preparedStatement.setBinaryStream(parameterIndex, stream, length);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -700,7 +700,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setBlob", "setBlob");
 
         try {
-            this.pstmt.setBlob(parameterIndex, x);
+            this.preparedStatement.setBlob(parameterIndex, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -714,7 +714,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setBlob", "setBlob");
 
         try {
-            this.pstmt.setBlob(parameterIndex, x);
+            this.preparedStatement.setBlob(parameterIndex, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -728,7 +728,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setBlob", "setBlob");
 
         try {
-            this.pstmt.setBlob(parameterIndex, inputStream, length);
+            this.preparedStatement.setBlob(parameterIndex, inputStream, length);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -742,7 +742,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setBoolean", "setBoolean");
 
         try {
-            this.pstmt.setBoolean(parameterIndex, x);
+            this.preparedStatement.setBoolean(parameterIndex, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -756,7 +756,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setByte", "setByte");
 
         try {
-            this.pstmt.setByte(parameterIndex, x);
+            this.preparedStatement.setByte(parameterIndex, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -770,7 +770,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setBytes", "setBytes");
 
         try {
-            this.pstmt.setBytes(parameterIndex, x);
+            this.preparedStatement.setBytes(parameterIndex, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -784,7 +784,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setCharacterStream", "setCharacterStream");
 
         try {
-            this.pstmt.setCharacterStream(parameterIndex, reader);
+            this.preparedStatement.setCharacterStream(parameterIndex, reader);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -798,7 +798,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setCharacterStream", "setCharacterStream");
 
         try {
-            this.pstmt.setCharacterStream(parameterIndex, reader, length);
+            this.preparedStatement.setCharacterStream(parameterIndex, reader, length);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -812,7 +812,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setCharacterStream", "setCharacterStream");
 
         try {
-            this.pstmt.setCharacterStream(parameterIndex, reader, length);
+            this.preparedStatement.setCharacterStream(parameterIndex, reader, length);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -826,7 +826,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setClob", "setClob");
 
         try {
-            this.pstmt.setClob(parameterIndex, x);
+            this.preparedStatement.setClob(parameterIndex, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -840,7 +840,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setClob", "setClob");
 
         try {
-            this.pstmt.setClob(parameterIndex, reader);
+            this.preparedStatement.setClob(parameterIndex, reader);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -854,7 +854,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setClob", "setClob");
 
         try {
-            this.pstmt.setClob(parameterIndex, reader, length);
+            this.preparedStatement.setClob(parameterIndex, reader, length);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -868,7 +868,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setDate", "setDate");
 
         try {
-            this.pstmt.setDate(parameterIndex, x);
+            this.preparedStatement.setDate(parameterIndex, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -882,7 +882,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setDate", "setDate");
 
         try {
-            this.pstmt.setDate(parameterIndex, x, cal);
+            this.preparedStatement.setDate(parameterIndex, x, cal);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -896,7 +896,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setDouble", "setDouble");
 
         try {
-            this.pstmt.setDouble(parameterIndex, x);
+            this.preparedStatement.setDouble(parameterIndex, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -910,7 +910,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setFloat", "setFloat");
 
         try {
-            this.pstmt.setFloat(parameterIndex, x);
+            this.preparedStatement.setFloat(parameterIndex, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -924,7 +924,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setInt", "setInt");
 
         try {
-            this.pstmt.setFloat(parameterIndex, x);
+            this.preparedStatement.setFloat(parameterIndex, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -938,7 +938,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setLong", "setLong");
 
         try {
-            this.pstmt.setLong(parameterIndex, x);
+            this.preparedStatement.setLong(parameterIndex, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -952,7 +952,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setNCharacterStream", "setNCharacterStream");
 
         try {
-            this.pstmt.setNCharacterStream(parameterIndex, value);
+            this.preparedStatement.setNCharacterStream(parameterIndex, value);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -966,7 +966,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setNCharacterStream", "setNCharacterStream");
 
         try {
-            this.pstmt.setNCharacterStream(parameterIndex, value, length);
+            this.preparedStatement.setNCharacterStream(parameterIndex, value, length);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -980,7 +980,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setNClob", "setNClob");
 
         try {
-            this.pstmt.setNClob(parameterIndex, value);
+            this.preparedStatement.setNClob(parameterIndex, value);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -994,7 +994,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setNClob", "setNClob");
 
         try {
-            this.pstmt.setNClob(parameterIndex, reader);
+            this.preparedStatement.setNClob(parameterIndex, reader);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1008,7 +1008,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setNClob", "setNClob");
 
         try {
-            this.pstmt.setNClob(parameterIndex, reader, length);
+            this.preparedStatement.setNClob(parameterIndex, reader, length);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1022,7 +1022,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setNString", "setNString");
 
         try {
-            this.pstmt.setNString(parameterIndex, value);
+            this.preparedStatement.setNString(parameterIndex, value);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1036,7 +1036,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setNull", "setNull");
 
         try {
-            this.pstmt.setNull(parameterIndex, sqlType);
+            this.preparedStatement.setNull(parameterIndex, sqlType);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1050,7 +1050,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setNull", "setNull");
 
         try {
-            this.pstmt.setNull(parameterIndex, sqlType, typeName);
+            this.preparedStatement.setNull(parameterIndex, sqlType, typeName);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1064,7 +1064,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setObject", "setObject");
 
         try {
-            this.pstmt.setObject(parameterIndex, x);
+            this.preparedStatement.setObject(parameterIndex, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1078,7 +1078,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setObject", "setObject");
 
         try {
-            this.pstmt.setObject(parameterIndex, x, targetSqlType);
+            this.preparedStatement.setObject(parameterIndex, x, targetSqlType);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1092,7 +1092,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setObject", "setObject");
 
         try {
-            this.pstmt.setObject(parameterIndex, x, targetSqlType, scaleOrLength);
+            this.preparedStatement.setObject(parameterIndex, x, targetSqlType, scaleOrLength);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1106,7 +1106,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setRef", "setRef");
 
         try {
-            this.pstmt.setRef(parameterIndex, x);
+            this.preparedStatement.setRef(parameterIndex, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1120,7 +1120,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setRowId", "setRowId");
 
         try {
-            this.pstmt.setRowId(parameterIndex, x);
+            this.preparedStatement.setRowId(parameterIndex, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1134,7 +1134,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setShort", "setShort");
 
         try {
-            this.pstmt.setShort(parameterIndex, x);
+            this.preparedStatement.setShort(parameterIndex, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1148,7 +1148,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setSQLXML", "setSQLXML");
 
         try {
-            this.pstmt.setSQLXML(parameterIndex, xmlObject);
+            this.preparedStatement.setSQLXML(parameterIndex, xmlObject);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1162,7 +1162,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setString", "setString");
 
         try {
-            this.pstmt.setString(parameterIndex, x);
+            this.preparedStatement.setString(parameterIndex, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1176,7 +1176,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setTime", "setTime");
 
         try {
-            this.pstmt.setTime(parameterIndex, x);
+            this.preparedStatement.setTime(parameterIndex, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1190,7 +1190,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setTime", "setTime");
 
         try {
-            this.pstmt.setTime(parameterIndex, x, cal);
+            this.preparedStatement.setTime(parameterIndex, x, cal);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1204,7 +1204,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setTimestamp", "setTimestamp");
 
         try {
-            this.pstmt.setTimestamp(parameterIndex, x);
+            this.preparedStatement.setTimestamp(parameterIndex, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1218,7 +1218,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setTimestamp", "setTimestamp");
 
         try {
-            this.pstmt.setTimestamp(parameterIndex, x, cal);
+            this.preparedStatement.setTimestamp(parameterIndex, x, cal);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1232,7 +1232,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setUnicodeStream", "setUnicodeStream");
 
         try {
-            this.pstmt.setUnicodeStream(parameterIndex, x, length);
+            this.preparedStatement.setUnicodeStream(parameterIndex, x, length);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1246,7 +1246,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setURL", "setURL");
 
         try {
-            this.pstmt.setURL(parameterIndex, x);
+            this.preparedStatement.setURL(parameterIndex, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1260,7 +1260,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.isClosed", "isClosed");
 
         try {
-            return this.pstmt.isClosed();
+            return this.preparedStatement.isClosed();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1274,7 +1274,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.isCloseOnCompletion", "isCloseOnCompletion");
 
         try {
-            return this.pstmt.isCloseOnCompletion();
+            return this.preparedStatement.isCloseOnCompletion();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1288,7 +1288,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.isPoolable", "isPoolable");
 
         try {
-            return this.pstmt.isPoolable();
+            return this.preparedStatement.isPoolable();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1302,7 +1302,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setCursorName", "setCursorName");
 
         try {
-            this.pstmt.setCursorName(cursorName);
+            this.preparedStatement.setCursorName(cursorName);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1316,7 +1316,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setEscapeProcessing", "setEscapeProcessing");
 
         try {
-            this.pstmt.setEscapeProcessing(enable);
+            this.preparedStatement.setEscapeProcessing(enable);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1330,7 +1330,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setFetchDirection", "setFetchDirection");
 
         try {
-            this.pstmt.setFetchDirection(direction);
+            this.preparedStatement.setFetchDirection(direction);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1344,7 +1344,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setFetchSize", "setFetchSize");
 
         try {
-            this.pstmt.setFetchSize(rows);
+            this.preparedStatement.setFetchSize(rows);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1358,7 +1358,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setMaxFieldSize", "setMaxFieldSize");
 
         try {
-            this.pstmt.setMaxFieldSize(max);
+            this.preparedStatement.setMaxFieldSize(max);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1372,7 +1372,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setMaxRows", "setMaxRows");
 
         try {
-            this.pstmt.setMaxRows(max);
+            this.preparedStatement.setMaxRows(max);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1386,7 +1386,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setPoolable", "setPoolable");
 
         try {
-            this.pstmt.setPoolable(poolable);
+            this.preparedStatement.setPoolable(poolable);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1400,7 +1400,7 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setQueryTimeout", "setQueryTimeout");
 
         try {
-            this.pstmt.setQueryTimeout(seconds);
+            this.preparedStatement.setQueryTimeout(seconds);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1411,12 +1411,12 @@ public class OcWrapPreparedStatement implements java.sql.PreparedStatement {
 
     @Override
     public boolean isWrapperFor(Class<?> iface) throws SQLException {
-        return this.pstmt.isWrapperFor(iface);
+        return this.preparedStatement.isWrapperFor(iface);
     }
 
     @Override
     public <T> T unwrap(Class<T> iface) throws SQLException {
-        return this.pstmt.unwrap(iface);
+        return this.preparedStatement.unwrap(iface);
     }
 
 }

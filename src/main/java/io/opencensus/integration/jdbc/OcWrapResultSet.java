@@ -19,10 +19,10 @@ import java.sql.SQLException;
 import io.opencensus.integration.jdbc.Observability;
 
 public class OcWrapResultSet implements java.sql.ResultSet {
-    private java.sql.ResultSet rs;
+    private final java.sql.ResultSet resultSet;
 
     public OcWrapResultSet(java.sql.ResultSet rs) throws SQLException {
-        this.rs = rs;
+        this.resultSet = rs;
     }
 
     @Override
@@ -30,7 +30,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.clearWarnings", "clearWarnings");
 
         try {
-            this.rs.clearWarnings();
+            this.resultSet.clearWarnings();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -44,7 +44,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.close", "close");
 
         try {
-            this.rs.close();
+            this.resultSet.close();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -58,7 +58,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.deleteRow", "deleteRow");
 
         try {
-            this.rs.deleteRow();
+            this.resultSet.deleteRow();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -72,7 +72,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.findColumn", "findColumn");
 
         try {
-            return this.rs.findColumn(columnLabel);
+            return this.resultSet.findColumn(columnLabel);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -86,7 +86,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.first", "first");
 
         try {
-            return this.rs.first();
+            return this.resultSet.first();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -100,7 +100,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.insertRow", "insertRow");
 
         try {
-            this.rs.insertRow();
+            this.resultSet.insertRow();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -114,7 +114,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateObject", "updateObject");
 
         try {
-            this.rs.updateObject(columnIndex, x);
+            this.resultSet.updateObject(columnIndex, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -128,7 +128,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateObject", "updateObject");
 
         try {
-            this.rs.updateObject(columnIndex, x, scaleOrLength);
+            this.resultSet.updateObject(columnIndex, x, scaleOrLength);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -142,7 +142,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateObject", "updateObject");
 
         try {
-            this.rs.updateObject(columnLabel, x);
+            this.resultSet.updateObject(columnLabel, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -156,7 +156,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateObject", "updateObject");
 
         try {
-            this.rs.updateObject(columnLabel, x, scaleOrLength);
+            this.resultSet.updateObject(columnLabel, x, scaleOrLength);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -170,7 +170,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateTimestamp", "updateTimestamp");
 
         try {
-            this.rs.updateTimestamp(columnIndex, x);
+            this.resultSet.updateTimestamp(columnIndex, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -184,7 +184,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateTimestamp", "updateTimestamp");
 
         try {
-            this.rs.updateTimestamp(columnName, x);
+            this.resultSet.updateTimestamp(columnName, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -198,7 +198,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateTime", "updateTime");
 
         try {
-            this.rs.updateTime(columnIndex, x);
+            this.resultSet.updateTime(columnIndex, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -212,7 +212,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateTime", "updateTime");
 
         try {
-            this.rs.updateTime(columnName, x);
+            this.resultSet.updateTime(columnName, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -226,7 +226,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateDate", "updateDate");
 
         try {
-            this.rs.updateDate(columnIndex, x);
+            this.resultSet.updateDate(columnIndex, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -240,7 +240,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateDate", "updateDate");
 
         try {
-            this.rs.updateDate(columnName, x);
+            this.resultSet.updateDate(columnName, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -254,7 +254,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateBytes", "updateBytes");
 
         try {
-            this.rs.updateBytes(columnIndex, x);
+            this.resultSet.updateBytes(columnIndex, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -268,7 +268,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateBytes", "updateBytes");
 
         try {
-            this.rs.updateBytes(columnName, x);
+            this.resultSet.updateBytes(columnName, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -282,7 +282,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateString", "updateString");
 
         try {
-            this.rs.updateString(columnIndex, x);
+            this.resultSet.updateString(columnIndex, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -296,7 +296,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateString", "updateString");
 
         try {
-            this.rs.updateString(columnName, x);
+            this.resultSet.updateString(columnName, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -310,7 +310,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateBigDecimal", "updateBigDecimal");
 
         try {
-            this.rs.updateBigDecimal(columnIndex, x);
+            this.resultSet.updateBigDecimal(columnIndex, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -324,7 +324,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateBigDecimal", "updateBigDecimal");
 
         try {
-            this.rs.updateBigDecimal(columnName, x);
+            this.resultSet.updateBigDecimal(columnName, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -338,7 +338,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateDouble", "updateDouble");
 
         try {
-            this.rs.updateDouble(columnIndex, x);
+            this.resultSet.updateDouble(columnIndex, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -352,7 +352,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateDouble", "updateDouble");
 
         try {
-            this.rs.updateDouble(columnName, x);
+            this.resultSet.updateDouble(columnName, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -366,7 +366,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateFloat", "updateFloat");
 
         try {
-            this.rs.updateFloat(columnIndex, x);
+            this.resultSet.updateFloat(columnIndex, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -380,7 +380,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateFloat", "updateFloat");
 
         try {
-            this.rs.updateFloat(columnName, x);
+            this.resultSet.updateFloat(columnName, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -394,7 +394,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateLong", "updateLong");
 
         try {
-            this.rs.updateLong(columnIndex, x);
+            this.resultSet.updateLong(columnIndex, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -408,7 +408,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateLong", "updateLong");
 
         try {
-            this.rs.updateLong(columnName, x);
+            this.resultSet.updateLong(columnName, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -422,7 +422,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateInt", "updateInt");
 
         try {
-            this.rs.updateInt(columnIndex, x);
+            this.resultSet.updateInt(columnIndex, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -436,7 +436,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateInt", "updateInt");
 
         try {
-            this.rs.updateInt(columnName, x);
+            this.resultSet.updateInt(columnName, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -450,7 +450,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateShort", "updateShort");
 
         try {
-            this.rs.updateShort(columnIndex, x);
+            this.resultSet.updateShort(columnIndex, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -464,7 +464,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateShort", "updateShort");
 
         try {
-            this.rs.updateShort(columnName, x);
+            this.resultSet.updateShort(columnName, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -478,7 +478,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateByte", "updateByte");
 
         try {
-            this.rs.updateByte(columnIndex, x);
+            this.resultSet.updateByte(columnIndex, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -492,7 +492,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateByte", "updateByte");
 
         try {
-            this.rs.updateByte(columnName, x);
+            this.resultSet.updateByte(columnName, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -506,7 +506,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateBoolean", "updateBoolean");
 
         try {
-            this.rs.updateBoolean(columnIndex, x);
+            this.resultSet.updateBoolean(columnIndex, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -520,7 +520,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateBoolean", "updateBoolean");
 
         try {
-            this.rs.updateBoolean(columnName, x);
+            this.resultSet.updateBoolean(columnName, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -534,7 +534,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateNull", "updateNull");
 
         try {
-            this.rs.updateNull(columnIndex);
+            this.resultSet.updateNull(columnIndex);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -548,7 +548,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateNull", "updateNull");
 
         try {
-            this.rs.updateNull(columnName);
+            this.resultSet.updateNull(columnName);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -562,7 +562,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.rowDeleted", "rowDeleted");
 
         try {
-            return this.rs.rowDeleted();
+            return this.resultSet.rowDeleted();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -576,7 +576,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.rowInserted", "rowInserted");
 
         try {
-            return this.rs.rowInserted();
+            return this.resultSet.rowInserted();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -590,7 +590,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.rowUpdated", "rowUpdated");
 
         try {
-            return this.rs.rowUpdated();
+            return this.resultSet.rowUpdated();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -604,7 +604,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getConcurrency", "getConcurrency");
 
         try {
-            return this.rs.getConcurrency();
+            return this.resultSet.getConcurrency();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -618,7 +618,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getType", "getType");
 
         try {
-            return this.rs.getType();
+            return this.resultSet.getType();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -632,7 +632,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getFetchDirection", "getFetchDirection");
 
         try {
-            return this.rs.getFetchDirection();
+            return this.resultSet.getFetchDirection();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -646,7 +646,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getFetchSize", "getFetchSize");
 
         try {
-            return this.rs.getFetchSize();
+            return this.resultSet.getFetchSize();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -660,7 +660,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getMetaData", "getMetaData");
 
         try {
-            return this.rs.getMetaData();
+            return this.resultSet.getMetaData();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -674,7 +674,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getWarnings", "getWarnings");
 
         try {
-            return this.rs.getWarnings();
+            return this.resultSet.getWarnings();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -688,7 +688,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getArray", "getArray");
 
         try {
-            return this.rs.getArray(parameterIndex);
+            return this.resultSet.getArray(parameterIndex);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -702,7 +702,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getArray", "getArray");
 
         try {
-            return this.rs.getArray(parameterName);
+            return this.resultSet.getArray(parameterName);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -716,7 +716,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getBigDecimal", "getBigDecimal");
 
         try {
-            return this.rs.getBigDecimal(columnIndex);
+            return this.resultSet.getBigDecimal(columnIndex);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -730,7 +730,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getBigDecimal", "getBigDecimal");
 
         try {
-            return this.rs.getBigDecimal(columnIndex, scale);
+            return this.resultSet.getBigDecimal(columnIndex, scale);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -744,7 +744,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getBigDecimal", "getBigDecimal");
 
         try {
-            return this.rs.getBigDecimal(columnLabel);
+            return this.resultSet.getBigDecimal(columnLabel);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -758,7 +758,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getBigDecimal", "getBigDecimal");
 
         try {
-            return this.rs.getBigDecimal(columnLabel, scale);
+            return this.resultSet.getBigDecimal(columnLabel, scale);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -772,7 +772,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getBlob", "getBlob");
 
         try {
-            return this.rs.getBlob(parameterIndex);
+            return this.resultSet.getBlob(parameterIndex);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -786,7 +786,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getBlob", "getBlob");
 
         try {
-            return this.rs.getBlob(parameterName);
+            return this.resultSet.getBlob(parameterName);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -800,7 +800,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateBlob", "updateBlob");
 
         try {
-            this.rs.updateBlob(parameterIndex, x);
+            this.resultSet.updateBlob(parameterIndex, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -814,7 +814,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateBlob", "updateBlob");
 
         try {
-            this.rs.updateBlob(parameterIndex, inputStream);
+            this.resultSet.updateBlob(parameterIndex, inputStream);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -828,7 +828,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateBlob", "updateBlob");
 
         try {
-            this.rs.updateBlob(parameterIndex, inputStream, length);
+            this.resultSet.updateBlob(parameterIndex, inputStream, length);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -842,7 +842,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateBlob", "updateBlob");
 
         try {
-            this.rs.updateBlob(parameterName, x);
+            this.resultSet.updateBlob(parameterName, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -856,7 +856,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateBlob", "updateBlob");
 
         try {
-            this.rs.updateBlob(parameterName, inputStream);
+            this.resultSet.updateBlob(parameterName, inputStream);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -870,7 +870,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateBlob", "updateBlob");
 
         try {
-            this.rs.updateBlob(parameterName, inputStream, length);
+            this.resultSet.updateBlob(parameterName, inputStream, length);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -884,7 +884,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getBoolean", "getBoolean");
 
         try {
-            return this.rs.getBoolean(parameterIndex);
+            return this.resultSet.getBoolean(parameterIndex);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -898,7 +898,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getBoolean", "getBoolean");
 
         try {
-            return this.rs.getBoolean(parameterName);
+            return this.resultSet.getBoolean(parameterName);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -912,7 +912,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getClob", "getClob");
 
         try {
-            return this.rs.getClob(parameterIndex);
+            return this.resultSet.getClob(parameterIndex);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -926,7 +926,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getClob", "getClob");
 
         try {
-            return this.rs.getClob(parameterName);
+            return this.resultSet.getClob(parameterName);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -940,7 +940,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateClob", "updateClob");
 
         try {
-            this.rs.updateClob(columnIndex, clob);
+            this.resultSet.updateClob(columnIndex, clob);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -954,7 +954,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateClob", "updateClob");
 
         try {
-            this.rs.updateClob(columnIndex, reader);
+            this.resultSet.updateClob(columnIndex, reader);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -968,7 +968,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateClob", "updateClob");
 
         try {
-            this.rs.updateClob(columnIndex, reader, length);
+            this.resultSet.updateClob(columnIndex, reader, length);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -982,7 +982,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateClob", "updateClob");
 
         try {
-            this.rs.updateClob(columnLabel, clob);
+            this.resultSet.updateClob(columnLabel, clob);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -996,7 +996,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateClob", "updateClob");
 
         try {
-            this.rs.updateClob(columnLabel, reader);
+            this.resultSet.updateClob(columnLabel, reader);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1010,7 +1010,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateClob", "updateClob");
 
         try {
-            this.rs.updateClob(columnLabel, reader, length);
+            this.resultSet.updateClob(columnLabel, reader, length);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1024,7 +1024,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getDate", "getDate");
 
         try {
-            return this.rs.getDate(parameterIndex);
+            return this.resultSet.getDate(parameterIndex);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1038,7 +1038,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getDate", "getDate");
 
         try {
-            return this.rs.getDate(parameterIndex, cal);
+            return this.resultSet.getDate(parameterIndex, cal);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1052,7 +1052,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getDate", "getDate");
 
         try {
-            return this.rs.getDate(parameterName);
+            return this.resultSet.getDate(parameterName);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1066,7 +1066,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getDate", "getDate");
 
         try {
-            return this.rs.getDate(parameterName, cal);
+            return this.resultSet.getDate(parameterName, cal);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1080,7 +1080,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getDouble", "getDouble");
 
         try {
-            return this.rs.getDouble(parameterIndex);
+            return this.resultSet.getDouble(parameterIndex);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1094,7 +1094,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getDouble", "getDouble");
 
         try {
-            return this.rs.getDouble(parameterName);
+            return this.resultSet.getDouble(parameterName);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1108,7 +1108,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getFloat", "getFloat");
 
         try {
-            return this.rs.getFloat(parameterIndex);
+            return this.resultSet.getFloat(parameterIndex);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1122,7 +1122,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getFloat", "getFloat");
 
         try {
-            return this.rs.getFloat(parameterName);
+            return this.resultSet.getFloat(parameterName);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1136,7 +1136,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getInt", "getInt");
 
         try {
-            return this.rs.getInt(parameterIndex);
+            return this.resultSet.getInt(parameterIndex);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1150,7 +1150,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getInt", "getInt");
 
         try {
-            return this.rs.getInt(parameterName);
+            return this.resultSet.getInt(parameterName);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1164,7 +1164,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getLong", "getLong");
 
         try {
-            return this.rs.getLong(parameterIndex);
+            return this.resultSet.getLong(parameterIndex);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1178,7 +1178,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getLong", "getLong");
 
         try {
-            return this.rs.getLong(parameterName);
+            return this.resultSet.getLong(parameterName);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1192,7 +1192,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getRef", "getRef");
 
         try {
-            return this.rs.getRef(parameterIndex);
+            return this.resultSet.getRef(parameterIndex);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1206,7 +1206,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getRef", "getRef");
 
         try {
-            return this.rs.getRef(parameterName);
+            return this.resultSet.getRef(parameterName);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1220,7 +1220,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getRowId", "getRowId");
 
         try {
-            return this.rs.getRowId(parameterIndex);
+            return this.resultSet.getRowId(parameterIndex);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1234,7 +1234,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getRowId", "getRowId");
 
         try {
-            return this.rs.getRowId(parameterName);
+            return this.resultSet.getRowId(parameterName);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1248,7 +1248,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getShort", "getShort");
 
         try {
-            return this.rs.getShort(parameterIndex);
+            return this.resultSet.getShort(parameterIndex);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1262,7 +1262,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getShort", "getShort");
 
         try {
-            return this.rs.getShort(parameterName);
+            return this.resultSet.getShort(parameterName);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1276,7 +1276,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getString", "getString");
 
         try {
-            return this.rs.getString(parameterIndex);
+            return this.resultSet.getString(parameterIndex);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1290,7 +1290,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getString", "getString");
 
         try {
-            return this.rs.getString(parameterName);
+            return this.resultSet.getString(parameterName);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1304,7 +1304,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getTime", "getTime");
 
         try {
-            return this.rs.getTime(parameterIndex);
+            return this.resultSet.getTime(parameterIndex);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1318,7 +1318,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getTime", "getTime");
 
         try {
-            return this.rs.getTime(parameterIndex, cal);
+            return this.resultSet.getTime(parameterIndex, cal);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1332,7 +1332,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getTime", "getTime");
 
         try {
-            return this.rs.getTime(parameterName);
+            return this.resultSet.getTime(parameterName);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1346,7 +1346,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getTime", "getTime");
 
         try {
-            return this.rs.getTime(parameterName, cal);
+            return this.resultSet.getTime(parameterName, cal);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1360,7 +1360,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getURL", "getURL");
 
         try {
-            return this.rs.getURL(parameterIndex);
+            return this.resultSet.getURL(parameterIndex);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1374,7 +1374,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getURL", "getURL");
 
         try {
-            return this.rs.getURL(parameterName);
+            return this.resultSet.getURL(parameterName);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1388,7 +1388,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.isClosed", "isClosed");
 
         try {
-            return this.rs.isClosed();
+            return this.resultSet.isClosed();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1402,7 +1402,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.isLast", "isLast");
 
         try {
-            return this.rs.isLast();
+            return this.resultSet.isLast();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1416,7 +1416,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.isAfterLast", "isAfterLast");
 
         try {
-            return this.rs.isAfterLast();
+            return this.resultSet.isAfterLast();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1430,7 +1430,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.isFirst", "isFirst");
 
         try {
-            return this.rs.isFirst();
+            return this.resultSet.isFirst();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1444,7 +1444,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getCursorName", "getCursorName");
 
         try {
-            return this.rs.getCursorName();
+            return this.resultSet.getCursorName();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1458,7 +1458,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getBytes", "getBytes");
 
         try {
-            return this.rs.getBytes(columnIndex);
+            return this.resultSet.getBytes(columnIndex);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1472,7 +1472,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getByte", "getByte");
 
         try {
-            return this.rs.getByte(columnIndex);
+            return this.resultSet.getByte(columnIndex);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1486,7 +1486,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getByte", "getByte");
 
         try {
-            return this.rs.getByte(columnLabel);
+            return this.resultSet.getByte(columnLabel);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1500,7 +1500,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getBytes", "getBytes");
 
         try {
-            return this.rs.getBytes(columnLabel);
+            return this.resultSet.getBytes(columnLabel);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1514,7 +1514,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getBinaryStream", "getBinaryStream");
 
         try {
-            return this.rs.getBinaryStream(columnIndex);
+            return this.resultSet.getBinaryStream(columnIndex);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1528,7 +1528,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getBinaryStream", "getBinaryStream");
 
         try {
-            return this.rs.getBinaryStream(columnLabel);
+            return this.resultSet.getBinaryStream(columnLabel);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1542,7 +1542,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getAsciiStream", "getAsciiStream");
 
         try {
-            return this.rs.getAsciiStream(columnIndex);
+            return this.resultSet.getAsciiStream(columnIndex);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1556,7 +1556,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getAsciiStream", "getAsciiStream");
 
         try {
-            return this.rs.getAsciiStream(columnLabel);
+            return this.resultSet.getAsciiStream(columnLabel);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1570,7 +1570,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getUnicodeStream", "getUnicodeBinaryStream");
 
         try {
-            return this.rs.getUnicodeStream(columnIndex);
+            return this.resultSet.getUnicodeStream(columnIndex);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1584,7 +1584,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getUnicodeStream", "getUnicodeBinaryStream");
 
         try {
-            return this.rs.getUnicodeStream(columnLabel);
+            return this.resultSet.getUnicodeStream(columnLabel);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1598,7 +1598,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.isBeforeFirst", "isBeforeFirst");
 
         try {
-            return this.rs.isBeforeFirst();
+            return this.resultSet.isBeforeFirst();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1612,7 +1612,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.setFetchDirection", "setFetchDirection");
 
         try {
-            this.rs.setFetchDirection(direction);
+            this.resultSet.setFetchDirection(direction);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1626,7 +1626,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.setFetchSize", "setFetchSize");
 
         try {
-            this.rs.setFetchSize(rows);
+            this.resultSet.setFetchSize(rows);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1637,12 +1637,12 @@ public class OcWrapResultSet implements java.sql.ResultSet {
 
     @Override
     public boolean isWrapperFor(Class<?> iface) throws SQLException {
-        return this.rs.isWrapperFor(iface);
+        return this.resultSet.isWrapperFor(iface);
     }
 
     @Override
     public <T> T unwrap(Class<T> iface) throws SQLException {
-        return this.rs.unwrap(iface);
+        return this.resultSet.unwrap(iface);
     }
 
     @Override
@@ -1650,7 +1650,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getObject", "getObject");
 
         try {
-            return this.rs.getObject(parameterIndex);
+            return this.resultSet.getObject(parameterIndex);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1664,7 +1664,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getObject", "getObject");
 
         try {
-            return this.rs.getObject(parameterIndex, type);
+            return this.resultSet.getObject(parameterIndex, type);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1678,7 +1678,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getObject", "getObject");
 
         try {
-            return this.rs.getObject(parameterIndex, map);
+            return this.resultSet.getObject(parameterIndex, map);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1692,7 +1692,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getObject", "getObject");
 
         try {
-            return this.rs.getObject(parameterName);
+            return this.resultSet.getObject(parameterName);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1706,7 +1706,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getObject", "getObject");
 
         try {
-            return this.rs.getObject(parameterName, type);
+            return this.resultSet.getObject(parameterName, type);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1720,7 +1720,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getObject", "getObject");
 
         try {
-            return this.rs.getObject(parameterName, map);
+            return this.resultSet.getObject(parameterName, map);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1734,7 +1734,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getSQLXML", "getSQLXML");
 
         try {
-            return this.rs.getSQLXML(parameterIndex);
+            return this.resultSet.getSQLXML(parameterIndex);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1748,7 +1748,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getSQLXML", "getSQLXML");
 
         try {
-            return this.rs.getSQLXML(parameterName);
+            return this.resultSet.getSQLXML(parameterName);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1762,7 +1762,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getNString", "getNString");
 
         try {
-            return this.rs.getNString(parameterIndex);
+            return this.resultSet.getNString(parameterIndex);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1776,7 +1776,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getNString", "getNString");
 
         try {
-            return this.rs.getNString(parameterName);
+            return this.resultSet.getNString(parameterName);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1790,7 +1790,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getNCharacterStream", "getNCharacterStream");
 
         try {
-            return this.rs.getNCharacterStream(parameterIndex);
+            return this.resultSet.getNCharacterStream(parameterIndex);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1804,7 +1804,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getNCharacterStream", "getNCharacterStream");
 
         try {
-            return this.rs.getNCharacterStream(parameterName);
+            return this.resultSet.getNCharacterStream(parameterName);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1818,7 +1818,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getCharacterStream", "getCharacterStream");
 
         try {
-            return this.rs.getCharacterStream(parameterIndex);
+            return this.resultSet.getCharacterStream(parameterIndex);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1832,7 +1832,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getCharacterStream", "getCharacterStream");
 
         try {
-            return this.rs.getCharacterStream(parameterName);
+            return this.resultSet.getCharacterStream(parameterName);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1846,7 +1846,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateCharacterStream", "updateCharacterStream");
 
         try {
-            this.rs.updateCharacterStream(parameterIndex, x);
+            this.resultSet.updateCharacterStream(parameterIndex, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1860,7 +1860,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateCharacterStream", "updateCharacterStream");
 
         try {
-            this.rs.updateCharacterStream(parameterIndex, x, length);
+            this.resultSet.updateCharacterStream(parameterIndex, x, length);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1874,7 +1874,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateCharacterStream", "updateCharacterStream");
 
         try {
-            this.rs.updateCharacterStream(parameterIndex, x, length);
+            this.resultSet.updateCharacterStream(parameterIndex, x, length);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1888,7 +1888,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateCharacterStream", "updateCharacterStream");
 
         try {
-            this.rs.updateCharacterStream(parameterName, x);
+            this.resultSet.updateCharacterStream(parameterName, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1902,7 +1902,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateCharacterStream", "updateCharacterStream");
 
         try {
-            this.rs.updateCharacterStream(parameterName, x, length);
+            this.resultSet.updateCharacterStream(parameterName, x, length);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1916,7 +1916,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateCharacterStream", "updateCharacterStream");
 
         try {
-            this.rs.updateCharacterStream(parameterName, x, length);
+            this.resultSet.updateCharacterStream(parameterName, x, length);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1930,7 +1930,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateBinaryStream", "updateBinaryStream");
 
         try {
-            this.rs.updateBinaryStream(columnIndex, x);
+            this.resultSet.updateBinaryStream(columnIndex, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1944,7 +1944,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateBinaryStream", "updateBinaryStream");
 
         try {
-            this.rs.updateBinaryStream(columnIndex, x, length);
+            this.resultSet.updateBinaryStream(columnIndex, x, length);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1958,7 +1958,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateBinaryStream", "updateBinaryStream");
 
         try {
-            this.rs.updateBinaryStream(columnIndex, x, length);
+            this.resultSet.updateBinaryStream(columnIndex, x, length);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1972,7 +1972,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateBinaryStream", "updateBinaryStream");
 
         try {
-            this.rs.updateBinaryStream(columnLabel, x);
+            this.resultSet.updateBinaryStream(columnLabel, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1986,7 +1986,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateBinaryStream", "updateBinaryStream");
 
         try {
-            this.rs.updateBinaryStream(columnLabel, x, length);
+            this.resultSet.updateBinaryStream(columnLabel, x, length);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2000,7 +2000,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateBinaryStream", "updateBinaryStream");
 
         try {
-            this.rs.updateBinaryStream(columnLabel, x, length);
+            this.resultSet.updateBinaryStream(columnLabel, x, length);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2014,7 +2014,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateAsciiStream", "updateAsciiStream");
 
         try {
-            this.rs.updateAsciiStream(columnIndex, x);
+            this.resultSet.updateAsciiStream(columnIndex, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2028,7 +2028,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateAsciiStream", "updateAsciiStream");
 
         try {
-            this.rs.updateAsciiStream(columnIndex, x, length);
+            this.resultSet.updateAsciiStream(columnIndex, x, length);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2042,7 +2042,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateAsciiStream", "updateAsciiStream");
 
         try {
-            this.rs.updateAsciiStream(columnIndex, x, length);
+            this.resultSet.updateAsciiStream(columnIndex, x, length);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2056,7 +2056,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateAsciiStream", "updateAsciiStream");
 
         try {
-            this.rs.updateAsciiStream(columnLabel, x);
+            this.resultSet.updateAsciiStream(columnLabel, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2070,7 +2070,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateAsciiStream", "updateAsciiStream");
 
         try {
-            this.rs.updateAsciiStream(columnLabel, x, length);
+            this.resultSet.updateAsciiStream(columnLabel, x, length);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2084,7 +2084,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateAsciiStream", "updateAsciiStream");
 
         try {
-            this.rs.updateAsciiStream(columnLabel, x, length);
+            this.resultSet.updateAsciiStream(columnLabel, x, length);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2098,7 +2098,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateNCharacterStream", "updateNCharacterStream");
 
         try {
-            this.rs.updateNCharacterStream(columnIndex, x);
+            this.resultSet.updateNCharacterStream(columnIndex, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2112,7 +2112,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateNCharacterStream", "updateNCharacterStream");
 
         try {
-            this.rs.updateNCharacterStream(columnIndex, x, length);
+            this.resultSet.updateNCharacterStream(columnIndex, x, length);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2126,7 +2126,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateNCharacterStream", "updateNCharacterStream");
 
         try {
-            this.rs.updateNCharacterStream(columnLabel, x);
+            this.resultSet.updateNCharacterStream(columnLabel, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2140,7 +2140,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateNCharacterStream", "updateNCharacterStream");
 
         try {
-            this.rs.updateNCharacterStream(columnLabel, x, length);
+            this.resultSet.updateNCharacterStream(columnLabel, x, length);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2154,7 +2154,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getNClob", "getNClob");
 
         try {
-            return this.rs.getNClob(parameterIndex);
+            return this.resultSet.getNClob(parameterIndex);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2168,7 +2168,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateSQLXML", "updateSQLXML");
 
         try {
-            this.rs.updateSQLXML(columnIndex, xmlObject);
+            this.resultSet.updateSQLXML(columnIndex, xmlObject);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2182,7 +2182,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateSQLXML", "updateSQLXML");
 
         try {
-            this.rs.updateSQLXML(columnName, xmlObject);
+            this.resultSet.updateSQLXML(columnName, xmlObject);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2196,7 +2196,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateNString", "updateNString");
 
         try {
-            this.rs.updateNString(columnLabel, nString);
+            this.resultSet.updateNString(columnLabel, nString);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2210,7 +2210,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateNString", "updateNString");
 
         try {
-            this.rs.updateNString(columnIndex, nString);
+            this.resultSet.updateNString(columnIndex, nString);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2224,7 +2224,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getHoldability", "getHoldability");
 
         try {
-            return this.rs.getHoldability();
+            return this.resultSet.getHoldability();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2238,7 +2238,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateRow", "updateRow");
 
         try {
-            this.rs.updateRow();
+            this.resultSet.updateRow();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2252,7 +2252,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateRowId", "updateRowId");
 
         try {
-            this.rs.updateRowId(columnIndex, x);
+            this.resultSet.updateRowId(columnIndex, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2266,7 +2266,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateRowId", "updateRowId");
 
         try {
-            this.rs.updateRowId(columnLabel, x);
+            this.resultSet.updateRowId(columnLabel, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2280,7 +2280,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateArray", "updateArray");
 
         try {
-            this.rs.updateArray(columnIndex, x);
+            this.resultSet.updateArray(columnIndex, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2294,7 +2294,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateArray", "updateArray");
 
         try {
-            this.rs.updateArray(columnLabel, x);
+            this.resultSet.updateArray(columnLabel, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2308,7 +2308,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateRef", "updateRef");
 
         try {
-            this.rs.updateRef(columnIndex, x);
+            this.resultSet.updateRef(columnIndex, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2322,7 +2322,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateRef", "updateRef");
 
         try {
-            this.rs.updateRef(columnLabel, x);
+            this.resultSet.updateRef(columnLabel, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2336,7 +2336,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getTimestamp", "getTimestamp");
 
         try {
-            return this.rs.getTimestamp(parameterIndex);
+            return this.resultSet.getTimestamp(parameterIndex);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2350,7 +2350,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getTimestamp", "getTimestamp");
 
         try {
-            return this.rs.getTimestamp(parameterIndex, cal);
+            return this.resultSet.getTimestamp(parameterIndex, cal);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2364,7 +2364,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getTimestamp", "getTimestamp");
 
         try {
-            return this.rs.getTimestamp(parameterName);
+            return this.resultSet.getTimestamp(parameterName);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2378,7 +2378,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getTimestamp", "getTimestamp");
 
         try {
-            return this.rs.getTimestamp(parameterName, cal);
+            return this.resultSet.getTimestamp(parameterName, cal);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2392,7 +2392,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.moveToCurrentRow", "moveToCurrentRow");
 
         try {
-            this.rs.moveToCurrentRow();
+            this.resultSet.moveToCurrentRow();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2406,7 +2406,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.moveToInsertRow", "moveToInsertRow");
 
         try {
-            this.rs.moveToInsertRow();
+            this.resultSet.moveToInsertRow();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2420,7 +2420,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.last", "last");
 
         try {
-            return this.rs.last();
+            return this.resultSet.last();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2434,7 +2434,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.afterLast", "afterLast");
 
         try {
-            this.rs.afterLast();
+            this.resultSet.afterLast();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2448,7 +2448,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.beforeFirst", "beforeFirst");
 
         try {
-            this.rs.beforeFirst();
+            this.resultSet.beforeFirst();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2462,7 +2462,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.next", "next");
 
         try {
-            return this.rs.next();
+            return this.resultSet.next();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2477,7 +2477,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.previous", "previous");
 
         try {
-            return this.rs.previous();
+            return this.resultSet.previous();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2491,7 +2491,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.absolute", "absolute");
 
         try {
-            return this.rs.absolute(rows);
+            return this.resultSet.absolute(rows);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2505,7 +2505,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getRow", "getRow");
 
         try {
-            return this.rs.getRow();
+            return this.resultSet.getRow();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2520,7 +2520,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.relative", "relative");
 
         try {
-            return this.rs.relative(rows);
+            return this.resultSet.relative(rows);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2534,7 +2534,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.cancelRowUpdates", "cancelRowUpdates");
 
         try {
-            this.rs.cancelRowUpdates();
+            this.resultSet.cancelRowUpdates();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2548,7 +2548,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.refreshRow", "refreshRow");
 
         try {
-            this.rs.refreshRow();
+            this.resultSet.refreshRow();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2562,7 +2562,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getStatement", "getStatement");
 
         try {
-            return this.rs.getStatement();
+            return this.resultSet.getStatement();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2575,7 +2575,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getNClob", "getNClob");
 
         try {
-            return this.rs.getNClob(parameterName);
+            return this.resultSet.getNClob(parameterName);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2589,7 +2589,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateNClob", "updateNClob");
 
         try {
-            this.rs.updateNClob(columnIndex, nclob);
+            this.resultSet.updateNClob(columnIndex, nclob);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2603,7 +2603,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateNClob", "updateNClob");
 
         try {
-            this.rs.updateNClob(columnIndex, reader);
+            this.resultSet.updateNClob(columnIndex, reader);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2617,7 +2617,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateNClob", "updateNClob");
 
         try {
-            this.rs.updateNClob(columnIndex, reader, length);
+            this.resultSet.updateNClob(columnIndex, reader, length);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2630,7 +2630,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateNClob", "updateNClob");
 
         try {
-            this.rs.updateNClob(columnLabel, nclob);
+            this.resultSet.updateNClob(columnLabel, nclob);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2644,7 +2644,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateNClob", "updateNClob");
 
         try {
-            this.rs.updateNClob(columnLabel, reader);
+            this.resultSet.updateNClob(columnLabel, reader);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2658,7 +2658,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateNClob", "updateNClob");
 
         try {
-            this.rs.updateNClob(columnLabel, reader, length);
+            this.resultSet.updateNClob(columnLabel, reader, length);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2673,7 +2673,7 @@ public class OcWrapResultSet implements java.sql.ResultSet {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.ResultSet.wasNull", "wasNull");
 
         try {
-            return this.rs.wasNull();
+            return this.resultSet.wasNull();
         } catch (Exception e) {
             span.recordException(e);
             throw e;

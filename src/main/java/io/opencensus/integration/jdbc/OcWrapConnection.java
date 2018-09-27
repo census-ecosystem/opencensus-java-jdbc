@@ -24,12 +24,12 @@ import java.util.concurrent.Executor;
  * each of its methods with tracing and metrixs using OpenCensus
  */
 public class OcWrapConnection implements java.sql.Connection {
-    private java.sql.Connection conn;
-    private boolean shouldAnnotateSpansWithSQL;
+    private final java.sql.Connection connection;
+    private final boolean shouldAnnotateSpansWithSQL;
     private Observability.TraceOption[] startOptions;
 
-    public OcWrapConnection(java.sql.Connection conn, Observability.TraceOption ...opts) {
-        this.conn = conn;
+    public OcWrapConnection(java.sql.Connection connection, Observability.TraceOption ...opts) {
+        this.connection = connection;
         this.shouldAnnotateSpansWithSQL = Observability.shouldAnnotateSpansWithSQL(opts);
         this.startOptions = opts;
     }
@@ -39,7 +39,7 @@ public class OcWrapConnection implements java.sql.Connection {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Connection.abort", "abort");
 
         try {
-            this.conn.abort(executor);
+            this.connection.abort(executor);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -53,7 +53,7 @@ public class OcWrapConnection implements java.sql.Connection {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Connection.clearWarnings", "clearWarnings");
 
         try {
-            this.conn.clearWarnings();
+            this.connection.clearWarnings();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -67,7 +67,7 @@ public class OcWrapConnection implements java.sql.Connection {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Connection.close", "close");
 
         try {
-            this.conn.close();
+            this.connection.close();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -81,7 +81,7 @@ public class OcWrapConnection implements java.sql.Connection {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Connection.commit", "commit");
 
         try {
-            this.conn.commit();
+            this.connection.commit();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -95,7 +95,7 @@ public class OcWrapConnection implements java.sql.Connection {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Connection.createArrayOf", "createArrayOf");
 
         try {
-            return this.conn.createArrayOf(typeName, elements);
+            return this.connection.createArrayOf(typeName, elements);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -109,7 +109,7 @@ public class OcWrapConnection implements java.sql.Connection {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Connection.createBlob", "createBlob");
 
         try {
-            return this.conn.createBlob();
+            return this.connection.createBlob();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -123,7 +123,7 @@ public class OcWrapConnection implements java.sql.Connection {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Connection.createClob", "createClob");
 
         try {
-            return this.conn.createClob();
+            return this.connection.createClob();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -137,7 +137,7 @@ public class OcWrapConnection implements java.sql.Connection {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Connection.createNClob", "createNClob");
 
         try {
-            return this.conn.createNClob();
+            return this.connection.createNClob();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -151,7 +151,7 @@ public class OcWrapConnection implements java.sql.Connection {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Connection.createSQLXML", "createSQLXML");
 
         try {
-            return this.conn.createSQLXML();
+            return this.connection.createSQLXML();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -165,7 +165,7 @@ public class OcWrapConnection implements java.sql.Connection {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Connection.createStatement", "createStatement");
 
         try {
-            java.sql.Statement stmt = this.conn.createStatement();
+            java.sql.Statement stmt = this.connection.createStatement();
             return new OcWrapStatement(stmt, this.startOptions);
         } catch (Exception e) {
             span.recordException(e);
@@ -180,7 +180,7 @@ public class OcWrapConnection implements java.sql.Connection {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Connection.createStatement", "createStatement");
 
         try {
-            java.sql.Statement stmt = this.conn.createStatement(resultSetType, resultSetConcurrency);
+            java.sql.Statement stmt = this.connection.createStatement(resultSetType, resultSetConcurrency);
             return new OcWrapStatement(stmt, this.startOptions);
         } catch (Exception e) {
             span.recordException(e);
@@ -195,7 +195,7 @@ public class OcWrapConnection implements java.sql.Connection {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Connection.createStatement", "createStatement");
 
         try {
-            java.sql.Statement stmt = this.conn.createStatement(resultSetType, resultSetConcurrency, resultSetHoldability);
+            java.sql.Statement stmt = this.connection.createStatement(resultSetType, resultSetConcurrency, resultSetHoldability);
             return new OcWrapStatement(stmt, this.startOptions);
         } catch (Exception e) {
             span.recordException(e);
@@ -210,7 +210,7 @@ public class OcWrapConnection implements java.sql.Connection {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Connection.createStruct", "createStruct");
 
         try {
-            return this.conn.createStruct(typeName, attributes);
+            return this.connection.createStruct(typeName, attributes);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -224,7 +224,7 @@ public class OcWrapConnection implements java.sql.Connection {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Connection.getAutoCommit", "getAutoCommit");
 
         try {
-            return this.conn.getAutoCommit();
+            return this.connection.getAutoCommit();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -238,7 +238,7 @@ public class OcWrapConnection implements java.sql.Connection {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Connection.getCatalog", "getCatalog");
 
         try {
-            return this.conn.getCatalog();
+            return this.connection.getCatalog();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -252,7 +252,7 @@ public class OcWrapConnection implements java.sql.Connection {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Connection.getClientInfo", "getClientInfo");
 
         try {
-            return this.conn.getClientInfo();
+            return this.connection.getClientInfo();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -266,7 +266,7 @@ public class OcWrapConnection implements java.sql.Connection {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Connection.getClientInfo", "getClientInfo");
 
         try {
-            return this.conn.getClientInfo(name);
+            return this.connection.getClientInfo(name);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -280,7 +280,7 @@ public class OcWrapConnection implements java.sql.Connection {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Connection.getHoldability", "getHoldability");
 
         try {
-            return this.conn.getHoldability();
+            return this.connection.getHoldability();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -294,7 +294,7 @@ public class OcWrapConnection implements java.sql.Connection {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Connection.getMetaData", "getMetaData");
 
         try {
-            return this.conn.getMetaData();
+            return this.connection.getMetaData();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -308,7 +308,7 @@ public class OcWrapConnection implements java.sql.Connection {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Connection.getNetworkTimeout", "getNetworkTimeout");
 
         try {
-            return this.conn.getNetworkTimeout();
+            return this.connection.getNetworkTimeout();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -322,7 +322,7 @@ public class OcWrapConnection implements java.sql.Connection {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Connection.getSchema", "getSchema");
 
         try {
-            return this.conn.getSchema();
+            return this.connection.getSchema();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -336,7 +336,7 @@ public class OcWrapConnection implements java.sql.Connection {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Connection.getTransactionIsolation", "getTransactionIsolation");
 
         try {
-            return this.conn.getTransactionIsolation();
+            return this.connection.getTransactionIsolation();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -350,7 +350,7 @@ public class OcWrapConnection implements java.sql.Connection {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Connection.getTypeMap", "getTypeMap");
 
         try {
-            return this.conn.getTypeMap();
+            return this.connection.getTypeMap();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -364,7 +364,7 @@ public class OcWrapConnection implements java.sql.Connection {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Connection.getWarnings", "getWarnings");
 
         try {
-            return this.conn.getWarnings();
+            return this.connection.getWarnings();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -378,7 +378,7 @@ public class OcWrapConnection implements java.sql.Connection {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Connection.isClosed", "isClosed");
 
         try {
-            return this.conn.isClosed();
+            return this.connection.isClosed();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -392,7 +392,7 @@ public class OcWrapConnection implements java.sql.Connection {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Connection.isReadOnly", "isReadOnly");
 
         try {
-            return this.conn.isReadOnly();
+            return this.connection.isReadOnly();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -406,7 +406,7 @@ public class OcWrapConnection implements java.sql.Connection {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Connection.isValid", "isValid");
 
         try {
-            return this.conn.isValid(timeout);
+            return this.connection.isValid(timeout);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -423,7 +423,7 @@ public class OcWrapConnection implements java.sql.Connection {
                                                                                              SQL);
 
         try {
-            return this.conn.nativeSQL(SQL);
+            return this.connection.nativeSQL(SQL);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -440,7 +440,7 @@ public class OcWrapConnection implements java.sql.Connection {
                                                                                              SQL);
 
         try {
-            java.sql.CallableStatement cstmt = this.conn.prepareCall(SQL);
+            java.sql.CallableStatement cstmt = this.connection.prepareCall(SQL);
             return new OcWrapCallableStatement(cstmt, this.startOptions);
         } catch (Exception e) {
             span.recordException(e);
@@ -458,7 +458,7 @@ public class OcWrapConnection implements java.sql.Connection {
                                                                                              SQL);
 
         try {
-            java.sql.CallableStatement cstmt = this.conn.prepareCall(SQL, resultSetType, resultSetConcurrency);
+            java.sql.CallableStatement cstmt = this.connection.prepareCall(SQL, resultSetType, resultSetConcurrency);
             return new OcWrapCallableStatement(cstmt, this.startOptions);
         } catch (Exception e) {
             span.recordException(e);
@@ -476,7 +476,7 @@ public class OcWrapConnection implements java.sql.Connection {
                                                                                              SQL);
 
         try {
-            java.sql.CallableStatement cstmt = this.conn.prepareCall(SQL, resultSetType, resultSetConcurrency, resultSetHoldability);
+            java.sql.CallableStatement cstmt = this.connection.prepareCall(SQL, resultSetType, resultSetConcurrency, resultSetHoldability);
             return new OcWrapCallableStatement(cstmt, this.startOptions);
         } catch (Exception e) {
             span.recordException(e);
@@ -496,7 +496,7 @@ public class OcWrapConnection implements java.sql.Connection {
                                                                                              SQL);
 
         try {
-            java.sql.PreparedStatement pstmt = this.conn.prepareStatement(SQL);
+            java.sql.PreparedStatement pstmt = this.connection.prepareStatement(SQL);
             return new OcWrapPreparedStatement(pstmt, this.startOptions);
         } catch (Exception e) {
             span.recordException(e);
@@ -514,7 +514,7 @@ public class OcWrapConnection implements java.sql.Connection {
                                                                                              SQL);
 
         try {
-            java.sql.PreparedStatement pstmt = this.conn.prepareStatement(SQL, autoGeneratedKeys);
+            java.sql.PreparedStatement pstmt = this.connection.prepareStatement(SQL, autoGeneratedKeys);
             return new OcWrapPreparedStatement(pstmt, this.startOptions);
         } catch (Exception e) {
             span.recordException(e);
@@ -532,7 +532,7 @@ public class OcWrapConnection implements java.sql.Connection {
                                                                                              SQL);
 
         try {
-            java.sql.PreparedStatement pstmt = this.conn.prepareStatement(SQL, columnIndices);
+            java.sql.PreparedStatement pstmt = this.connection.prepareStatement(SQL, columnIndices);
             return new OcWrapPreparedStatement(pstmt, this.startOptions);
         } catch (Exception e) {
             span.recordException(e);
@@ -550,7 +550,7 @@ public class OcWrapConnection implements java.sql.Connection {
                                                                                              SQL);
 
         try {
-            java.sql.PreparedStatement pstmt = this.conn.prepareStatement(SQL, columnNames);
+            java.sql.PreparedStatement pstmt = this.connection.prepareStatement(SQL, columnNames);
             return new OcWrapPreparedStatement(pstmt, this.startOptions);
         } catch (Exception e) {
             span.recordException(e);
@@ -568,7 +568,7 @@ public class OcWrapConnection implements java.sql.Connection {
                                                                                              SQL);
 
         try {
-            java.sql.PreparedStatement pstmt = this.conn.prepareStatement(SQL, resultSetType, resultSetConcurrency);
+            java.sql.PreparedStatement pstmt = this.connection.prepareStatement(SQL, resultSetType, resultSetConcurrency);
             return new OcWrapPreparedStatement(pstmt, this.startOptions);
         } catch (Exception e) {
             span.recordException(e);
@@ -586,7 +586,7 @@ public class OcWrapConnection implements java.sql.Connection {
                                                                                              SQL);
 
         try {
-            java.sql.PreparedStatement pstmt = this.conn.prepareStatement(SQL, resultSetType, resultSetConcurrency, resultSetHoldability);
+            java.sql.PreparedStatement pstmt = this.connection.prepareStatement(SQL, resultSetType, resultSetConcurrency, resultSetHoldability);
             return new OcWrapPreparedStatement(pstmt, this.startOptions);
         } catch (Exception e) {
             span.recordException(e);
@@ -601,7 +601,7 @@ public class OcWrapConnection implements java.sql.Connection {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Connection.releaseSavepoint", "releaseSavepoint");
 
         try {
-            this.conn.releaseSavepoint(savepoint);
+            this.connection.releaseSavepoint(savepoint);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -615,7 +615,7 @@ public class OcWrapConnection implements java.sql.Connection {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Connection.rollback", "rollback");
 
         try {
-            this.conn.rollback();
+            this.connection.rollback();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -629,7 +629,7 @@ public class OcWrapConnection implements java.sql.Connection {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Connection.rollback", "rollback");
 
         try {
-            this.conn.rollback(savepoint);
+            this.connection.rollback(savepoint);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -643,7 +643,7 @@ public class OcWrapConnection implements java.sql.Connection {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Connection.setAutoCommit", "setAutoCommit");
 
         try {
-            this.conn.setAutoCommit(autoCommit);
+            this.connection.setAutoCommit(autoCommit);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -657,7 +657,7 @@ public class OcWrapConnection implements java.sql.Connection {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Connection.setCatalog", "setCatalog");
 
         try {
-            this.conn.setCatalog(catalog);
+            this.connection.setCatalog(catalog);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -671,7 +671,7 @@ public class OcWrapConnection implements java.sql.Connection {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Connection.setClientInfo", "setClientInfo");
 
         try {
-            this.conn.setClientInfo(properties);
+            this.connection.setClientInfo(properties);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -685,7 +685,7 @@ public class OcWrapConnection implements java.sql.Connection {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Connection.setClientInfo", "setClientInfo");
 
         try {
-            this.conn.setClientInfo(name, value);
+            this.connection.setClientInfo(name, value);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -699,7 +699,7 @@ public class OcWrapConnection implements java.sql.Connection {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Connection.setHoldability", "setHoldability");
 
         try {
-            this.conn.setHoldability(holdability);
+            this.connection.setHoldability(holdability);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -713,7 +713,7 @@ public class OcWrapConnection implements java.sql.Connection {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Connection.setNetowrkTimeout", "setNetowrkTimeout");
 
         try {
-            this.conn.setNetworkTimeout(executor, milliseconds);
+            this.connection.setNetworkTimeout(executor, milliseconds);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -727,7 +727,7 @@ public class OcWrapConnection implements java.sql.Connection {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Connection.setReadOnly", "setReadOnly");
 
         try {
-            this.conn.setReadOnly(readOnly);
+            this.connection.setReadOnly(readOnly);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -741,7 +741,7 @@ public class OcWrapConnection implements java.sql.Connection {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Connection.setSavepoint", "setSavepoint");
 
         try {
-            return this.conn.setSavepoint();
+            return this.connection.setSavepoint();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -755,7 +755,7 @@ public class OcWrapConnection implements java.sql.Connection {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Connection.setSavepoint", "setSavepoint");
 
         try {
-            return this.conn.setSavepoint(name);
+            return this.connection.setSavepoint(name);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -769,7 +769,7 @@ public class OcWrapConnection implements java.sql.Connection {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Connection.setSavepoint", "setSavepoint");
 
         try {
-            this.conn.setSchema(schema);
+            this.connection.setSchema(schema);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -783,7 +783,7 @@ public class OcWrapConnection implements java.sql.Connection {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Connection.setTransactionIsolation", "setTransactionIsolation");
 
         try {
-            this.conn.setTransactionIsolation(level);
+            this.connection.setTransactionIsolation(level);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -797,7 +797,7 @@ public class OcWrapConnection implements java.sql.Connection {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.Connection.setTypeMap", "setTypeMap");
 
         try {
-            this.conn.setTypeMap(map);
+            this.connection.setTypeMap(map);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -808,11 +808,11 @@ public class OcWrapConnection implements java.sql.Connection {
 
     @Override
     public boolean isWrapperFor(Class<?> iface) throws SQLException {
-        return this.conn.isWrapperFor(iface);
+        return this.connection.isWrapperFor(iface);
     }
 
     @Override
     public <T> T unwrap(Class<T> iface) throws SQLException {
-        return this.conn.unwrap(iface);
+        return this.connection.unwrap(iface);
     }
 }

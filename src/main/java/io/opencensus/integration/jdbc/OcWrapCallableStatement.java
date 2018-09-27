@@ -19,12 +19,12 @@ import java.sql.SQLException;
 import io.opencensus.integration.jdbc.Observability;
 
 public class OcWrapCallableStatement implements java.sql.CallableStatement {
-    private java.sql.CallableStatement cstmt;
-    private boolean shouldAnnotateSpansWithSQL;
-    private Observability.TraceOption[] startOptions;
+    private final java.sql.CallableStatement callableStatement;
+    private final boolean shouldAnnotateSpansWithSQL;
+    private final Observability.TraceOption[] startOptions;
 
-    public OcWrapCallableStatement(java.sql.CallableStatement cstmt, Observability.TraceOption ...opts) throws SQLException {
-        this.cstmt = cstmt;
+    public OcWrapCallableStatement(java.sql.CallableStatement callableStatement, Observability.TraceOption ...opts) throws SQLException {
+        this.callableStatement = callableStatement;
         this.shouldAnnotateSpansWithSQL = Observability.shouldAnnotateSpansWithSQL(opts);
         this.startOptions = opts;
     }
@@ -34,7 +34,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.addBatch", "addBatch");
 
         try {
-            this.cstmt.addBatch();
+            this.callableStatement.addBatch();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -51,7 +51,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
                                                                                              SQL);
 
         try {
-            this.cstmt.addBatch(SQL);
+            this.callableStatement.addBatch(SQL);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -65,7 +65,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.cancel", "cancel");
 
         try {
-            this.cstmt.cancel();
+            this.callableStatement.cancel();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -79,7 +79,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.createBatch", "createBatch");
 
         try {
-            this.cstmt.clearBatch();
+            this.callableStatement.clearBatch();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -93,7 +93,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.clearWarnings", "clearWarnings");
 
         try {
-            this.cstmt.clearWarnings();
+            this.callableStatement.clearWarnings();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -108,7 +108,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.clearParameters", "clearParameters");
 
         try {
-            this.cstmt.clearParameters();
+            this.callableStatement.clearParameters();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -122,7 +122,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.close", "close");
 
         try {
-            this.cstmt.close();
+            this.callableStatement.close();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -136,7 +136,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.closeOnCompletion", "closeOnCompletion");
 
         try {
-            this.cstmt.closeOnCompletion();
+            this.callableStatement.closeOnCompletion();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -150,7 +150,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.execute", "execute");
 
         try {
-            return this.cstmt.execute();
+            return this.callableStatement.execute();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -167,7 +167,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
                                                                                              SQL);
 
         try {
-            return this.cstmt.execute(SQL);
+            return this.callableStatement.execute(SQL);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -184,7 +184,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
                                                                                              SQL);
 
         try {
-            return this.cstmt.execute(SQL, columnNames);
+            return this.callableStatement.execute(SQL, columnNames);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -201,7 +201,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
                                                                                              SQL);
 
         try {
-            return this.cstmt.execute(SQL, columnIndices);
+            return this.callableStatement.execute(SQL, columnIndices);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -218,7 +218,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
                                                                                              SQL);
 
         try {
-            return this.cstmt.execute(SQL, autoGeneratedKeys);
+            return this.callableStatement.execute(SQL, autoGeneratedKeys);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -232,7 +232,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.executeBatch", "executeBatch");
 
         try {
-            return this.cstmt.executeBatch();
+            return this.callableStatement.executeBatch();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -249,7 +249,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
                                                                                              SQL);
 
         try {
-            java.sql.ResultSet rs = this.cstmt.executeQuery(SQL);
+            java.sql.ResultSet rs = this.callableStatement.executeQuery(SQL);
             return new OcWrapResultSet(rs);
         } catch (Exception e) {
             span.recordException(e);
@@ -267,7 +267,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
                                                                                              SQL);
 
         try {
-            return this.cstmt.executeUpdate(SQL);
+            return this.callableStatement.executeUpdate(SQL);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -284,7 +284,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
                                                                                              SQL);
 
         try {
-            return this.cstmt.executeUpdate(SQL, autoGeneratedKeys);
+            return this.callableStatement.executeUpdate(SQL, autoGeneratedKeys);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -301,7 +301,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
                                                                                              SQL);
 
         try {
-            return this.cstmt.executeUpdate(SQL, columnIndices);
+            return this.callableStatement.executeUpdate(SQL, columnIndices);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -318,7 +318,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
                                                                                              SQL);
 
         try {
-            return this.cstmt.executeUpdate(SQL, columnNames);
+            return this.callableStatement.executeUpdate(SQL, columnNames);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -332,7 +332,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.executeQuery", "executeQuery");
 
         try {
-            java.sql.ResultSet rs = this.cstmt.executeQuery();
+            java.sql.ResultSet rs = this.callableStatement.executeQuery();
             return new OcWrapResultSet(rs);
         } catch (Exception e) {
             span.recordException(e);
@@ -347,7 +347,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.executeUpdate", "executeUpdate");
 
         try {
-            return this.cstmt.executeUpdate();
+            return this.callableStatement.executeUpdate();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -361,7 +361,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getFetchDirection", "getFetchDirection");
 
         try {
-            return this.cstmt.getFetchDirection();
+            return this.callableStatement.getFetchDirection();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -375,7 +375,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getFetchSize", "getFetchSize");
 
         try {
-            return this.cstmt.getFetchSize();
+            return this.callableStatement.getFetchSize();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -389,7 +389,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getGeneratedKeys", "getGeneratedKeys");
 
         try {
-            java.sql.ResultSet rs = this.cstmt.getGeneratedKeys();
+            java.sql.ResultSet rs = this.callableStatement.getGeneratedKeys();
             return new OcWrapResultSet(rs);
         } catch (Exception e) {
             span.recordException(e);
@@ -404,7 +404,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getMaxFieldSize", "getMaxFieldSize");
 
         try {
-            return this.cstmt.getMaxFieldSize();
+            return this.callableStatement.getMaxFieldSize();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -418,7 +418,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getMaxRows", "getMaxRows");
 
         try {
-            return this.cstmt.getMaxRows();
+            return this.callableStatement.getMaxRows();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -432,7 +432,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getMetaData", "getMetaData");
 
         try {
-            return this.cstmt.getMetaData();
+            return this.callableStatement.getMetaData();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -446,7 +446,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getMoreResults", "getMoreResults");
 
         try {
-            return this.cstmt.getMoreResults(current);
+            return this.callableStatement.getMoreResults(current);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -460,7 +460,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getMoreResults", "getMoreResults");
 
         try {
-            return this.cstmt.getMoreResults();
+            return this.callableStatement.getMoreResults();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -474,7 +474,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getResultSet", "getResultSet");
 
         try {
-            java.sql.ResultSet rs = this.cstmt.getResultSet();
+            java.sql.ResultSet rs = this.callableStatement.getResultSet();
             return new OcWrapResultSet(rs);
         } catch (Exception e) {
             span.recordException(e);
@@ -489,7 +489,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getResultSetConcurrency", "getResultSetConcurrency");
 
         try {
-            return this.cstmt.getResultSetConcurrency();
+            return this.callableStatement.getResultSetConcurrency();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -503,7 +503,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getQueryTimeout", "getQueryTimeout");
 
         try {
-            return this.cstmt.getQueryTimeout();
+            return this.callableStatement.getQueryTimeout();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -514,7 +514,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
 
     @Override
     public java.sql.Connection getConnection() throws SQLException {
-        return this.cstmt.getConnection();
+        return this.callableStatement.getConnection();
     }
 
     @Override
@@ -522,7 +522,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getParameterMetaData", "getParameterMetaData");
 
         try {
-            return this.cstmt.getParameterMetaData();
+            return this.callableStatement.getParameterMetaData();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -536,7 +536,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getResultSetHoldability", "getResultSetHoldability");
 
         try {
-            return this.cstmt.getResultSetHoldability();
+            return this.callableStatement.getResultSetHoldability();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -550,7 +550,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getResultSetType", "getResultSetType");
 
         try {
-            return this.cstmt.getResultSetType();
+            return this.callableStatement.getResultSetType();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -564,7 +564,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getUpdateCount", "getUpdateCount");
 
         try {
-            return this.cstmt.getUpdateCount();
+            return this.callableStatement.getUpdateCount();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -578,7 +578,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getWarnings", "getWarnings");
 
         try {
-            return this.cstmt.getWarnings();
+            return this.callableStatement.getWarnings();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -592,7 +592,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getArray", "getArray");
 
         try {
-            return this.cstmt.getArray(parameterIndex);
+            return this.callableStatement.getArray(parameterIndex);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -606,7 +606,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getArray", "getArray");
 
         try {
-            return this.cstmt.getArray(parameterName);
+            return this.callableStatement.getArray(parameterName);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -620,7 +620,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setArray", "setArray");
 
         try {
-            this.cstmt.setArray(parameterIndex, x);
+            this.callableStatement.setArray(parameterIndex, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -634,7 +634,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setAsciiStream", "setAsciiStream");
 
         try {
-            this.cstmt.setAsciiStream(parameterIndex, stream);
+            this.callableStatement.setAsciiStream(parameterIndex, stream);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -648,7 +648,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setAsciiStream", "setAsciiStream");
 
         try {
-            this.cstmt.setAsciiStream(parameterIndex, stream, length);
+            this.callableStatement.setAsciiStream(parameterIndex, stream, length);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -662,7 +662,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setAsciiStream", "setAsciiStream");
 
         try {
-            this.cstmt.setAsciiStream(parameterIndex, stream, length);
+            this.callableStatement.setAsciiStream(parameterIndex, stream, length);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -676,7 +676,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setAsciiStream", "setAsciiStream");
 
         try {
-            this.cstmt.setAsciiStream(parameterName, stream);
+            this.callableStatement.setAsciiStream(parameterName, stream);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -690,7 +690,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setAsciiStream", "setAsciiStream");
 
         try {
-            this.cstmt.setAsciiStream(parameterName, stream, length);
+            this.callableStatement.setAsciiStream(parameterName, stream, length);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -704,7 +704,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setAsciiStream", "setAsciiStream");
 
         try {
-            this.cstmt.setAsciiStream(parameterName, stream, length);
+            this.callableStatement.setAsciiStream(parameterName, stream, length);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -718,7 +718,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getBigDecimal", "getBigDecimal");
 
         try {
-            return this.cstmt.getBigDecimal(parameterIndex);
+            return this.callableStatement.getBigDecimal(parameterIndex);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -732,7 +732,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getBigDecimal", "getBigDecimal");
 
         try {
-            return this.cstmt.getBigDecimal(parameterIndex, scale);
+            return this.callableStatement.getBigDecimal(parameterIndex, scale);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -746,7 +746,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getBigDecimal", "getBigDecimal");
 
         try {
-            return this.cstmt.getBigDecimal(parameterName);
+            return this.callableStatement.getBigDecimal(parameterName);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -760,7 +760,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setBigDecimal", "setBigDecimal");
 
         try {
-            this.cstmt.setBigDecimal(parameterIndex, x);
+            this.callableStatement.setBigDecimal(parameterIndex, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -774,7 +774,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setBigDecimal", "setBigDecimal");
 
         try {
-            this.cstmt.setBigDecimal(parameterName, x);
+            this.callableStatement.setBigDecimal(parameterName, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -788,7 +788,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setBinaryStream", "setBinaryStream");
 
         try {
-            this.cstmt.setBinaryStream(parameterIndex, stream);
+            this.callableStatement.setBinaryStream(parameterIndex, stream);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -802,7 +802,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setBinaryStream", "setBinaryStream");
 
         try {
-            this.cstmt.setBinaryStream(parameterIndex, stream, length);
+            this.callableStatement.setBinaryStream(parameterIndex, stream, length);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -816,7 +816,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setBinaryStream", "setBinaryStream");
 
         try {
-            this.cstmt.setBinaryStream(parameterIndex, stream, length);
+            this.callableStatement.setBinaryStream(parameterIndex, stream, length);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -830,7 +830,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setBinaryStream", "setBinaryStream");
 
         try {
-            this.cstmt.setBinaryStream(parameterName, stream);
+            this.callableStatement.setBinaryStream(parameterName, stream);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -844,7 +844,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setBinaryStream", "setBinaryStream");
 
         try {
-            this.cstmt.setBinaryStream(parameterName, stream, length);
+            this.callableStatement.setBinaryStream(parameterName, stream, length);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -858,7 +858,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setBinaryStream", "setBinaryStream");
 
         try {
-            this.cstmt.setBinaryStream(parameterName, stream, length);
+            this.callableStatement.setBinaryStream(parameterName, stream, length);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -872,7 +872,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getBlob", "getBlob");
 
         try {
-            return this.cstmt.getBlob(parameterIndex);
+            return this.callableStatement.getBlob(parameterIndex);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -886,7 +886,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getBlob", "getBlob");
 
         try {
-            return this.cstmt.getBlob(parameterName);
+            return this.callableStatement.getBlob(parameterName);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -900,7 +900,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setBlob", "setBlob");
 
         try {
-            this.cstmt.setBlob(parameterIndex, x);
+            this.callableStatement.setBlob(parameterIndex, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -914,7 +914,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setBlob", "setBlob");
 
         try {
-            this.cstmt.setBlob(parameterIndex, x);
+            this.callableStatement.setBlob(parameterIndex, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -928,7 +928,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setBlob", "setBlob");
 
         try {
-            this.cstmt.setBlob(parameterIndex, inputStream, length);
+            this.callableStatement.setBlob(parameterIndex, inputStream, length);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -942,7 +942,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setBlob", "setBlob");
 
         try {
-            this.cstmt.setBlob(parameterName, x);
+            this.callableStatement.setBlob(parameterName, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -956,7 +956,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setBlob", "setBlob");
 
         try {
-            this.cstmt.setBlob(parameterName, x);
+            this.callableStatement.setBlob(parameterName, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -970,7 +970,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setBlob", "setBlob");
 
         try {
-            this.cstmt.setBlob(parameterName, inputStream, length);
+            this.callableStatement.setBlob(parameterName, inputStream, length);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -984,7 +984,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getBoolean", "getBoolean");
 
         try {
-            return this.cstmt.getBoolean(parameterIndex);
+            return this.callableStatement.getBoolean(parameterIndex);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -998,7 +998,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getBoolean", "getBoolean");
 
         try {
-            return this.cstmt.getBoolean(parameterName);
+            return this.callableStatement.getBoolean(parameterName);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1012,7 +1012,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setBoolean", "setBoolean");
 
         try {
-            this.cstmt.setBoolean(parameterIndex, x);
+            this.callableStatement.setBoolean(parameterIndex, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1026,7 +1026,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setBoolean", "setBoolean");
 
         try {
-            this.cstmt.setBoolean(parameterName, x);
+            this.callableStatement.setBoolean(parameterName, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1040,7 +1040,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getByte", "getByte");
 
         try {
-            return this.cstmt.getByte(parameterIndex);
+            return this.callableStatement.getByte(parameterIndex);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1054,7 +1054,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getByte", "getByte");
 
         try {
-            return this.cstmt.getByte(parameterName);
+            return this.callableStatement.getByte(parameterName);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1068,7 +1068,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setByte", "setByte");
 
         try {
-            this.cstmt.setByte(parameterIndex, x);
+            this.callableStatement.setByte(parameterIndex, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1082,7 +1082,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setByte", "setByte");
 
         try {
-            this.cstmt.setByte(parameterName, x);
+            this.callableStatement.setByte(parameterName, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1096,7 +1096,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getBytes", "getBytes");
 
         try {
-            return this.cstmt.getBytes(parameterIndex);
+            return this.callableStatement.getBytes(parameterIndex);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1110,7 +1110,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getBytes", "getBytes");
 
         try {
-            return this.cstmt.getBytes(parameterName);
+            return this.callableStatement.getBytes(parameterName);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1124,7 +1124,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setBytes", "setBytes");
 
         try {
-            this.cstmt.setBytes(parameterIndex, x);
+            this.callableStatement.setBytes(parameterIndex, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1138,7 +1138,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setBytes", "setBytes");
 
         try {
-            this.cstmt.setBytes(parameterName, x);
+            this.callableStatement.setBytes(parameterName, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1152,7 +1152,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setCharacterStream", "setCharacterStream");
 
         try {
-            this.cstmt.setCharacterStream(parameterIndex, reader);
+            this.callableStatement.setCharacterStream(parameterIndex, reader);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1166,7 +1166,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setCharacterStream", "setCharacterStream");
 
         try {
-            this.cstmt.setCharacterStream(parameterIndex, reader, length);
+            this.callableStatement.setCharacterStream(parameterIndex, reader, length);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1180,7 +1180,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setCharacterStream", "setCharacterStream");
 
         try {
-            this.cstmt.setCharacterStream(parameterIndex, reader, length);
+            this.callableStatement.setCharacterStream(parameterIndex, reader, length);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1194,7 +1194,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setCharacterStream", "setCharacterStream");
 
         try {
-            this.cstmt.setCharacterStream(parameterName, reader);
+            this.callableStatement.setCharacterStream(parameterName, reader);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1208,7 +1208,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setCharacterStream", "setCharacterStream");
 
         try {
-            this.cstmt.setCharacterStream(parameterName, reader, length);
+            this.callableStatement.setCharacterStream(parameterName, reader, length);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1222,7 +1222,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setCharacterStream", "setCharacterStream");
 
         try {
-            this.cstmt.setCharacterStream(parameterName, reader, length);
+            this.callableStatement.setCharacterStream(parameterName, reader, length);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1236,7 +1236,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getClob", "getClob");
 
         try {
-            return this.cstmt.getClob(parameterIndex);
+            return this.callableStatement.getClob(parameterIndex);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1250,7 +1250,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getClob", "getClob");
 
         try {
-            return this.cstmt.getClob(parameterName);
+            return this.callableStatement.getClob(parameterName);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1264,7 +1264,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setClob", "setClob");
 
         try {
-            this.cstmt.setClob(parameterIndex, x);
+            this.callableStatement.setClob(parameterIndex, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1278,7 +1278,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setClob", "setClob");
 
         try {
-            this.cstmt.setClob(parameterIndex, reader);
+            this.callableStatement.setClob(parameterIndex, reader);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1292,7 +1292,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setClob", "setClob");
 
         try {
-            this.cstmt.setClob(parameterIndex, reader, length);
+            this.callableStatement.setClob(parameterIndex, reader, length);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1306,7 +1306,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setClob", "setClob");
 
         try {
-            this.cstmt.setClob(parameterName, x);
+            this.callableStatement.setClob(parameterName, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1320,7 +1320,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setClob", "setClob");
 
         try {
-            this.cstmt.setClob(parameterName, reader);
+            this.callableStatement.setClob(parameterName, reader);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1334,7 +1334,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setClob", "setClob");
 
         try {
-            this.cstmt.setClob(parameterName, reader, length);
+            this.callableStatement.setClob(parameterName, reader, length);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1348,7 +1348,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getDate", "getDate");
 
         try {
-            return this.cstmt.getDate(parameterIndex);
+            return this.callableStatement.getDate(parameterIndex);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1362,7 +1362,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getDate", "getDate");
 
         try {
-            return this.cstmt.getDate(parameterIndex, cal);
+            return this.callableStatement.getDate(parameterIndex, cal);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1376,7 +1376,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getDate", "getDate");
 
         try {
-            return this.cstmt.getDate(parameterName);
+            return this.callableStatement.getDate(parameterName);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1390,7 +1390,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getDate", "getDate");
 
         try {
-            return this.cstmt.getDate(parameterName, cal);
+            return this.callableStatement.getDate(parameterName, cal);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1404,7 +1404,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setDate", "setDate");
 
         try {
-            this.cstmt.setDate(parameterIndex, x);
+            this.callableStatement.setDate(parameterIndex, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1418,7 +1418,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setDate", "setDate");
 
         try {
-            this.cstmt.setDate(parameterName, x);
+            this.callableStatement.setDate(parameterName, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1432,7 +1432,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setDate", "setDate");
 
         try {
-            this.cstmt.setDate(parameterIndex, x, cal);
+            this.callableStatement.setDate(parameterIndex, x, cal);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1446,7 +1446,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setDate", "setDate");
 
         try {
-            this.cstmt.setDate(parameterName, x, cal);
+            this.callableStatement.setDate(parameterName, x, cal);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1461,7 +1461,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getDouble", "getDouble");
 
         try {
-            return this.cstmt.getDouble(parameterIndex);
+            return this.callableStatement.getDouble(parameterIndex);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1475,7 +1475,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getDouble", "getDouble");
 
         try {
-            return this.cstmt.getDouble(parameterName);
+            return this.callableStatement.getDouble(parameterName);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1489,7 +1489,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setDouble", "setDouble");
 
         try {
-            this.cstmt.setDouble(parameterIndex, x);
+            this.callableStatement.setDouble(parameterIndex, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1503,7 +1503,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setDouble", "setDouble");
 
         try {
-            this.cstmt.setDouble(parameterName, x);
+            this.callableStatement.setDouble(parameterName, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1517,7 +1517,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getFloat", "getFloat");
 
         try {
-            return this.cstmt.getFloat(parameterIndex);
+            return this.callableStatement.getFloat(parameterIndex);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1531,7 +1531,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getFloat", "getFloat");
 
         try {
-            return this.cstmt.getFloat(parameterName);
+            return this.callableStatement.getFloat(parameterName);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1545,7 +1545,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setFloat", "setFloat");
 
         try {
-            this.cstmt.setFloat(parameterIndex, x);
+            this.callableStatement.setFloat(parameterIndex, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1559,7 +1559,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setFloat", "setFloat");
 
         try {
-            this.cstmt.setFloat(parameterName, x);
+            this.callableStatement.setFloat(parameterName, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1573,7 +1573,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getInt", "getInt");
 
         try {
-            return this.cstmt.getInt(parameterIndex);
+            return this.callableStatement.getInt(parameterIndex);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1587,7 +1587,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getInt", "getInt");
 
         try {
-            return this.cstmt.getInt(parameterName);
+            return this.callableStatement.getInt(parameterName);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1601,7 +1601,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setInt", "setInt");
 
         try {
-            this.cstmt.setInt(parameterIndex, x);
+            this.callableStatement.setInt(parameterIndex, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1615,7 +1615,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setInt", "setInt");
 
         try {
-            this.cstmt.setInt(parameterName, x);
+            this.callableStatement.setInt(parameterName, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1629,7 +1629,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getLong", "getLong");
 
         try {
-            return this.cstmt.getLong(parameterIndex);
+            return this.callableStatement.getLong(parameterIndex);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1643,7 +1643,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getLong", "getLong");
 
         try {
-            return this.cstmt.getLong(parameterName);
+            return this.callableStatement.getLong(parameterName);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1657,7 +1657,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setLong", "setLong");
 
         try {
-            this.cstmt.setLong(parameterIndex, x);
+            this.callableStatement.setLong(parameterIndex, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1671,7 +1671,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setLong", "setLong");
 
         try {
-            this.cstmt.setLong(parameterName, x);
+            this.callableStatement.setLong(parameterName, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1685,7 +1685,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setNCharacterStream", "setNCharacterStream");
 
         try {
-            this.cstmt.setNCharacterStream(parameterIndex, value);
+            this.callableStatement.setNCharacterStream(parameterIndex, value);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1699,7 +1699,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setNCharacterStream", "setNCharacterStream");
 
         try {
-            this.cstmt.setNCharacterStream(parameterIndex, value, length);
+            this.callableStatement.setNCharacterStream(parameterIndex, value, length);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1713,7 +1713,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setNCharacterStream", "setNCharacterStream");
 
         try {
-            this.cstmt.setNCharacterStream(parameterName, value);
+            this.callableStatement.setNCharacterStream(parameterName, value);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1727,7 +1727,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setNCharacterStream", "setNCharacterStream");
 
         try {
-            this.cstmt.setNCharacterStream(parameterName, value, length);
+            this.callableStatement.setNCharacterStream(parameterName, value, length);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1741,7 +1741,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setNClob", "setNClob");
 
         try {
-            this.cstmt.setNClob(parameterName, value);
+            this.callableStatement.setNClob(parameterName, value);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1755,7 +1755,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setNClob", "setNClob");
 
         try {
-            this.cstmt.setNClob(parameterIndex, value);
+            this.callableStatement.setNClob(parameterIndex, value);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1769,7 +1769,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setNClob", "setNClob");
 
         try {
-            this.cstmt.setNClob(parameterIndex, reader);
+            this.callableStatement.setNClob(parameterIndex, reader);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1783,7 +1783,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setNClob", "setNClob");
 
         try {
-            this.cstmt.setNClob(parameterName, reader);
+            this.callableStatement.setNClob(parameterName, reader);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1797,7 +1797,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setNClob", "setNClob");
 
         try {
-            this.cstmt.setNClob(parameterName, reader, length);
+            this.callableStatement.setNClob(parameterName, reader, length);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1811,7 +1811,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setNClob", "setNClob");
 
         try {
-            this.cstmt.setNClob(parameterIndex, reader, length);
+            this.callableStatement.setNClob(parameterIndex, reader, length);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1825,7 +1825,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setNString", "setNString");
 
         try {
-            this.cstmt.setNString(parameterIndex, value);
+            this.callableStatement.setNString(parameterIndex, value);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1839,7 +1839,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setNString", "setNString");
 
         try {
-            this.cstmt.setNString(parameterName, value);
+            this.callableStatement.setNString(parameterName, value);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1853,7 +1853,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setNull", "setNull");
 
         try {
-            this.cstmt.setNull(parameterIndex, sqlType);
+            this.callableStatement.setNull(parameterIndex, sqlType);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1867,7 +1867,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setNull", "setNull");
 
         try {
-            this.cstmt.setNull(parameterName, sqlType);
+            this.callableStatement.setNull(parameterName, sqlType);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1881,7 +1881,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setNull", "setNull");
 
         try {
-            this.cstmt.setNull(parameterIndex, sqlType, typeName);
+            this.callableStatement.setNull(parameterIndex, sqlType, typeName);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1895,7 +1895,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setNull", "setNull");
 
         try {
-            this.cstmt.setNull(parameterName, sqlType, typeName);
+            this.callableStatement.setNull(parameterName, sqlType, typeName);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1909,7 +1909,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setObject", "setObject");
 
         try {
-            this.cstmt.setObject(parameterIndex, x);
+            this.callableStatement.setObject(parameterIndex, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1923,7 +1923,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setObject", "setObject");
 
         try {
-            this.cstmt.setObject(parameterName, x);
+            this.callableStatement.setObject(parameterName, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1937,7 +1937,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setObject", "setObject");
 
         try {
-            this.cstmt.setObject(parameterIndex, x, targetSqlType);
+            this.callableStatement.setObject(parameterIndex, x, targetSqlType);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1951,7 +1951,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setObject", "setObject");
 
         try {
-            this.cstmt.setObject(parameterName, x, targetSqlType);
+            this.callableStatement.setObject(parameterName, x, targetSqlType);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1966,7 +1966,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setObject", "setObject");
 
         try {
-            this.cstmt.setObject(parameterIndex, x, targetSqlType, scaleOrLength);
+            this.callableStatement.setObject(parameterIndex, x, targetSqlType, scaleOrLength);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1980,7 +1980,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setObject", "setObject");
 
         try {
-            this.cstmt.setObject(parameterName, x, targetSqlType, scaleOrLength);
+            this.callableStatement.setObject(parameterName, x, targetSqlType, scaleOrLength);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -1995,7 +1995,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getRef", "getRef");
 
         try {
-            return this.cstmt.getRef(parameterIndex);
+            return this.callableStatement.getRef(parameterIndex);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2009,7 +2009,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getRef", "getRef");
 
         try {
-            return this.cstmt.getRef(parameterName);
+            return this.callableStatement.getRef(parameterName);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2023,7 +2023,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setRef", "setRef");
 
         try {
-            this.cstmt.setRef(parameterIndex, x);
+            this.callableStatement.setRef(parameterIndex, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2037,7 +2037,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getRowId", "getRowId");
 
         try {
-            return this.cstmt.getRowId(parameterIndex);
+            return this.callableStatement.getRowId(parameterIndex);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2051,7 +2051,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getRowId", "getRowId");
 
         try {
-            return this.cstmt.getRowId(parameterName);
+            return this.callableStatement.getRowId(parameterName);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2065,7 +2065,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setRowId", "setRowId");
 
         try {
-            this.cstmt.setRowId(parameterIndex, x);
+            this.callableStatement.setRowId(parameterIndex, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2079,7 +2079,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setRowId", "setRowId");
 
         try {
-            this.cstmt.setRowId(parameterName, x);
+            this.callableStatement.setRowId(parameterName, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2093,7 +2093,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getShort", "getShort");
 
         try {
-            return this.cstmt.getShort(parameterIndex);
+            return this.callableStatement.getShort(parameterIndex);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2107,7 +2107,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getShort", "getShort");
 
         try {
-            return this.cstmt.getShort(parameterName);
+            return this.callableStatement.getShort(parameterName);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2121,7 +2121,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setShort", "setShort");
 
         try {
-            this.cstmt.setShort(parameterIndex, x);
+            this.callableStatement.setShort(parameterIndex, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2135,7 +2135,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setShort", "setShort");
 
         try {
-            this.cstmt.setShort(parameterName, x);
+            this.callableStatement.setShort(parameterName, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2149,7 +2149,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setSQLXML", "setSQLXML");
 
         try {
-            this.cstmt.setSQLXML(parameterIndex, xmlObject);
+            this.callableStatement.setSQLXML(parameterIndex, xmlObject);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2163,7 +2163,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setSQLXML", "setSQLXML");
 
         try {
-            this.cstmt.setSQLXML(parameterName, xmlObject);
+            this.callableStatement.setSQLXML(parameterName, xmlObject);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2177,7 +2177,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getString", "getString");
 
         try {
-            return this.cstmt.getString(parameterIndex);
+            return this.callableStatement.getString(parameterIndex);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2191,7 +2191,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getString", "getString");
 
         try {
-            return this.cstmt.getString(parameterName);
+            return this.callableStatement.getString(parameterName);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2205,7 +2205,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setString", "setString");
 
         try {
-            this.cstmt.setString(parameterIndex, x);
+            this.callableStatement.setString(parameterIndex, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2219,7 +2219,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setString", "setString");
 
         try {
-            this.cstmt.setString(parameterName, x);
+            this.callableStatement.setString(parameterName, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2233,7 +2233,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getTime", "getTime");
 
         try {
-            return this.cstmt.getTime(parameterIndex);
+            return this.callableStatement.getTime(parameterIndex);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2247,7 +2247,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getTime", "getTime");
 
         try {
-            return this.cstmt.getTime(parameterIndex, cal);
+            return this.callableStatement.getTime(parameterIndex, cal);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2261,7 +2261,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getTime", "getTime");
 
         try {
-            return this.cstmt.getTime(parameterName);
+            return this.callableStatement.getTime(parameterName);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2275,7 +2275,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getTime", "getTime");
 
         try {
-            return this.cstmt.getTime(parameterName, cal);
+            return this.callableStatement.getTime(parameterName, cal);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2289,7 +2289,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setTime", "setTime");
 
         try {
-            this.cstmt.setTime(parameterIndex, x);
+            this.callableStatement.setTime(parameterIndex, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2303,7 +2303,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setTime", "setTime");
 
         try {
-            this.cstmt.setTime(parameterName, x);
+            this.callableStatement.setTime(parameterName, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2317,7 +2317,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setTime", "setTime");
 
         try {
-            this.cstmt.setTime(parameterIndex, x, cal);
+            this.callableStatement.setTime(parameterIndex, x, cal);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2331,7 +2331,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setTime", "setTime");
 
         try {
-            this.cstmt.setTime(parameterName, x, cal);
+            this.callableStatement.setTime(parameterName, x, cal);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2345,7 +2345,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getTimestamp", "getTimestamp");
 
         try {
-            return this.cstmt.getTimestamp(parameterIndex);
+            return this.callableStatement.getTimestamp(parameterIndex);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2359,7 +2359,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getTimestamp", "getTimestamp");
 
         try {
-            return this.cstmt.getTimestamp(parameterIndex, cal);
+            return this.callableStatement.getTimestamp(parameterIndex, cal);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2373,7 +2373,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getTimestamp", "getTimestamp");
 
         try {
-            return this.cstmt.getTimestamp(parameterName);
+            return this.callableStatement.getTimestamp(parameterName);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2387,7 +2387,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getTimestamp", "getTimestamp");
 
         try {
-            return this.cstmt.getTimestamp(parameterName, cal);
+            return this.callableStatement.getTimestamp(parameterName, cal);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2401,7 +2401,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setTimestamp", "setTimestamp");
 
         try {
-            this.cstmt.setTimestamp(parameterIndex, x);
+            this.callableStatement.setTimestamp(parameterIndex, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2415,7 +2415,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setTimestamp", "setTimestamp");
 
         try {
-            this.cstmt.setTimestamp(parameterName, x);
+            this.callableStatement.setTimestamp(parameterName, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2429,7 +2429,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setTimestamp", "setTimestamp");
 
         try {
-            this.cstmt.setTimestamp(parameterIndex, x, cal);
+            this.callableStatement.setTimestamp(parameterIndex, x, cal);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2443,7 +2443,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setTimestamp", "setTimestamp");
 
         try {
-            this.cstmt.setTimestamp(parameterName, x, cal);
+            this.callableStatement.setTimestamp(parameterName, x, cal);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2457,7 +2457,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setUnicodeStream", "setUnicodeStream");
 
         try {
-            this.cstmt.setUnicodeStream(parameterIndex, x, length);
+            this.callableStatement.setUnicodeStream(parameterIndex, x, length);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2471,7 +2471,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getURL", "getURL");
 
         try {
-            return this.cstmt.getURL(parameterIndex);
+            return this.callableStatement.getURL(parameterIndex);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2485,7 +2485,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getURL", "getURL");
 
         try {
-            return this.cstmt.getURL(parameterName);
+            return this.callableStatement.getURL(parameterName);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2499,7 +2499,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setURL", "setURL");
 
         try {
-            this.cstmt.setURL(parameterIndex, x);
+            this.callableStatement.setURL(parameterIndex, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2513,7 +2513,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setURL", "setURL");
 
         try {
-            this.cstmt.setURL(parameterName, x);
+            this.callableStatement.setURL(parameterName, x);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2527,7 +2527,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.isClosed", "isClosed");
 
         try {
-            return this.cstmt.isClosed();
+            return this.callableStatement.isClosed();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2541,7 +2541,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.isCloseOnCompletion", "isCloseOnCompletion");
 
         try {
-            return this.cstmt.isCloseOnCompletion();
+            return this.callableStatement.isCloseOnCompletion();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2555,7 +2555,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.isPoolable", "isPoolable");
 
         try {
-            return this.cstmt.isPoolable();
+            return this.callableStatement.isPoolable();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2569,7 +2569,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setCursorName", "setCursorName");
 
         try {
-            this.cstmt.setCursorName(cursorName);
+            this.callableStatement.setCursorName(cursorName);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2583,7 +2583,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setEscapeProcessing", "setEscapeProcessing");
 
         try {
-            this.cstmt.setEscapeProcessing(enable);
+            this.callableStatement.setEscapeProcessing(enable);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2597,7 +2597,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setFetchDirection", "setFetchDirection");
 
         try {
-            this.cstmt.setFetchDirection(direction);
+            this.callableStatement.setFetchDirection(direction);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2611,7 +2611,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setFetchSize", "setFetchSize");
 
         try {
-            this.cstmt.setFetchSize(rows);
+            this.callableStatement.setFetchSize(rows);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2625,7 +2625,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setMaxFieldSize", "setMaxFieldSize");
 
         try {
-            this.cstmt.setMaxFieldSize(max);
+            this.callableStatement.setMaxFieldSize(max);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2639,7 +2639,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setMaxRows", "setMaxRows");
 
         try {
-            this.cstmt.setMaxRows(max);
+            this.callableStatement.setMaxRows(max);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2653,7 +2653,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setPoolable", "setPoolable");
 
         try {
-            this.cstmt.setPoolable(poolable);
+            this.callableStatement.setPoolable(poolable);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2667,7 +2667,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.setQueryTimeout", "setQueryTimeout");
 
         try {
-            this.cstmt.setQueryTimeout(seconds);
+            this.callableStatement.setQueryTimeout(seconds);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2678,12 +2678,12 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
 
     @Override
     public boolean isWrapperFor(Class<?> iface) throws SQLException {
-        return this.cstmt.isWrapperFor(iface);
+        return this.callableStatement.isWrapperFor(iface);
     }
 
     @Override
     public <T> T unwrap(Class<T> iface) throws SQLException {
-        return this.cstmt.unwrap(iface);
+        return this.callableStatement.unwrap(iface);
     }
 
     @Override
@@ -2691,7 +2691,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getObject", "getObject");
 
         try {
-            return this.cstmt.getObject(parameterIndex);
+            return this.callableStatement.getObject(parameterIndex);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2705,7 +2705,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getObject", "getObject");
 
         try {
-            return this.cstmt.getObject(parameterIndex, type);
+            return this.callableStatement.getObject(parameterIndex, type);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2719,7 +2719,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getObject", "getObject");
 
         try {
-            return this.cstmt.getObject(parameterIndex, map);
+            return this.callableStatement.getObject(parameterIndex, map);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2733,7 +2733,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getObject", "getObject");
 
         try {
-            return this.cstmt.getObject(parameterName);
+            return this.callableStatement.getObject(parameterName);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2747,7 +2747,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getObject", "getObject");
 
         try {
-            return this.cstmt.getObject(parameterName, type);
+            return this.callableStatement.getObject(parameterName, type);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2761,7 +2761,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getObject", "getObject");
 
         try {
-            return this.cstmt.getObject(parameterName, map);
+            return this.callableStatement.getObject(parameterName, map);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2775,7 +2775,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getSQLXML", "getSQLXML");
 
         try {
-            return this.cstmt.getSQLXML(parameterIndex);
+            return this.callableStatement.getSQLXML(parameterIndex);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2789,7 +2789,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getSQLXML", "getSQLXML");
 
         try {
-            return this.cstmt.getSQLXML(parameterName);
+            return this.callableStatement.getSQLXML(parameterName);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2803,7 +2803,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getNString", "getNString");
 
         try {
-            return this.cstmt.getNString(parameterIndex);
+            return this.callableStatement.getNString(parameterIndex);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2817,7 +2817,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getNString", "getNString");
 
         try {
-            return this.cstmt.getNString(parameterName);
+            return this.callableStatement.getNString(parameterName);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2831,7 +2831,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getNCharacterStream", "getNCharacterStream");
 
         try {
-            return this.cstmt.getNCharacterStream(parameterIndex);
+            return this.callableStatement.getNCharacterStream(parameterIndex);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2845,7 +2845,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getNCharacterStream", "getNCharacterStream");
 
         try {
-            return this.cstmt.getNCharacterStream(parameterName);
+            return this.callableStatement.getNCharacterStream(parameterName);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2859,7 +2859,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getCharacterStream", "getCharacterStream");
 
         try {
-            return this.cstmt.getCharacterStream(parameterIndex);
+            return this.callableStatement.getCharacterStream(parameterIndex);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2873,7 +2873,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getCharacterStream", "getCharacterStream");
 
         try {
-            return this.cstmt.getCharacterStream(parameterName);
+            return this.callableStatement.getCharacterStream(parameterName);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2887,7 +2887,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getNClob", "getNClob");
 
         try {
-            return this.cstmt.getNClob(parameterIndex);
+            return this.callableStatement.getNClob(parameterIndex);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2901,7 +2901,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.getNClob", "getNClob");
 
         try {
-            return this.cstmt.getNClob(parameterName);
+            return this.callableStatement.getNClob(parameterName);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2915,7 +2915,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.registerOutParameter", "registerOutParameter");
 
         try {
-            this.cstmt.registerOutParameter(parameterIndex, sqlType);
+            this.callableStatement.registerOutParameter(parameterIndex, sqlType);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2929,7 +2929,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.registerOutParameter", "registerOutParameter");
 
         try {
-            this.cstmt.registerOutParameter(parameterIndex, sqlType, scale);
+            this.callableStatement.registerOutParameter(parameterIndex, sqlType, scale);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2943,7 +2943,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.registerOutParameter", "registerOutParameter");
 
         try {
-            this.cstmt.registerOutParameter(parameterIndex, sqlType, typeName);
+            this.callableStatement.registerOutParameter(parameterIndex, sqlType, typeName);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2957,7 +2957,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.registerOutParameter", "registerOutParameter");
 
         try {
-            this.cstmt.registerOutParameter(parameterName, sqlType);
+            this.callableStatement.registerOutParameter(parameterName, sqlType);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2971,7 +2971,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.registerOutParameter", "registerOutParameter");
 
         try {
-            this.cstmt.registerOutParameter(parameterName, sqlType, scale);
+            this.callableStatement.registerOutParameter(parameterName, sqlType, scale);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2985,7 +2985,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.registerOutParameter", "registerOutParameter");
 
         try {
-            this.cstmt.registerOutParameter(parameterName, sqlType, typeName);
+            this.callableStatement.registerOutParameter(parameterName, sqlType, typeName);
         } catch (Exception e) {
             span.recordException(e);
             throw e;
@@ -2999,7 +2999,7 @@ public class OcWrapCallableStatement implements java.sql.CallableStatement {
         Observability.RoundtripTrackingSpan span = Observability.createRoundtripTrackingSpan("java.sql.CallableStatement.wasNull", "wasNull");
 
         try {
-            return this.cstmt.wasNull();
+            return this.callableStatement.wasNull();
         } catch (Exception e) {
             span.recordException(e);
             throw e;
