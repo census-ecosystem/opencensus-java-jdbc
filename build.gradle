@@ -8,8 +8,8 @@ apply plugin: "signing"
 group = "io.opencensus.integration"
 version = "0.0.2" // CURRENT_OCJDBC_VERSION
 
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 repositories {
     maven { url "https://plugins.gradle.org/m2/" }

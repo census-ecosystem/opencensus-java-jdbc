@@ -42,3 +42,6 @@ out/
 .project
 .settings
 bin
+
+# VS Code
+.vscode
