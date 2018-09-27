@@ -44,6 +44,7 @@ import java.util.List;
 import java.util.Map;
 
 public final class Observability {
+
   private static final StatsRecorder statsRecorder = Stats.getStatsRecorder();
   private static final Tagger tagger = Tags.getTagger();
   private static final Tracer tracer = Tracing.getTracer();
@@ -71,7 +72,7 @@ public final class Observability {
   private static final TagKey KEY_OS_NAME = TagKey.create("os_name");
   private static final TagKey KEY_OS_VERSION = TagKey.create("os_version");
 
-  private static final Map<TagKey, TagValue> mandatorySystemTags = new HashMap<TagKey, TagValue>();
+  private static final Map<TagKey, TagValue> mandatorySystemTags = new HashMap<>();
 
   static {
     mandatorySystemTags.put(KEY_ARCHITECTURE, DETECTED_ARCH);
@@ -86,12 +87,73 @@ public final class Observability {
   public static final MeasureLong MEASURE_ERRORS =
       MeasureLong.create("java.sql/errors", "The number of errors encountered", DIMENSIONLESS);
   public static final MeasureLong MEASURE_KEY_LENGTH =
-      MeasureLong.create("java.sql/key_length", "Records the lengths of keys", DIMENSIONLESS);
+      MeasureLong.create("java.sql/key_length", "Records the lengths of keys", BYTES);
   public static final MeasureDouble MEASURE_LATENCY_MS =
       MeasureDouble.create(
           "java.sql/latency", "The latency of calls in milliseconds", MILLISECONDS);
   public static final MeasureLong MEASURE_VALUE_LENGTH =
-      MeasureLong.create("java.sql/value_length", "Records the lengths of values", DIMENSIONLESS);
+      MeasureLong.create("java.sql/value_length", "Records the lengths of values", BYTES);
+
+  // Default distribution buckets.
+  private static final Aggregation DEFAULT_BYTES_DISTRIBUTION =
+      Distribution.create(
+          BucketBoundaries.create(
+              Arrays.asList(
+                  // [0, 1KB,  2KB,    4KB,    16KB,    64KB,    256KB,    1MB,       4MB,
+                  // 16MB,       64MB,       256MB,       1GB,          2GB,          4GB]
+                  0.0,
+                  1024.0,
+                  2048.0,
+                  4096.0,
+                  16384.0,
+                  65536.0,
+                  262144.0,
+                  1048576.0,
+                  4194304.0,
+                  16777216.0,
+                  67108864.0,
+                  268435456.0,
+                  1073741824.0,
+                  2147483648.0,
+                  4294967296.0)));
+  private static final Aggregation DEFAULT_MILLISECONDS_DISTRIBUTION =
+      Distribution.create(
+          BucketBoundaries.create(
+              Arrays.asList(
+                  // [0ms, 0.001ms, 0.005ms, 0.01ms, 0.05ms, 0.1ms, 0.5ms, 1ms, 1.5ms, 2ms, 2.5ms,
+                  // 5ms, 10ms, 25ms, 50ms, 100ms, 200ms, 400ms, 600ms, 800ms, 1s, 1.5s, 2s, 2.5s,
+                  // 5s, 10s, 20s, 40s, 100s, 200s, 500s]
+                  0.0,
+                  0.001,
+                  0.005,
+                  0.01,
+                  0.05,
+                  0.1,
+                  0.5,
+                  1.0,
+                  1.5,
+                  2.0,
+                  2.5,
+                  5.0,
+                  10.0,
+                  25.0,
+                  50.0,
+                  100.0,
+                  200.0,
+                  400.0,
+                  600.0,
+                  800.0,
+                  1000.0,
+                  1500.0,
+                  2000.0,
+                  2500.0,
+                  5000.0,
+                  10000.0,
+                  20000.0,
+                  40000.0,
+                  100000.0,
+                  200000.0,
+                  500000.0)));
 
   private static Scope buildTagContextAndScopeWithSystemProperties(Map<TagKey, TagValue> tags) {
     TagContextBuilder tb = tagger.emptyBuilder();
@@ -113,6 +175,7 @@ public final class Observability {
   }
 
   static void recordTaggedStat(TagKey key, String value, MeasureLong ml, Long l) {
+
     Scope ss =
         buildTagContextAndScopeWithSystemProperties(
             Collections.singletonMap(key, TagValue.create(value)));
@@ -232,67 +295,6 @@ public final class Observability {
   }
 
   public static void registerAllViews() {
-    Aggregation defaultBytesDistribution =
-        Distribution.create(
-            BucketBoundaries.create(
-                Arrays.asList(
-                    // [0, 1KB,  2KB,    4KB,    16KB,    64KB,    256KB,    1MB,       4MB,
-                    // 16MB,       64MB,       256MB,       1GB,          2GB,          4GB]
-                    0.0,
-                    1024.0,
-                    2048.0,
-                    4096.0,
-                    16384.0,
-                    65536.0,
-                    262144.0,
-                    1048576.0,
-                    4194304.0,
-                    16777216.0,
-                    67108864.0,
-                    268435456.0,
-                    1073741824.0,
-                    2147483648.0,
-                    4294967296.0)));
-
-    Aggregation defaultMillisecondsDistribution =
-        Distribution.create(
-            BucketBoundaries.create(
-                Arrays.asList(
-                    // [0ms, 0.001ms, 0.005ms, 0.01ms, 0.05ms, 0.1ms, 0.5ms, 1ms, 1.5ms, 2ms, 2.5ms,
-                    // 5ms, 10ms, 25ms, 50ms, 100ms, 200ms, 400ms, 600ms, 800ms, 1s, 1.5s, 2s, 2.5s,
-                    // 5s, 10s, 20s, 40s, 100s, 200s, 500s]
-                    0.0,
-                    0.001,
-                    0.005,
-                    0.01,
-                    0.05,
-                    0.1,
-                    0.5,
-                    1.0,
-                    1.5,
-                    2.0,
-                    2.5,
-                    5.0,
-                    10.0,
-                    25.0,
-                    50.0,
-                    100.0,
-                    200.0,
-                    400.0,
-                    600.0,
-                    800.0,
-                    1000.0,
-                    1500.0,
-                    2000.0,
-                    2500.0,
-                    5000.0,
-                    10000.0,
-                    20000.0,
-                    40000.0,
-                    100000.0,
-                    200000.0,
-                    500000.0)));
-
     Aggregation countAggregation = Aggregation.Count.create();
     List<TagKey> noKeys = new ArrayList<TagKey>();
 
@@ -302,7 +304,7 @@ public final class Observability {
               Name.create("java.sql/client/latency"),
               "The distribution of the latencies of various calls in milliseconds",
               MEASURE_LATENCY_MS,
-              defaultMillisecondsDistribution,
+              DEFAULT_MILLISECONDS_DISTRIBUTION,
               addMandatorySystemTagKeys(
                   Arrays.asList(KEY_METHOD, KEY_PHASE, KEY_REASON, KEY_TYPE))),
           View.create(
@@ -323,14 +325,14 @@ public final class Observability {
               Name.create("java.sql/client/key_length"),
               "The distribution of lengths of keys",
               MEASURE_KEY_LENGTH,
-              defaultBytesDistribution,
+              DEFAULT_BYTES_DISTRIBUTION,
               addMandatorySystemTagKeys(
                   Arrays.asList(KEY_METHOD, KEY_PHASE, KEY_REASON, KEY_TYPE))),
           View.create(
               Name.create("java.sql/client/value_length"),
               "The distribution of lengths of values",
               MEASURE_VALUE_LENGTH,
-              defaultBytesDistribution,
+              DEFAULT_BYTES_DISTRIBUTION,
               addMandatorySystemTagKeys(Arrays.asList(KEY_METHOD, KEY_PHASE, KEY_REASON, KEY_TYPE)))
         };
 
