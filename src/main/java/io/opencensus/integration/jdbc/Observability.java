@@ -100,7 +100,7 @@ public class Observability {
   }
 
   public static void recordTaggedStat(TagKey key, String value, MeasureLong ml, int i) {
-    recordTaggedStat(key, value, ml, new Long(i));
+    recordTaggedStat(key, value, ml, Long.valueOf(i));
   }
 
   public static void recordTaggedStat(TagKey key, String value, MeasureLong ml, Long l) {
@@ -171,7 +171,7 @@ public class Observability {
         recordTaggedStat(keyMethod, this.method, mCalls, 1);
 
         long totalTimeNs = System.nanoTime() - this.startTimeNs;
-        double timeSpentMs = (new Double(totalTimeNs)) / 1e6;
+        double timeSpentMs = (Double.valueOf(totalTimeNs)) / 1e6;
 
         // Finally record the latency of the entire call.
         recordTaggedStat(keyMethod, this.method, mLatencyMs, timeSpentMs);
