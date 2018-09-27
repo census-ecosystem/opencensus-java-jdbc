@@ -169,8 +169,7 @@ public final class Observability {
       this.method = method;
     }
 
-    RoundtripTrackingSpan(
-        String name, String method, boolean shouldAnnotateWithSQL, String SQL) {
+    RoundtripTrackingSpan(String name, String method, boolean shouldAnnotateWithSQL, String SQL) {
       this(name, method);
       if (shouldAnnotateWithSQL)
         this.span.putAttribute("sql", AttributeValue.stringAttributeValue(SQL));
@@ -304,25 +303,29 @@ public final class Observability {
               "The distribution of the latencies of various calls in milliseconds",
               MEASURE_LATENCY_MS,
               defaultMillisecondsDistribution,
-              addMandatorySystemTagKeys(Arrays.asList(KEY_METHOD, KEY_PHASE, KEY_REASON, KEY_TYPE))),
+              addMandatorySystemTagKeys(
+                  Arrays.asList(KEY_METHOD, KEY_PHASE, KEY_REASON, KEY_TYPE))),
           View.create(
               Name.create("java.sql/client/calls"),
               "The number of various calls of methods",
               MEASURE_CALLS,
               countAggregation,
-              addMandatorySystemTagKeys(Arrays.asList(KEY_METHOD, KEY_PHASE, KEY_REASON, KEY_TYPE))),
+              addMandatorySystemTagKeys(
+                  Arrays.asList(KEY_METHOD, KEY_PHASE, KEY_REASON, KEY_TYPE))),
           View.create(
               Name.create("java.sql/client/errors"),
               "The number of errors encountered",
               MEASURE_ERRORS,
               countAggregation,
-              addMandatorySystemTagKeys(Arrays.asList(KEY_METHOD, KEY_PHASE, KEY_REASON, KEY_TYPE))),
+              addMandatorySystemTagKeys(
+                  Arrays.asList(KEY_METHOD, KEY_PHASE, KEY_REASON, KEY_TYPE))),
           View.create(
               Name.create("java.sql/client/key_length"),
               "The distribution of lengths of keys",
               MEASURE_KEY_LENGTH,
               defaultBytesDistribution,
-              addMandatorySystemTagKeys(Arrays.asList(KEY_METHOD, KEY_PHASE, KEY_REASON, KEY_TYPE))),
+              addMandatorySystemTagKeys(
+                  Arrays.asList(KEY_METHOD, KEY_PHASE, KEY_REASON, KEY_TYPE))),
           View.create(
               Name.create("java.sql/client/value_length"),
               "The distribution of lengths of values",
