@@ -14,7 +14,6 @@
 
 package io.opencensus.integration.jdbc;
 
-import com.sun.istack.internal.Nullable;
 import io.opencensus.common.Scope;
 import io.opencensus.stats.Aggregation;
 import io.opencensus.stats.Aggregation.Distribution;
@@ -201,7 +200,7 @@ public final class Observability {
       this(name, method, null);
     }
 
-    TrackingOperation(String name, String method, @Nullable String sql) {
+    TrackingOperation(String name, String method, String sql) {
       startTimeNs = System.nanoTime();
       span = tracer.spanBuilder(name).startSpan();
       this.method = method;
@@ -210,6 +209,7 @@ public final class Observability {
       }
     }
 
+    @SuppressWarnings("MustBeClosedChecker")
     Scope withSpan() {
       return tracer.withSpan(span);
     }
