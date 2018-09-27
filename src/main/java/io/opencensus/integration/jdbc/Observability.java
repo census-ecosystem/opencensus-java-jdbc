@@ -157,36 +157,36 @@ public final class Observability {
                   500000.0)));
 
   private static TagContext buildTagContextWithSystemProperties(Map<TagKey, TagValue> tags) {
-    TagContextBuilder tb = tagger.currentBuilder();
+    TagContextBuilder tagContextBuilder = tagger.currentBuilder();
     for (Map.Entry<TagKey, TagValue> tag : tags.entrySet()) {
-      tb.put(tag.getKey(), tag.getValue());
+      tagContextBuilder.put(tag.getKey(), tag.getValue());
     }
 
     // It is imperative that we record the various mandatory OS and System identifiers.
     // See Issue https://github.com/opencensus-integrations/ocjdbc/issues/4
     // As they are very useful in helping disambiguate between processes.
     for (Map.Entry<TagKey, TagValue> tag : mandatorySystemTags.entrySet()) {
-      tb.put(tag.getKey(), tag.getValue());
+      tagContextBuilder.put(tag.getKey(), tag.getValue());
     }
-    return tb.build();
+    return tagContextBuilder.build();
   }
 
-
-  static void recordTaggedStat(TagKey key, String value, MeasureLong ml, long l) {
-    recordStatWithTags(ml, l, Collections.singletonMap(key, TagValue.create(value)));
+  static void recordTaggedStat(TagKey tagKey, String tagValue, MeasureLong measureLong, long value) {
+    recordStatWithTags(measureLong, value, Collections.singletonMap(tagKey, TagValue.create(tagValue)));
   }
 
-  static void recordTaggedStat(TagKey key, String value, MeasureDouble md, double d) {
+  static void recordTaggedStat(TagKey tagKey, String tagValue, MeasureDouble measureDouble,
+      double value) {
     statsRecorder
         .newMeasureMap()
-        .put(md, d)
+        .put(measureDouble, value)
         .record(
             buildTagContextWithSystemProperties(
-                Collections.singletonMap(key, TagValue.create(value))));
+                Collections.singletonMap(tagKey, TagValue.create(tagValue))));
   }
 
-  static void recordStatWithTags(MeasureLong ml, long l, Map<TagKey, TagValue> tags) {
-    statsRecorder.newMeasureMap().put(ml, l).record(buildTagContextWithSystemProperties(tags));
+  static void recordStatWithTags(MeasureLong measureLong, long value, Map<TagKey, TagValue> tags) {
+    statsRecorder.newMeasureMap().put(measureLong, value).record(buildTagContextWithSystemProperties(tags));
   }
 
   public enum TraceOption {
@@ -266,8 +266,8 @@ public final class Observability {
   }
 
   static RoundtripTrackingSpan createRoundtripTrackingSpan(
-      String spanName, String method, boolean canRecordSQL, String SQL) {
-    return new RoundtripTrackingSpan(spanName, method, canRecordSQL, SQL);
+      String spanName, String method, boolean canRecordSQL, String sql) {
+    return new RoundtripTrackingSpan(spanName, method, canRecordSQL, sql);
   }
 
   private static List<TagKey> addMandatorySystemTagKeys(List<TagKey> customTagKeys) {
@@ -321,10 +321,10 @@ public final class Observability {
               addMandatorySystemTagKeys(Arrays.asList(KEY_METHOD, KEY_PHASE, KEY_REASON, KEY_TYPE)))
         };
 
-    ViewManager vmgr = Stats.getViewManager();
+    ViewManager viewManager = Stats.getViewManager();
 
     for (View v : views) {
-      vmgr.registerView(v);
+      viewManager.registerView(v);
     }
   }
 }
