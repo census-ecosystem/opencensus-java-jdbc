@@ -170,11 +170,11 @@ public final class Observability {
     return tagger.withTagContext(tb.build());
   }
 
-  static void recordTaggedStat(TagKey key, String value, MeasureLong ml, int i) {
+  private static void recordTaggedStat(TagKey key, String value, MeasureLong ml, int i) {
     recordTaggedStat(key, value, ml, Long.valueOf(i));
   }
 
-  static void recordTaggedStat(TagKey key, String value, MeasureLong ml, Long l) {
+  private static void recordTaggedStat(TagKey key, String value, MeasureLong ml, Long l) {
 
     Scope ss =
         buildTagContextAndScopeWithSystemProperties(
@@ -183,7 +183,7 @@ public final class Observability {
     ss.close();
   }
 
-  static void recordTaggedStat(TagKey key, String value, MeasureDouble md, Double d) {
+  private static void recordTaggedStat(TagKey key, String value, MeasureDouble md, Double d) {
     Scope ss =
         buildTagContextAndScopeWithSystemProperties(
             Collections.singletonMap(key, TagValue.create(value)));
@@ -191,7 +191,7 @@ public final class Observability {
     ss.close();
   }
 
-  static void recordStatWithTags(MeasureLong ml, long l, Map<TagKey, TagValue> tags) {
+  private static void recordStatWithTags(MeasureLong ml, long l, Map<TagKey, TagValue> tags) {
     Scope ss = buildTagContextAndScopeWithSystemProperties(tags);
     statsRecorder.newMeasureMap().put(ml, l).record();
     ss.close();
@@ -199,11 +199,8 @@ public final class Observability {
 
   public enum TraceOption {
     NONE,
-    ANNOTATE_TRACES_WITH_SQL;
+    ANNOTATE_TRACES_WITH_SQL
   }
-
-  public static final TraceOption OPTION_ANNOTATE_TRACES_WITH_SQL =
-      TraceOption.ANNOTATE_TRACES_WITH_SQL;
 
   static boolean shouldAnnotateSpansWithSQL(EnumSet<TraceOption> opts) {
     for (TraceOption opt : opts) {
@@ -247,7 +244,7 @@ public final class Observability {
         recordTaggedStat(KEY_METHOD, this.method, MEASURE_CALLS, 1);
 
         long totalTimeNs = System.nanoTime() - this.startTimeNs;
-        double timeSpentMs = (Double.valueOf(totalTimeNs)) / 1e6;
+        double timeSpentMs = ((double) totalTimeNs) / 1e6;
 
         // Finally record the latency of the entire call.
         recordTaggedStat(KEY_METHOD, this.method, MEASURE_LATENCY_MS, timeSpentMs);
@@ -265,7 +262,7 @@ public final class Observability {
     void recordException(Exception e) {
       String detail = e.toString();
       this.span.setStatus(Status.INTERNAL.withDescription(detail));
-      Map<TagKey, TagValue> tags = new HashMap<TagKey, TagValue>();
+      Map<TagKey, TagValue> tags = new HashMap<>();
       tags.put(KEY_REASON, TagValue.create(detail));
       tags.put(KEY_METHOD, TagValue.create(this.method));
       recordStatWithTags(MEASURE_ERRORS, 1, tags);
@@ -282,10 +279,7 @@ public final class Observability {
   }
 
   private static List<TagKey> addMandatorySystemTagKeys(List<TagKey> customTagKeys) {
-    List<TagKey> out = new ArrayList<TagKey>();
-    for (TagKey tagKey : customTagKeys) {
-      out.add(tagKey);
-    }
+    List<TagKey> out = new ArrayList<>(customTagKeys);
 
     for (Map.Entry<TagKey, TagValue> tag : mandatorySystemTags.entrySet()) {
       out.add(tag.getKey());
@@ -296,7 +290,6 @@ public final class Observability {
 
   public static void registerAllViews() {
     Aggregation countAggregation = Aggregation.Count.create();
-    List<TagKey> noKeys = new ArrayList<TagKey>();
 
     View[] views =
         new View[] {
