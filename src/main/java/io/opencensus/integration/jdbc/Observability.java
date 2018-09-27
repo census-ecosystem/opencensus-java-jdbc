@@ -68,19 +68,6 @@ public final class Observability {
   public static final TagKey KEY_PHASE = TagKey.create("phase");
   public static final TagKey KEY_REASON = TagKey.create("reason");
   public static final TagKey KEY_TYPE = TagKey.create("type");
-  private static final TagKey KEY_ARCHITECTURE = TagKey.create("arch");
-  private static final TagKey KEY_JAVA_VERSION = TagKey.create("java_version");
-  private static final TagKey KEY_OS_NAME = TagKey.create("os_name");
-  private static final TagKey KEY_OS_VERSION = TagKey.create("os_version");
-
-  private static final Map<TagKey, TagValue> mandatorySystemTags = new HashMap<>();
-
-  static {
-    mandatorySystemTags.put(KEY_ARCHITECTURE, DETECTED_ARCH);
-    mandatorySystemTags.put(KEY_JAVA_VERSION, DETECTED_JAVA_VERSION);
-    mandatorySystemTags.put(KEY_OS_NAME, DETECTED_OS_NAME);
-    mandatorySystemTags.put(KEY_OS_VERSION, DETECTED_OS_VERSION);
-  }
 
   // Measures
   public static final MeasureLong MEASURE_CALLS =
@@ -159,13 +146,6 @@ public final class Observability {
   private static TagContext buildTagContextWithSystemProperties(Map<TagKey, TagValue> tags) {
     TagContextBuilder tagContextBuilder = tagger.currentBuilder();
     for (Map.Entry<TagKey, TagValue> tag : tags.entrySet()) {
-      tagContextBuilder.put(tag.getKey(), tag.getValue());
-    }
-
-    // It is imperative that we record the various mandatory OS and System identifiers.
-    // See Issue https://github.com/opencensus-integrations/ocjdbc/issues/4
-    // As they are very useful in helping disambiguate between processes.
-    for (Map.Entry<TagKey, TagValue> tag : mandatorySystemTags.entrySet()) {
       tagContextBuilder.put(tag.getKey(), tag.getValue());
     }
     return tagContextBuilder.build();
@@ -275,16 +255,6 @@ public final class Observability {
     return new RoundtripTrackingSpan(spanName, method, canRecordSQL, sql);
   }
 
-  private static List<TagKey> addMandatorySystemTagKeys(List<TagKey> customTagKeys) {
-    List<TagKey> out = new ArrayList<>(customTagKeys);
-
-    for (Map.Entry<TagKey, TagValue> tag : mandatorySystemTags.entrySet()) {
-      out.add(tag.getKey());
-    }
-
-    return out;
-  }
-
   public static void registerAllViews() {
     Aggregation countAggregation = Aggregation.Count.create();
 
@@ -295,35 +265,31 @@ public final class Observability {
               "The distribution of the latencies of various calls in milliseconds",
               MEASURE_LATENCY_MS,
               DEFAULT_MILLISECONDS_DISTRIBUTION,
-              addMandatorySystemTagKeys(
-                  Arrays.asList(KEY_METHOD, KEY_PHASE, KEY_REASON, KEY_TYPE))),
+              Arrays.asList(KEY_METHOD, KEY_PHASE, KEY_REASON, KEY_TYPE)),
           View.create(
               Name.create("java.sql/client/calls"),
               "The number of various calls of methods",
               MEASURE_CALLS,
               countAggregation,
-              addMandatorySystemTagKeys(
-                  Arrays.asList(KEY_METHOD, KEY_PHASE, KEY_REASON, KEY_TYPE))),
+              Arrays.asList(KEY_METHOD, KEY_PHASE, KEY_REASON, KEY_TYPE)),
           View.create(
               Name.create("java.sql/client/errors"),
               "The number of errors encountered",
               MEASURE_ERRORS,
               countAggregation,
-              addMandatorySystemTagKeys(
-                  Arrays.asList(KEY_METHOD, KEY_PHASE, KEY_REASON, KEY_TYPE))),
+              Arrays.asList(KEY_METHOD, KEY_PHASE, KEY_REASON, KEY_TYPE)),
           View.create(
               Name.create("java.sql/client/key_length"),
               "The distribution of lengths of keys",
               MEASURE_KEY_LENGTH,
               DEFAULT_BYTES_DISTRIBUTION,
-              addMandatorySystemTagKeys(
-                  Arrays.asList(KEY_METHOD, KEY_PHASE, KEY_REASON, KEY_TYPE))),
+              Arrays.asList(KEY_METHOD, KEY_PHASE, KEY_REASON, KEY_TYPE)),
           View.create(
               Name.create("java.sql/client/value_length"),
               "The distribution of lengths of values",
               MEASURE_VALUE_LENGTH,
               DEFAULT_BYTES_DISTRIBUTION,
-              addMandatorySystemTagKeys(Arrays.asList(KEY_METHOD, KEY_PHASE, KEY_REASON, KEY_TYPE)))
+              Arrays.asList(KEY_METHOD, KEY_PHASE, KEY_REASON, KEY_TYPE))
         };
 
     ViewManager viewManager = Stats.getViewManager();
