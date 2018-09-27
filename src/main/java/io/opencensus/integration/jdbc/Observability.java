@@ -25,6 +25,7 @@ import io.opencensus.stats.StatsRecorder;
 import io.opencensus.stats.View;
 import io.opencensus.stats.View.Name;
 import io.opencensus.stats.ViewManager;
+import io.opencensus.tags.TagContext;
 import io.opencensus.tags.TagContextBuilder;
 import io.opencensus.tags.TagKey;
 import io.opencensus.tags.TagValue;
@@ -155,8 +156,8 @@ public final class Observability {
                   200000.0,
                   500000.0)));
 
-  private static Scope buildTagContextAndScopeWithSystemProperties(Map<TagKey, TagValue> tags) {
-    TagContextBuilder tb = tagger.emptyBuilder();
+  private static TagContext buildTagContextWithSystemProperties(Map<TagKey, TagValue> tags) {
+    TagContextBuilder tb = tagger.currentBuilder();
     for (Map.Entry<TagKey, TagValue> tag : tags.entrySet()) {
       tb.put(tag.getKey(), tag.getValue());
     }
@@ -167,34 +168,25 @@ public final class Observability {
     for (Map.Entry<TagKey, TagValue> tag : mandatorySystemTags.entrySet()) {
       tb.put(tag.getKey(), tag.getValue());
     }
-    return tagger.withTagContext(tb.build());
+    return tb.build();
   }
 
-  private static void recordTaggedStat(TagKey key, String value, MeasureLong ml, int i) {
-    recordTaggedStat(key, value, ml, Long.valueOf(i));
+
+  static void recordTaggedStat(TagKey key, String value, MeasureLong ml, long l) {
+    recordStatWithTags(ml, l, Collections.singletonMap(key, TagValue.create(value)));
   }
 
-  private static void recordTaggedStat(TagKey key, String value, MeasureLong ml, Long l) {
-
-    Scope ss =
-        buildTagContextAndScopeWithSystemProperties(
-            Collections.singletonMap(key, TagValue.create(value)));
-    statsRecorder.newMeasureMap().put(ml, l).record();
-    ss.close();
+  static void recordTaggedStat(TagKey key, String value, MeasureDouble md, double d) {
+    statsRecorder
+        .newMeasureMap()
+        .put(md, d)
+        .record(
+            buildTagContextWithSystemProperties(
+                Collections.singletonMap(key, TagValue.create(value))));
   }
 
-  private static void recordTaggedStat(TagKey key, String value, MeasureDouble md, Double d) {
-    Scope ss =
-        buildTagContextAndScopeWithSystemProperties(
-            Collections.singletonMap(key, TagValue.create(value)));
-    statsRecorder.newMeasureMap().put(md, d).record();
-    ss.close();
-  }
-
-  private static void recordStatWithTags(MeasureLong ml, long l, Map<TagKey, TagValue> tags) {
-    Scope ss = buildTagContextAndScopeWithSystemProperties(tags);
-    statsRecorder.newMeasureMap().put(ml, l).record();
-    ss.close();
+  static void recordStatWithTags(MeasureLong ml, long l, Map<TagKey, TagValue> tags) {
+    statsRecorder.newMeasureMap().put(ml, l).record(buildTagContextWithSystemProperties(tags));
   }
 
   public enum TraceOption {
@@ -241,7 +233,7 @@ public final class Observability {
 
       try {
         // Record the number of calls of the made method.
-        recordTaggedStat(KEY_METHOD, this.method, MEASURE_CALLS, 1);
+        recordTaggedStat(KEY_METHOD, this.method, MEASURE_CALLS, 1L);
 
         long totalTimeNs = System.nanoTime() - this.startTimeNs;
         double timeSpentMs = ((double) totalTimeNs) / 1e6;
