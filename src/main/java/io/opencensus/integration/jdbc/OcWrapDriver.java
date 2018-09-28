@@ -14,21 +14,21 @@
 
 package io.opencensus.integration.jdbc;
 
+import io.opencensus.common.Scope;
 import io.opencensus.integration.jdbc.Observability.TraceOption;
+import io.opencensus.integration.jdbc.Observability.TrackingOperation;
+import java.sql.Driver;
 import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
 import java.util.EnumSet;
 import java.util.Properties;
 import java.util.logging.Logger;
 
-/*
- * OcWrapDriver is a class that wraps and instruments a sql.Driver
- * instance wit htracing and metrics using OpenCensus.
- */
-public class OcWrapDriver implements java.sql.Driver {
-  private final java.sql.Driver driver;
+/** Wraps and instruments a {@link Driver} instance with tracing and metrics using OpenCensus. */
+public class OcWrapDriver implements Driver {
+  private final Driver driver;
 
-  public OcWrapDriver(java.sql.Driver driver) throws SQLException {
+  public OcWrapDriver(Driver driver) {
     this.driver = driver;
   }
 
@@ -39,19 +39,17 @@ public class OcWrapDriver implements java.sql.Driver {
 
   @Override
   public java.sql.Connection connect(String url, Properties info) throws SQLException {
-    Observability.RoundtripTrackingSpan span =
+    TrackingOperation trackingOperation =
         Observability.createRoundtripTrackingSpan("java.sql.Driver.connect", "connect");
 
-    try {
-      // Retrieve the raw connection then wrap it with the OpenCensus instrumented
-      // Connection class instance to provide metrics and traces per call.
-      java.sql.Connection conn = this.driver.connect(url, info);
-      return new OcWrapConnection(conn, EnumSet.noneOf(TraceOption.class));
+    try (Scope ws = trackingOperation.withSpan()) {
+      return new OcWrapConnection(
+          this.driver.connect(url, info), EnumSet.noneOf(TraceOption.class));
     } catch (Exception e) {
-      span.recordException(e);
+      trackingOperation.endWithException(e);
       throw e;
     } finally {
-      span.close();
+      trackingOperation.end();
     }
   }
 

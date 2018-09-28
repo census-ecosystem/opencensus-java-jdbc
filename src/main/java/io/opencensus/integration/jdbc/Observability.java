@@ -149,13 +149,13 @@ public final class Observability {
     return tagContextBuilder.build();
   }
 
-  static void recordTaggedStat(
+  private static void recordTaggedStat(
       TagKey tagKey, String tagValue, MeasureLong measureLong, long value) {
     recordStatWithTags(
         measureLong, value, Collections.singletonMap(tagKey, TagValue.create(tagValue)));
   }
 
-  static void recordTaggedStat(
+  private static void recordTaggedStat(
       TagKey tagKey, String tagValue, MeasureDouble measureDouble, double value) {
     statsRecorder
         .newMeasureMap()
@@ -165,7 +165,8 @@ public final class Observability {
                 Collections.singletonMap(tagKey, TagValue.create(tagValue))));
   }
 
-  static void recordStatWithTags(MeasureLong measureLong, long value, Map<TagKey, TagValue> tags) {
+  private static void recordStatWithTags(
+      MeasureLong measureLong, long value, Map<TagKey, TagValue> tags) {
     statsRecorder
         .newMeasureMap()
         .put(measureLong, value)
@@ -187,32 +188,34 @@ public final class Observability {
     return false;
   }
 
-  // RoundtripTrackingSpan records both the metric latency in
-  // milliseconds, and the span created by tracing the calling function.
-  static final class RoundtripTrackingSpan implements AutoCloseable {
-    private Span span;
-    private Scope spanScope;
-    private long startTimeNs;
-    private String method;
+  // TrackingOperation records both the metric latency in milliseconds, and the span created by
+  // tracing the calling function.
+  static final class TrackingOperation {
+    private final Span span;
+    private final long startTimeNs;
+    private final String method;
     private boolean closed;
 
-    @SuppressWarnings("MustBeClosedChecker") // Span closed in end().
-    RoundtripTrackingSpan(String name, String method) {
-      this.startTimeNs = System.nanoTime();
-      this.spanScope = tracer.spanBuilder(name).startScopedSpan();
-      this.span = tracer.getCurrentSpan();
+    TrackingOperation(String name, String method) {
+      this(name, method, null);
+    }
+
+    TrackingOperation(String name, String method, String sql) {
+      startTimeNs = System.nanoTime();
+      span = tracer.spanBuilder(name).startSpan();
       this.method = method;
+      if (sql != null) {
+        span.putAttribute("sql", AttributeValue.stringAttributeValue(sql));
+      }
     }
 
-    RoundtripTrackingSpan(String name, String method, boolean shouldAnnotateWithSQL, String SQL) {
-      this(name, method);
-      if (shouldAnnotateWithSQL)
-        this.span.putAttribute("sql", AttributeValue.stringAttributeValue(SQL));
+    @SuppressWarnings("MustBeClosedChecker")
+    Scope withSpan() {
+      return tracer.withSpan(span);
     }
 
-    @Override
-    public void close() {
-      if (this.closed) return;
+    void end() {
+      if (closed) return;
 
       try {
         // Record the number of calls of the made method.
@@ -224,19 +227,16 @@ public final class Observability {
         // Finally record the latency of the entire call.
         recordTaggedStat(KEY_METHOD, this.method, MEASURE_LATENCY_MS, timeSpentMs);
       } finally {
-        this.spanScope.close();
-        this.closed = true;
+        closed = true;
       }
     }
 
-    /*
-     * recordException annotates the underlying span with the description of the exception
-     * and also sets its status to indicate the exception but it also increments the number
-     * of errors by 1, adding tags: "method", "reason" to the recorded metric.
-     * */
-    void recordException(Exception e) {
+    // Ends and Annotates the underlying span with the description of the exception and also sets
+    // its status to indicate the exception but it also increments the number of errors by 1,
+    // adding tags: "method", "reason" to the recorded metric.
+    void endWithException(Exception e) {
       String detail = e.toString();
-      this.span.setStatus(Status.INTERNAL.withDescription(detail));
+      span.setStatus(Status.INTERNAL.withDescription(detail));
       Map<TagKey, TagValue> tags = new HashMap<>();
       tags.put(KEY_REASON, TagValue.create(detail));
       tags.put(KEY_METHOD, TagValue.create(this.method));
@@ -244,13 +244,13 @@ public final class Observability {
     }
   }
 
-  static RoundtripTrackingSpan createRoundtripTrackingSpan(String spanName, String method) {
-    return new RoundtripTrackingSpan(spanName, method);
+  static TrackingOperation createRoundtripTrackingSpan(String spanName, String method) {
+    return new TrackingOperation(spanName, method);
   }
 
-  static RoundtripTrackingSpan createRoundtripTrackingSpan(
+  static TrackingOperation createRoundtripTrackingSpan(
       String spanName, String method, boolean canRecordSQL, String sql) {
-    return new RoundtripTrackingSpan(spanName, method, canRecordSQL, sql);
+    return new TrackingOperation(spanName, method, canRecordSQL ? sql : null);
   }
 
   public static void registerAllViews() {
