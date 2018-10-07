@@ -33,18 +33,7 @@ public class OcWrapStatement implements Statement {
 
   @Override
   public void addBatch(String SQL) throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.Statement.addBatch", "addBatch", this.shouldAnnotateSpansWithSQL, SQL);
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.statement.addBatch(SQL);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    this.statement.addBatch(SQL);
   }
 
   @Override
@@ -64,33 +53,12 @@ public class OcWrapStatement implements Statement {
 
   @Override
   public void clearBatch() throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan("java.sql.Statement.createBatch", "createBatch");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.statement.clearBatch();
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    this.statement.clearBatch();
   }
 
   @Override
   public void clearWarnings() throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.Statement.clearWarnings", "clearWarnings");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.statement.clearWarnings();
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    this.statement.clearWarnings();
   }
 
   @Override
@@ -110,18 +78,7 @@ public class OcWrapStatement implements Statement {
 
   @Override
   public void closeOnCompletion() throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.Statement.closeOnCompletion", "closeOnCompletion");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.statement.closeOnCompletion();
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    this.statement.closeOnCompletion();
   }
 
   @Override
@@ -307,34 +264,12 @@ public class OcWrapStatement implements Statement {
 
   @Override
   public int getFetchDirection() throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.Statement.getFetchDirection", "getFetchDirection");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      return this.statement.getFetchDirection();
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    return this.statement.getFetchDirection();
   }
 
   @Override
   public int getFetchSize() throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.Statement.getFetchSize", "getFetchSize");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      return this.statement.getFetchSize();
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    return this.statement.getFetchSize();
   }
 
   @Override
@@ -356,33 +291,12 @@ public class OcWrapStatement implements Statement {
 
   @Override
   public int getMaxFieldSize() throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.Statement.getMaxFieldSize", "getMaxFieldSize");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      return this.statement.getMaxFieldSize();
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    return this.statement.getMaxFieldSize();
   }
 
   @Override
   public int getMaxRows() throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan("java.sql.Statement.getMaxRows", "getMaxRows");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      return this.statement.getMaxRows();
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    return this.statement.getMaxRows();
   }
 
   @Override
@@ -419,286 +333,93 @@ public class OcWrapStatement implements Statement {
 
   @Override
   public int getQueryTimeout() throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.Statement.getQueryTimeout", "getQueryTimeout");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      return this.statement.getQueryTimeout();
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    return this.statement.getQueryTimeout();
   }
 
   @Override
   public java.sql.ResultSet getResultSet() throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.Statement.getResultSet", "getResultSet");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      java.sql.ResultSet rs = this.statement.getResultSet();
-      return new OcWrapResultSet(rs);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    java.sql.ResultSet rs = this.statement.getResultSet();
+    return new OcWrapResultSet(rs);
   }
 
   @Override
   public int getResultSetConcurrency() throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.Statement.getResultSetConcurrency", "getResultSetConcurrency");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      return this.statement.getResultSetConcurrency();
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    return this.statement.getResultSetConcurrency();
   }
 
   @Override
   public int getResultSetHoldability() throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.Statement.getResultSetHoldability", "getResultSetHoldability");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      return this.statement.getResultSetHoldability();
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    return this.statement.getResultSetHoldability();
   }
 
   @Override
   public int getResultSetType() throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.Statement.getResultSetType", "getResultSetType");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      return this.statement.getResultSetType();
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    return this.statement.getResultSetType();
   }
 
   @Override
   public int getUpdateCount() throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.Statement.getUpdateCount", "getUpdateCount");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      return this.statement.getUpdateCount();
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    return this.statement.getUpdateCount();
   }
 
   @Override
   public java.sql.SQLWarning getWarnings() throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan("java.sql.Statement.getWarnings", "getWarnings");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      return this.statement.getWarnings();
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    return this.statement.getWarnings();
   }
 
   @Override
   public boolean isClosed() throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan("java.sql.Statement.isClosed", "isClosed");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      return this.statement.isClosed();
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    return this.statement.isClosed();
   }
 
   @Override
   public boolean isCloseOnCompletion() throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.Statement.isCloseOnCompletion", "isCloseOnCompletion");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      return this.statement.isCloseOnCompletion();
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    return this.statement.isCloseOnCompletion();
   }
 
   @Override
   public boolean isPoolable() throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan("java.sql.Statement.isPoolable", "isPoolable");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      return this.statement.isPoolable();
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    return this.statement.isPoolable();
   }
 
   @Override
   public void setCursorName(String cursorName) throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.Statement.setCursorName", "setCursorName");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.statement.setCursorName(cursorName);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    this.statement.setCursorName(cursorName);
   }
 
   @Override
   public void setEscapeProcessing(boolean enable) throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.Statement.setEscapeProcessing", "setEscapeProcessing");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.statement.setEscapeProcessing(enable);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    this.statement.setEscapeProcessing(enable);
   }
 
   @Override
   public void setFetchDirection(int direction) throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.Statement.setFetchDirection", "setFetchDirection");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.statement.setFetchDirection(direction);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    this.statement.setFetchDirection(direction);
   }
 
   @Override
   public void setFetchSize(int rows) throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.Statement.setFetchSize", "setFetchSize");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.statement.setFetchSize(rows);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    this.statement.setFetchSize(rows);
   }
 
   @Override
   public void setMaxFieldSize(int max) throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.Statement.setMaxFieldSize", "setMaxFieldSize");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.statement.setMaxFieldSize(max);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    this.statement.setMaxFieldSize(max);
   }
 
   @Override
   public void setMaxRows(int max) throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan("java.sql.Statement.setMaxRows", "setMaxRows");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.statement.setMaxRows(max);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    this.statement.setMaxRows(max);
   }
 
   @Override
   public void setPoolable(boolean poolable) throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan("java.sql.Statement.setPoolable", "setPoolable");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.statement.setPoolable(poolable);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    this.statement.setPoolable(poolable);
   }
 
   @Override
   public void setQueryTimeout(int seconds) throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.Statement.setQueryTimeout", "setQueryTimeout");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.statement.setQueryTimeout(seconds);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    this.statement.setQueryTimeout(seconds);
   }
 
   @Override
