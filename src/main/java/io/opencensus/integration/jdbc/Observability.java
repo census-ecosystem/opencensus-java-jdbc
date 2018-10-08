@@ -37,7 +37,6 @@ import io.opencensus.trace.Status;
 import io.opencensus.trace.Tracer;
 import io.opencensus.trace.Tracing;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
@@ -48,14 +47,6 @@ public final class Observability {
   private static final Tagger tagger = Tags.getTagger();
   private static final Tracer tracer = Tracing.getTracer();
 
-  private static final TagValue DETECTED_OS_NAME =
-      TagValue.create(System.getProperty("os.name", ""));
-  private static final TagValue DETECTED_ARCH = TagValue.create(System.getProperty("os.arch", ""));
-  private static final TagValue DETECTED_OS_VERSION =
-      TagValue.create(System.getProperty("os.version", ""));
-  private static final TagValue DETECTED_JAVA_VERSION =
-      TagValue.create(System.getProperty("java.version", ""));
-
   // Units of measurement
   private static final String BYTES = "By";
   private static final String DIMENSIONLESS = "1";
@@ -63,22 +54,17 @@ public final class Observability {
 
   // Tag keys
   public static final TagKey KEY_METHOD = TagKey.create("method");
-  public static final TagKey KEY_PHASE = TagKey.create("phase");
-  public static final TagKey KEY_REASON = TagKey.create("reason");
-  public static final TagKey KEY_TYPE = TagKey.create("type");
+  public static final TagKey KEY_ERROR = TagKey.create("error");
+  public static final TagKey KEY_STATUS = TagKey.create("status");
+
+  // Tag values
+  private static final TagValue VALUE_OK = TagValue.create("OK");
+  private static final TagValue VALUE_ERROR = TagValue.create("ERROR");
 
   // Measures
-  public static final MeasureLong MEASURE_CALLS =
-      MeasureLong.create("java.sql/calls", "The number of calls to the server", DIMENSIONLESS);
-  public static final MeasureLong MEASURE_ERRORS =
-      MeasureLong.create("java.sql/errors", "The number of errors encountered", DIMENSIONLESS);
-  public static final MeasureLong MEASURE_KEY_LENGTH =
-      MeasureLong.create("java.sql/key_length", "Records the lengths of keys", BYTES);
   public static final MeasureDouble MEASURE_LATENCY_MS =
       MeasureDouble.create(
           "java.sql/latency", "The latency of calls in milliseconds", MILLISECONDS);
-  public static final MeasureLong MEASURE_VALUE_LENGTH =
-      MeasureLong.create("java.sql/value_length", "Records the lengths of values", BYTES);
 
   // Default distribution buckets.
   private static final Aggregation DEFAULT_BYTES_DISTRIBUTION =
@@ -141,7 +127,7 @@ public final class Observability {
                   200000.0,
                   500000.0)));
 
-  private static TagContext buildTagContextWithSystemProperties(Map<TagKey, TagValue> tags) {
+  private static TagContext buildTagContextWithTags(Map<TagKey, TagValue> tags) {
     TagContextBuilder tagContextBuilder = tagger.currentBuilder();
     for (Map.Entry<TagKey, TagValue> tag : tags.entrySet()) {
       tagContextBuilder.put(tag.getKey(), tag.getValue());
@@ -149,28 +135,14 @@ public final class Observability {
     return tagContextBuilder.build();
   }
 
-  private static void recordTaggedStat(
-      TagKey tagKey, String tagValue, MeasureLong measureLong, long value) {
-    recordStatWithTags(
-        measureLong, value, Collections.singletonMap(tagKey, TagValue.create(tagValue)));
-  }
-
-  private static void recordTaggedStat(
-      TagKey tagKey, String tagValue, MeasureDouble measureDouble, double value) {
-    statsRecorder
-        .newMeasureMap()
-        .put(measureDouble, value)
-        .record(
-            buildTagContextWithSystemProperties(
-                Collections.singletonMap(tagKey, TagValue.create(tagValue))));
+  private static void recordStatWithTags(
+      MeasureLong measureLong, long value, Map<TagKey, TagValue> tags) {
+    statsRecorder.newMeasureMap().put(measureLong, value).record(buildTagContextWithTags(tags));
   }
 
   private static void recordStatWithTags(
-      MeasureLong measureLong, long value, Map<TagKey, TagValue> tags) {
-    statsRecorder
-        .newMeasureMap()
-        .put(measureLong, value)
-        .record(buildTagContextWithSystemProperties(tags));
+      MeasureDouble measureDouble, double value, Map<TagKey, TagValue> tags) {
+    statsRecorder.newMeasureMap().put(measureDouble, value).record(buildTagContextWithTags(tags));
   }
 
   public enum TraceOption {
@@ -195,6 +167,7 @@ public final class Observability {
     private final long startTimeNs;
     private final String method;
     private boolean closed;
+    private String recordedError;
 
     TrackingOperation(String name, String method) {
       this(name, method, null);
@@ -218,29 +191,33 @@ public final class Observability {
       if (closed) return;
 
       try {
-        // Record the number of calls of the made method.
-        recordTaggedStat(KEY_METHOD, this.method, MEASURE_CALLS, 1L);
+        // Finally record the latency of the entire call,
+        // as well as "status": "OK" for non-error calls.
+        Map<TagKey, TagValue> tags = new HashMap<>();
+        tags.put(KEY_METHOD, TagValue.create(this.method));
+
+        if (recordedError == null) {
+          tags.put(KEY_STATUS, VALUE_OK);
+        } else {
+          tags.put(KEY_ERROR, TagValue.create(recordedError));
+          tags.put(KEY_STATUS, VALUE_ERROR);
+        }
 
         long totalTimeNs = System.nanoTime() - this.startTimeNs;
         double timeSpentMs = ((double) totalTimeNs) / 1e6;
 
-        // Finally record the latency of the entire call.
-        recordTaggedStat(KEY_METHOD, this.method, MEASURE_LATENCY_MS, timeSpentMs);
+        // Now finally record all the stats the same tags.
+        recordStatWithTags(MEASURE_LATENCY_MS, timeSpentMs, tags);
       } finally {
         closed = true;
       }
     }
 
-    // Ends and Annotates the underlying span with the description of the exception and also sets
-    // its status to indicate the exception but it also increments the number of errors by 1,
-    // adding tags: "method", "reason" to the recorded metric.
+    // Ends and Annotates the underlying span with the description
+    // of the exception. The actual ending will be performed by end.
     void endWithException(Exception e) {
-      String detail = e.toString();
-      span.setStatus(Status.INTERNAL.withDescription(detail));
-      Map<TagKey, TagValue> tags = new HashMap<>();
-      tags.put(KEY_REASON, TagValue.create(detail));
-      tags.put(KEY_METHOD, TagValue.create(this.method));
-      recordStatWithTags(MEASURE_ERRORS, 1, tags);
+      recordedError = e.toString();
+      span.setStatus(Status.INTERNAL.withDescription(recordedError));
     }
   }
 
@@ -263,31 +240,13 @@ public final class Observability {
               "The distribution of the latencies of various calls in milliseconds",
               MEASURE_LATENCY_MS,
               DEFAULT_MILLISECONDS_DISTRIBUTION,
-              Arrays.asList(KEY_METHOD, KEY_PHASE, KEY_REASON, KEY_TYPE)),
+              Arrays.asList(KEY_METHOD, KEY_ERROR, KEY_STATUS)),
           View.create(
               Name.create("java.sql/client/calls"),
               "The number of various calls of methods",
-              MEASURE_CALLS,
+              MEASURE_LATENCY_MS,
               countAggregation,
-              Arrays.asList(KEY_METHOD, KEY_PHASE, KEY_REASON, KEY_TYPE)),
-          View.create(
-              Name.create("java.sql/client/errors"),
-              "The number of errors encountered",
-              MEASURE_ERRORS,
-              countAggregation,
-              Arrays.asList(KEY_METHOD, KEY_PHASE, KEY_REASON, KEY_TYPE)),
-          View.create(
-              Name.create("java.sql/client/key_length"),
-              "The distribution of lengths of keys",
-              MEASURE_KEY_LENGTH,
-              DEFAULT_BYTES_DISTRIBUTION,
-              Arrays.asList(KEY_METHOD, KEY_PHASE, KEY_REASON, KEY_TYPE)),
-          View.create(
-              Name.create("java.sql/client/value_length"),
-              "The distribution of lengths of values",
-              MEASURE_VALUE_LENGTH,
-              DEFAULT_BYTES_DISTRIBUTION,
-              Arrays.asList(KEY_METHOD, KEY_PHASE, KEY_REASON, KEY_TYPE))
+              Arrays.asList(KEY_METHOD, KEY_ERROR, KEY_STATUS))
         };
 
     ViewManager viewManager = Stats.getViewManager();
