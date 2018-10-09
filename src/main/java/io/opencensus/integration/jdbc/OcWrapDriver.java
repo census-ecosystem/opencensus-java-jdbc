@@ -40,7 +40,7 @@ public class OcWrapDriver implements Driver {
   @Override
   public java.sql.Connection connect(String url, Properties info) throws SQLException {
     TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan("java.sql.Driver.connect", "connect");
+        Observability.createRoundtripTrackingSpan("java.sql.Driver.connect");
 
     try (Scope ws = trackingOperation.withSpan()) {
       return new OcWrapConnection(

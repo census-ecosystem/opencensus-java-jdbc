@@ -41,7 +41,7 @@ public class OcWrapConnection implements Connection {
     // This method directly touches the database:
     // https://docs.oracle.com/javase/8/docs/api/java/sql/Connection.html#abort-java.util.concurrent.Executor-
     TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan("java.sql.Connection.abort", "abort");
+        Observability.createRoundtripTrackingSpan("java.sql.Connection.abort");
 
     try (Scope ws = trackingOperation.withSpan()) {
       this.connection.abort(executor);
@@ -58,8 +58,7 @@ public class OcWrapConnection implements Connection {
     // This method may directly touch the database:
     // https://docs.oracle.com/javase/8/docs/api/java/sql/Connection.html#clearWarnings--
     TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.Connection.clearWarnings", "clearWarnings");
+        Observability.createRoundtripTrackingSpan("java.sql.Connection.clearWarnings");
 
     try (Scope ws = trackingOperation.withSpan()) {
       this.connection.clearWarnings();
@@ -76,7 +75,7 @@ public class OcWrapConnection implements Connection {
     // This method directly touches the database:
     // https://docs.oracle.com/javase/8/docs/api/java/sql/Connection.html#close--
     TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan("java.sql.Connection.close", "close");
+        Observability.createRoundtripTrackingSpan("java.sql.Connection.close");
 
     try (Scope ws = trackingOperation.withSpan()) {
       this.connection.close();
@@ -93,7 +92,7 @@ public class OcWrapConnection implements Connection {
     // This method directly touches the database:
     // https://docs.oracle.com/javase/8/docs/api/java/sql/Connection.html#commit--
     TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan("java.sql.Connection.commit", "commit");
+        Observability.createRoundtripTrackingSpan("java.sql.Connection.commit");
 
     try (Scope ws = trackingOperation.withSpan()) {
       this.connection.commit();
@@ -214,7 +213,7 @@ public class OcWrapConnection implements Connection {
     // This method directly touches the database:
     // https://docs.oracle.com/javase/8/docs/api/java/sql/Connection.html#getMetaData--
     TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan("java.sql.Connection.getMetaData", "getMetaData");
+        Observability.createRoundtripTrackingSpan("java.sql.Connection.getMetaData");
 
     try (Scope ws = trackingOperation.withSpan()) {
       return this.connection.getMetaData();
@@ -238,7 +237,7 @@ public class OcWrapConnection implements Connection {
     // This method directly touches the database:
     // https://docs.oracle.com/javase/8/docs/api/java/sql/Connection.html#getSchema--
     TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan("java.sql.Connection.getSchema", "getSchema");
+        Observability.createRoundtripTrackingSpan("java.sql.Connection.getSchema");
 
     try (Scope ws = trackingOperation.withSpan()) {
       return this.connection.getSchema();
@@ -255,8 +254,7 @@ public class OcWrapConnection implements Connection {
     // This method directly touches the database:
     // https://docs.oracle.com/javase/8/docs/api/java/sql/Connection.html#getTransactionIsolation--
     TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.Connection.getTransactionIsolation", "getTransactionIsolation");
+        Observability.createRoundtripTrackingSpan("java.sql.Connection.getTransactionIsolation");
 
     try (Scope ws = trackingOperation.withSpan()) {
       return this.connection.getTransactionIsolation();
@@ -299,7 +297,7 @@ public class OcWrapConnection implements Connection {
     // This method directly touches the database:
     // https://docs.oracle.com/javase/8/docs/api/java/sql/Connection.html#isValid-int-
     TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan("java.sql.Connection.isValid", "isValid");
+        Observability.createRoundtripTrackingSpan("java.sql.Connection.isValid");
 
     try (Scope ws = trackingOperation.withSpan()) {
       return this.connection.isValid(timeout);
@@ -317,7 +315,7 @@ public class OcWrapConnection implements Connection {
     // https://docs.oracle.com/javase/8/docs/api/java/sql/Connection.html#nativeSQL-java.lang.String-
     TrackingOperation trackingOperation =
         Observability.createRoundtripTrackingSpan(
-            "java.sql.Connection.nativeSQL", "nativeSQL", this.shouldAnnotateSpansWithSQL, SQL);
+            "java.sql.Connection.nativeSQL", this.shouldAnnotateSpansWithSQL, SQL);
 
     try (Scope ws = trackingOperation.withSpan()) {
       return this.connection.nativeSQL(SQL);
@@ -420,8 +418,7 @@ public class OcWrapConnection implements Connection {
     // This method directly touches the database:
     // https://docs.oracle.com/javase/8/docs/api/java/sql/Connection.html#releaseSavepoint-java.sql.Savepoint-
     TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.Connection.releaseSavepoint", "releaseSavepoint");
+        Observability.createRoundtripTrackingSpan("java.sql.Connection.releaseSavepoint");
 
     try (Scope ws = trackingOperation.withSpan()) {
       this.connection.releaseSavepoint(savepoint);
@@ -438,7 +435,7 @@ public class OcWrapConnection implements Connection {
     // This method directly touches the database:
     // https://docs.oracle.com/javase/8/docs/api/java/sql/Connection.html#rollback--
     TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan("java.sql.Connection.rollback", "rollback");
+        Observability.createRoundtripTrackingSpan("java.sql.Connection.rollback");
 
     try (Scope ws = trackingOperation.withSpan()) {
       this.connection.rollback();
@@ -455,7 +452,7 @@ public class OcWrapConnection implements Connection {
     // This method directly touches the database:
     // https://docs.oracle.com/javase/8/docs/api/java/sql/Connection.html#rollback-java.sql.Savepoint-
     TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan("java.sql.Connection.rollback", "rollback");
+        Observability.createRoundtripTrackingSpan("java.sql.Connection.rollback");
 
     try (Scope ws = trackingOperation.withSpan()) {
       this.connection.rollback(savepoint);
@@ -487,8 +484,7 @@ public class OcWrapConnection implements Connection {
     // This method may touch the database:
     // https://docs.oracle.com/javase/8/docs/api/java/sql/Connection.html#setClientInfo-java.util.Properties-
     TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.Connection.setClientInfo", "setClientInfo");
+        Observability.createRoundtripTrackingSpan("java.sql.Connection.setClientInfo");
 
     try (Scope ws = trackingOperation.withSpan()) {
       this.connection.setClientInfo(properties);
@@ -505,8 +501,7 @@ public class OcWrapConnection implements Connection {
     // This method may touch the database:
     // https://docs.oracle.com/javase/8/docs/api/java/sql/Connection.html#setClientInfo-java.lang.String-java.lang.String-
     TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.Connection.setClientInfo", "setClientInfo");
+        Observability.createRoundtripTrackingSpan("java.sql.Connection.setClientInfo");
 
     try (Scope ws = trackingOperation.withSpan()) {
       this.connection.setClientInfo(name, value);
@@ -531,8 +526,7 @@ public class OcWrapConnection implements Connection {
     // This method may touch the database or incur some expenses:
     // https://docs.oracle.com/javase/8/docs/api/java/sql/Connection.html#setNetworkTimeout-java.util.concurrent.Executor-int-
     TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.Connection.setNetowrkTimeout", "setNetowrkTimeout");
+        Observability.createRoundtripTrackingSpan("java.sql.Connection.setNetowrkTimeout");
 
     try (Scope ws = trackingOperation.withSpan()) {
       this.connection.setNetworkTimeout(executor, milliseconds);
@@ -549,7 +543,7 @@ public class OcWrapConnection implements Connection {
     // This method directly touches the database:
     // https://docs.oracle.com/javase/8/docs/api/java/sql/Connection.html#setReadOnly-boolean-
     TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan("java.sql.Connection.setReadOnly", "setReadOnly");
+        Observability.createRoundtripTrackingSpan("java.sql.Connection.setReadOnly");
 
     try (Scope ws = trackingOperation.withSpan()) {
       this.connection.setReadOnly(readOnly);
@@ -566,8 +560,7 @@ public class OcWrapConnection implements Connection {
     // This method directly touches the database:
     // https://docs.oracle.com/javase/8/docs/api/java/sql/Connection.html#setSavepoint--
     TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.Connection.setSavepoint", "setSavepoint");
+        Observability.createRoundtripTrackingSpan("java.sql.Connection.setSavepoint");
 
     try (Scope ws = trackingOperation.withSpan()) {
       return this.connection.setSavepoint();
@@ -584,8 +577,7 @@ public class OcWrapConnection implements Connection {
     // This method directly touches the database:
     // https://docs.oracle.com/javase/8/docs/api/java/sql/Connection.html#setSavepoint-java.lang.String-
     TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.Connection.setSavepoint", "setSavepoint");
+        Observability.createRoundtripTrackingSpan("java.sql.Connection.setSavepoint");
 
     try (Scope ws = trackingOperation.withSpan()) {
       return this.connection.setSavepoint(name);
@@ -602,8 +594,7 @@ public class OcWrapConnection implements Connection {
     // This method directly touches the database:
     // https://docs.oracle.com/javase/8/docs/api/java/sql/Connection.html#setSchema-java.lang.String-
     TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.Connection.setSavepoint", "setSavepoint");
+        Observability.createRoundtripTrackingSpan("java.sql.Connection.setSavepoint");
 
     try (Scope ws = trackingOperation.withSpan()) {
       this.connection.setSchema(schema);
@@ -620,8 +611,7 @@ public class OcWrapConnection implements Connection {
     // This method directly touches the database:
     // https://docs.oracle.com/javase/8/docs/api/java/sql/Connection.html#setTransactionIsolation-int-
     TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.Connection.setTransactionIsolation", "setTransactionIsolation");
+        Observability.createRoundtripTrackingSpan("java.sql.Connection.setTransactionIsolation");
 
     try (Scope ws = trackingOperation.withSpan()) {
       this.connection.setTransactionIsolation(level);

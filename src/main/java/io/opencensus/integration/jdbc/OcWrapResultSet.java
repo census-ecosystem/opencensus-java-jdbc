@@ -32,8 +32,7 @@ public class OcWrapResultSet implements ResultSet {
     // This method may touch the database:
     // https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSet.html#clearWarnings--
     TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.ResultSet.clearWarnings", "clearWarnings");
+        Observability.createRoundtripTrackingSpan("java.sql.ResultSet.clearWarnings");
 
     try (Scope ws = trackingOperation.withSpan()) {
       this.resultSet.clearWarnings();
@@ -50,7 +49,7 @@ public class OcWrapResultSet implements ResultSet {
     // This method goes to the database directly:
     // https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSet.html#close--
     TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan("java.sql.ResultSet.close", "close");
+        Observability.createRoundtripTrackingSpan("java.sql.ResultSet.close");
 
     try (Scope ws = trackingOperation.withSpan()) {
       this.resultSet.close();
@@ -67,7 +66,7 @@ public class OcWrapResultSet implements ResultSet {
     // This method goes to the database directly:
     // https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSet.html#deleteRow--
     TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan("java.sql.ResultSet.deleteRow", "deleteRow");
+        Observability.createRoundtripTrackingSpan("java.sql.ResultSet.deleteRow");
 
     try (Scope ws = trackingOperation.withSpan()) {
       this.resultSet.deleteRow();
@@ -84,7 +83,7 @@ public class OcWrapResultSet implements ResultSet {
     // This method may touch the database:
     // https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSet.html#findColumn-java.lang.String-
     TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan("java.sql.ResultSet.findColumn", "findColumn");
+        Observability.createRoundtripTrackingSpan("java.sql.ResultSet.findColumn");
 
     try (Scope ws = trackingOperation.withSpan()) {
       return this.resultSet.findColumn(columnLabel);
@@ -101,7 +100,7 @@ public class OcWrapResultSet implements ResultSet {
     // This method may touch the database:
     // https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSet.html#first--
     TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan("java.sql.ResultSet.first", "first");
+        Observability.createRoundtripTrackingSpan("java.sql.ResultSet.first");
 
     try (Scope ws = trackingOperation.withSpan()) {
       return this.resultSet.first();
@@ -118,7 +117,7 @@ public class OcWrapResultSet implements ResultSet {
     // This method may touch the database:
     // https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSet.html#insertRow--
     TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan("java.sql.ResultSet.insertRow", "insertRow");
+        Observability.createRoundtripTrackingSpan("java.sql.ResultSet.insertRow");
 
     try (Scope ws = trackingOperation.withSpan()) {
       this.resultSet.insertRow();
@@ -785,7 +784,7 @@ public class OcWrapResultSet implements ResultSet {
     // This method may touch the database:
     // https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSet.html#isLast--
     TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan("java.sql.ResultSet.isLast", "isLast");
+        Observability.createRoundtripTrackingSpan("java.sql.ResultSet.isLast");
 
     try (Scope ws = trackingOperation.withSpan()) {
       return this.resultSet.isLast();
@@ -816,8 +815,7 @@ public class OcWrapResultSet implements ResultSet {
     // This method may touch the database:
     // https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSet.html#getCursorName--
     TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.ResultSet.getCursorName", "getCursorName");
+        Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getCursorName");
 
     try (Scope ws = trackingOperation.withSpan()) {
       return this.resultSet.getCursorName();
@@ -876,8 +874,7 @@ public class OcWrapResultSet implements ResultSet {
     // This method may touch the database:
     // https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSet.html#getAsciiStream-int-
     TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.ResultSet.getAsciiStream", "getAsciiStream");
+        Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getAsciiStream");
 
     try (Scope ws = trackingOperation.withSpan()) {
       return this.resultSet.getAsciiStream(columnIndex);
@@ -894,8 +891,7 @@ public class OcWrapResultSet implements ResultSet {
     // This method may touch the database:
     // https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSet.html#getAsciiStream-java.lang.String-
     TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.ResultSet.getAsciiStream", "getAsciiStream");
+        Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getAsciiStream");
 
     try (Scope ws = trackingOperation.withSpan()) {
       return this.resultSet.getAsciiStream(columnLabel);
@@ -913,8 +909,7 @@ public class OcWrapResultSet implements ResultSet {
     // This method may touch the database:
     // https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSet.html#getUnicodeStream-int-
     TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.ResultSet.getUnicodeStream", "getUnicodeBinaryStream");
+        Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getUnicodeStream");
 
     try (Scope ws = trackingOperation.withSpan()) {
       return this.resultSet.getUnicodeStream(columnIndex);
@@ -932,8 +927,7 @@ public class OcWrapResultSet implements ResultSet {
     // This method may touch the database:
     // https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSet.html#getUnicodeStream-java.lang.String-
     TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.ResultSet.getUnicodeStream", "getUnicodeBinaryStream");
+        Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getUnicodeStream");
 
     try (Scope ws = trackingOperation.withSpan()) {
       return this.resultSet.getUnicodeStream(columnLabel);
@@ -1284,8 +1278,7 @@ public class OcWrapResultSet implements ResultSet {
     // This method may touch the database:
     // https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSet.html#getHoldability--
     TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.ResultSet.getHoldability", "getHoldability");
+        Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getHoldability");
 
     try (Scope ws = trackingOperation.withSpan()) {
       return this.resultSet.getHoldability();
@@ -1302,7 +1295,7 @@ public class OcWrapResultSet implements ResultSet {
     // This method goes to the database directly:
     // https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSet.html#updateRow--
     TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateRow", "updateRow");
+        Observability.createRoundtripTrackingSpan("java.sql.ResultSet.updateRow");
 
     try (Scope ws = trackingOperation.withSpan()) {
       this.resultSet.updateRow();
@@ -1361,8 +1354,7 @@ public class OcWrapResultSet implements ResultSet {
     // This method may touch the database:
     // https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSet.html#getTimestamp-int-
     TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.ResultSet.getTimestamp", "getTimestamp");
+        Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getTimestamp");
 
     try (Scope ws = trackingOperation.withSpan()) {
       return this.resultSet.getTimestamp(parameterIndex);
@@ -1380,8 +1372,7 @@ public class OcWrapResultSet implements ResultSet {
     // This method may touch the database:
     // https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSet.html#getTimestamp-int-java.util.Calendar-
     TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.ResultSet.getTimestamp", "getTimestamp");
+        Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getTimestamp");
 
     try (Scope ws = trackingOperation.withSpan()) {
       return this.resultSet.getTimestamp(parameterIndex, cal);
@@ -1398,8 +1389,7 @@ public class OcWrapResultSet implements ResultSet {
     // This method may touch the database:
     // https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSet.html#getTimestamp-java.lang.String-
     TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.ResultSet.getTimestamp", "getTimestamp");
+        Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getTimestamp");
 
     try (Scope ws = trackingOperation.withSpan()) {
       return this.resultSet.getTimestamp(parameterName);
@@ -1417,8 +1407,7 @@ public class OcWrapResultSet implements ResultSet {
     // This method may touch the database:
     // https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSet.html#getTimestamp-java.lang.String-java.util.Calendar-
     TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.ResultSet.getTimestamp", "getTimestamp");
+        Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getTimestamp");
 
     try (Scope ws = trackingOperation.withSpan()) {
       return this.resultSet.getTimestamp(parameterName, cal);
@@ -1435,8 +1424,7 @@ public class OcWrapResultSet implements ResultSet {
     // This method may touch the database:
     // https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSet.html#moveToCurrentRow--
     TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.ResultSet.moveToCurrentRow", "moveToCurrentRow");
+        Observability.createRoundtripTrackingSpan("java.sql.ResultSet.moveToCurrentRow");
 
     try (Scope ws = trackingOperation.withSpan()) {
       this.resultSet.moveToCurrentRow();
@@ -1453,8 +1441,7 @@ public class OcWrapResultSet implements ResultSet {
     // This method may touch the database:
     // https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSet.html#moveToInsertRow--
     TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.ResultSet.moveToInsertRow", "moveToInsertRow");
+        Observability.createRoundtripTrackingSpan("java.sql.ResultSet.moveToInsertRow");
 
     try (Scope ws = trackingOperation.withSpan()) {
       this.resultSet.moveToInsertRow();
@@ -1471,7 +1458,7 @@ public class OcWrapResultSet implements ResultSet {
     // This method may touch the database:
     // https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSet.html#last--
     TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan("java.sql.ResultSet.last", "last");
+        Observability.createRoundtripTrackingSpan("java.sql.ResultSet.last");
 
     try (Scope ws = trackingOperation.withSpan()) {
       return this.resultSet.last();
@@ -1488,7 +1475,7 @@ public class OcWrapResultSet implements ResultSet {
     // This method may touch the database:
     // https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSet.html#afterLast--
     TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan("java.sql.ResultSet.afterLast", "afterLast");
+        Observability.createRoundtripTrackingSpan("java.sql.ResultSet.afterLast");
 
     try (Scope ws = trackingOperation.withSpan()) {
       this.resultSet.afterLast();
@@ -1505,7 +1492,7 @@ public class OcWrapResultSet implements ResultSet {
     // This method may touch the database:
     // https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSet.html#beforeFirst--
     TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan("java.sql.ResultSet.beforeFirst", "beforeFirst");
+        Observability.createRoundtripTrackingSpan("java.sql.ResultSet.beforeFirst");
 
     try (Scope ws = trackingOperation.withSpan()) {
       this.resultSet.beforeFirst();
@@ -1522,7 +1509,7 @@ public class OcWrapResultSet implements ResultSet {
     // This method may touch the database:
     // https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSet.html#next--
     TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan("java.sql.ResultSet.next", "next");
+        Observability.createRoundtripTrackingSpan("java.sql.ResultSet.next");
 
     try (Scope ws = trackingOperation.withSpan()) {
       return this.resultSet.next();
@@ -1539,7 +1526,7 @@ public class OcWrapResultSet implements ResultSet {
     // This method may touch the database:
     // https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSet.html#previous--
     TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan("java.sql.ResultSet.previous", "previous");
+        Observability.createRoundtripTrackingSpan("java.sql.ResultSet.previous");
 
     try (Scope ws = trackingOperation.withSpan()) {
       return this.resultSet.previous();
@@ -1556,7 +1543,7 @@ public class OcWrapResultSet implements ResultSet {
     // This method may touch the database:
     // https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSet.html#absolute-int-
     TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan("java.sql.ResultSet.absolute", "absolute");
+        Observability.createRoundtripTrackingSpan("java.sql.ResultSet.absolute");
 
     try (Scope ws = trackingOperation.withSpan()) {
       return this.resultSet.absolute(rows);
@@ -1573,7 +1560,7 @@ public class OcWrapResultSet implements ResultSet {
     // This method may touch the database:
     // https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSet.html#getRow--
     TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getRow", "getRow");
+        Observability.createRoundtripTrackingSpan("java.sql.ResultSet.getRow");
 
     try (Scope ws = trackingOperation.withSpan()) {
       return this.resultSet.getRow();
@@ -1590,7 +1577,7 @@ public class OcWrapResultSet implements ResultSet {
     // This method may touch the database:
     // https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSet.html#relative-int-
     TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan("java.sql.ResultSet.relative", "relative");
+        Observability.createRoundtripTrackingSpan("java.sql.ResultSet.relative");
 
     try (Scope ws = trackingOperation.withSpan()) {
       return this.resultSet.relative(rows);
@@ -1607,8 +1594,7 @@ public class OcWrapResultSet implements ResultSet {
     // This method goes to the database directly:
     // https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSet.html#cancelRowUpdates--
     TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.ResultSet.cancelRowUpdates", "cancelRowUpdates");
+        Observability.createRoundtripTrackingSpan("java.sql.ResultSet.cancelRowUpdates");
 
     try (Scope ws = trackingOperation.withSpan()) {
       this.resultSet.cancelRowUpdates();
@@ -1625,7 +1611,7 @@ public class OcWrapResultSet implements ResultSet {
     // This method goes to the database directly:
     // https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSet.html#refreshRow--
     TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan("java.sql.ResultSet.refreshRow", "refreshRow");
+        Observability.createRoundtripTrackingSpan("java.sql.ResultSet.refreshRow");
 
     try (Scope ws = trackingOperation.withSpan()) {
       this.resultSet.refreshRow();

@@ -169,13 +169,13 @@ public final class Observability {
     private boolean closed;
     private String recordedError;
 
-    TrackingOperation(String name, String method) {
-      this(name, method, null);
+    TrackingOperation(String method) {
+      this(method, null);
     }
 
-    TrackingOperation(String name, String method, String sql) {
+    TrackingOperation(String method, String sql) {
       startTimeNs = System.nanoTime();
-      span = tracer.spanBuilder(name).startSpan();
+      span = tracer.spanBuilder(method).startSpan();
       this.method = method;
       if (sql != null) {
         span.putAttribute("sql", AttributeValue.stringAttributeValue(sql));
@@ -221,13 +221,13 @@ public final class Observability {
     }
   }
 
-  static TrackingOperation createRoundtripTrackingSpan(String spanName, String method) {
-    return new TrackingOperation(spanName, method);
+  static TrackingOperation createRoundtripTrackingSpan(String method) {
+    return new TrackingOperation(method);
   }
 
   static TrackingOperation createRoundtripTrackingSpan(
-      String spanName, String method, boolean canRecordSQL, String sql) {
-    return new TrackingOperation(spanName, method, canRecordSQL ? sql : null);
+      String method, boolean canRecordSQL, String sql) {
+    return new TrackingOperation(method, canRecordSQL ? sql : null);
   }
 
   public static void registerAllViews() {
