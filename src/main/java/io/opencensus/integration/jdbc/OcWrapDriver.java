@@ -46,7 +46,7 @@ public class OcWrapDriver implements Driver {
       return new OcWrapConnection(
           this.driver.connect(url, info), EnumSet.noneOf(TraceOption.class));
     } catch (Exception e) {
-      trackingOperation.endWithException(e);
+      trackingOperation.recordException(e);
       throw e;
     } finally {
       trackingOperation.end();

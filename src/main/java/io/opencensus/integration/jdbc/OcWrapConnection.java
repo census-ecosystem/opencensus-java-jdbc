@@ -46,7 +46,7 @@ public class OcWrapConnection implements Connection {
     try (Scope ws = trackingOperation.withSpan()) {
       this.connection.abort(executor);
     } catch (Exception e) {
-      trackingOperation.endWithException(e);
+      trackingOperation.recordException(e);
       throw e;
     } finally {
       trackingOperation.end();
@@ -63,7 +63,7 @@ public class OcWrapConnection implements Connection {
     try (Scope ws = trackingOperation.withSpan()) {
       this.connection.clearWarnings();
     } catch (Exception e) {
-      trackingOperation.endWithException(e);
+      trackingOperation.recordException(e);
       throw e;
     } finally {
       trackingOperation.end();
@@ -80,7 +80,7 @@ public class OcWrapConnection implements Connection {
     try (Scope ws = trackingOperation.withSpan()) {
       this.connection.close();
     } catch (Exception e) {
-      trackingOperation.endWithException(e);
+      trackingOperation.recordException(e);
       throw e;
     } finally {
       trackingOperation.end();
@@ -97,7 +97,7 @@ public class OcWrapConnection implements Connection {
     try (Scope ws = trackingOperation.withSpan()) {
       this.connection.commit();
     } catch (Exception e) {
-      trackingOperation.endWithException(e);
+      trackingOperation.recordException(e);
       throw e;
     } finally {
       trackingOperation.end();
@@ -218,7 +218,7 @@ public class OcWrapConnection implements Connection {
     try (Scope ws = trackingOperation.withSpan()) {
       return this.connection.getMetaData();
     } catch (Exception e) {
-      trackingOperation.endWithException(e);
+      trackingOperation.recordException(e);
       throw e;
     } finally {
       trackingOperation.end();
@@ -242,7 +242,7 @@ public class OcWrapConnection implements Connection {
     try (Scope ws = trackingOperation.withSpan()) {
       return this.connection.getSchema();
     } catch (Exception e) {
-      trackingOperation.endWithException(e);
+      trackingOperation.recordException(e);
       throw e;
     } finally {
       trackingOperation.end();
@@ -259,7 +259,7 @@ public class OcWrapConnection implements Connection {
     try (Scope ws = trackingOperation.withSpan()) {
       return this.connection.getTransactionIsolation();
     } catch (Exception e) {
-      trackingOperation.endWithException(e);
+      trackingOperation.recordException(e);
       throw e;
     } finally {
       trackingOperation.end();
@@ -302,7 +302,7 @@ public class OcWrapConnection implements Connection {
     try (Scope ws = trackingOperation.withSpan()) {
       return this.connection.isValid(timeout);
     } catch (Exception e) {
-      trackingOperation.endWithException(e);
+      trackingOperation.recordException(e);
       throw e;
     } finally {
       trackingOperation.end();
@@ -320,7 +320,7 @@ public class OcWrapConnection implements Connection {
     try (Scope ws = trackingOperation.withSpan()) {
       return this.connection.nativeSQL(SQL);
     } catch (Exception e) {
-      trackingOperation.endWithException(e);
+      trackingOperation.recordException(e);
       throw e;
     } finally {
       trackingOperation.end();
@@ -423,7 +423,7 @@ public class OcWrapConnection implements Connection {
     try (Scope ws = trackingOperation.withSpan()) {
       this.connection.releaseSavepoint(savepoint);
     } catch (Exception e) {
-      trackingOperation.endWithException(e);
+      trackingOperation.recordException(e);
       throw e;
     } finally {
       trackingOperation.end();
@@ -440,7 +440,7 @@ public class OcWrapConnection implements Connection {
     try (Scope ws = trackingOperation.withSpan()) {
       this.connection.rollback();
     } catch (Exception e) {
-      trackingOperation.endWithException(e);
+      trackingOperation.recordException(e);
       throw e;
     } finally {
       trackingOperation.end();
@@ -457,7 +457,7 @@ public class OcWrapConnection implements Connection {
     try (Scope ws = trackingOperation.withSpan()) {
       this.connection.rollback(savepoint);
     } catch (Exception e) {
-      trackingOperation.endWithException(e);
+      trackingOperation.recordException(e);
       throw e;
     } finally {
       trackingOperation.end();
@@ -489,7 +489,7 @@ public class OcWrapConnection implements Connection {
     try (Scope ws = trackingOperation.withSpan()) {
       this.connection.setClientInfo(properties);
     } catch (Exception e) {
-      trackingOperation.endWithException(e);
+      trackingOperation.recordException(e);
       throw e;
     } finally {
       trackingOperation.end();
@@ -506,7 +506,7 @@ public class OcWrapConnection implements Connection {
     try (Scope ws = trackingOperation.withSpan()) {
       this.connection.setClientInfo(name, value);
     } catch (Exception e) {
-      trackingOperation.endWithException(e);
+      trackingOperation.recordException(e);
       throw e;
     } finally {
       trackingOperation.end();
@@ -531,7 +531,7 @@ public class OcWrapConnection implements Connection {
     try (Scope ws = trackingOperation.withSpan()) {
       this.connection.setNetworkTimeout(executor, milliseconds);
     } catch (Exception e) {
-      trackingOperation.endWithException(e);
+      trackingOperation.recordException(e);
       throw e;
     } finally {
       trackingOperation.end();
@@ -548,7 +548,7 @@ public class OcWrapConnection implements Connection {
     try (Scope ws = trackingOperation.withSpan()) {
       this.connection.setReadOnly(readOnly);
     } catch (Exception e) {
-      trackingOperation.endWithException(e);
+      trackingOperation.recordException(e);
       throw e;
     } finally {
       trackingOperation.end();
@@ -565,7 +565,7 @@ public class OcWrapConnection implements Connection {
     try (Scope ws = trackingOperation.withSpan()) {
       return this.connection.setSavepoint();
     } catch (Exception e) {
-      trackingOperation.endWithException(e);
+      trackingOperation.recordException(e);
       throw e;
     } finally {
       trackingOperation.end();
@@ -582,7 +582,7 @@ public class OcWrapConnection implements Connection {
     try (Scope ws = trackingOperation.withSpan()) {
       return this.connection.setSavepoint(name);
     } catch (Exception e) {
-      trackingOperation.endWithException(e);
+      trackingOperation.recordException(e);
       throw e;
     } finally {
       trackingOperation.end();
@@ -599,7 +599,7 @@ public class OcWrapConnection implements Connection {
     try (Scope ws = trackingOperation.withSpan()) {
       this.connection.setSchema(schema);
     } catch (Exception e) {
-      trackingOperation.endWithException(e);
+      trackingOperation.recordException(e);
       throw e;
     } finally {
       trackingOperation.end();
@@ -616,7 +616,7 @@ public class OcWrapConnection implements Connection {
     try (Scope ws = trackingOperation.withSpan()) {
       this.connection.setTransactionIsolation(level);
     } catch (Exception e) {
-      trackingOperation.endWithException(e);
+      trackingOperation.recordException(e);
       throw e;
     } finally {
       trackingOperation.end();

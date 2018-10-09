@@ -37,7 +37,7 @@ public class OcWrapResultSet implements ResultSet {
     try (Scope ws = trackingOperation.withSpan()) {
       this.resultSet.clearWarnings();
     } catch (Exception e) {
-      trackingOperation.endWithException(e);
+      trackingOperation.recordException(e);
       throw e;
     } finally {
       trackingOperation.end();
@@ -54,7 +54,7 @@ public class OcWrapResultSet implements ResultSet {
     try (Scope ws = trackingOperation.withSpan()) {
       this.resultSet.close();
     } catch (Exception e) {
-      trackingOperation.endWithException(e);
+      trackingOperation.recordException(e);
       throw e;
     } finally {
       trackingOperation.end();
@@ -71,7 +71,7 @@ public class OcWrapResultSet implements ResultSet {
     try (Scope ws = trackingOperation.withSpan()) {
       this.resultSet.deleteRow();
     } catch (Exception e) {
-      trackingOperation.endWithException(e);
+      trackingOperation.recordException(e);
       throw e;
     } finally {
       trackingOperation.end();
@@ -88,7 +88,7 @@ public class OcWrapResultSet implements ResultSet {
     try (Scope ws = trackingOperation.withSpan()) {
       return this.resultSet.findColumn(columnLabel);
     } catch (Exception e) {
-      trackingOperation.endWithException(e);
+      trackingOperation.recordException(e);
       throw e;
     } finally {
       trackingOperation.end();
@@ -105,7 +105,7 @@ public class OcWrapResultSet implements ResultSet {
     try (Scope ws = trackingOperation.withSpan()) {
       return this.resultSet.first();
     } catch (Exception e) {
-      trackingOperation.endWithException(e);
+      trackingOperation.recordException(e);
       throw e;
     } finally {
       trackingOperation.end();
@@ -122,7 +122,7 @@ public class OcWrapResultSet implements ResultSet {
     try (Scope ws = trackingOperation.withSpan()) {
       this.resultSet.insertRow();
     } catch (Exception e) {
-      trackingOperation.endWithException(e);
+      trackingOperation.recordException(e);
       throw e;
     } finally {
       trackingOperation.end();
@@ -789,7 +789,7 @@ public class OcWrapResultSet implements ResultSet {
     try (Scope ws = trackingOperation.withSpan()) {
       return this.resultSet.isLast();
     } catch (Exception e) {
-      trackingOperation.endWithException(e);
+      trackingOperation.recordException(e);
       throw e;
     } finally {
       trackingOperation.end();
@@ -820,7 +820,7 @@ public class OcWrapResultSet implements ResultSet {
     try (Scope ws = trackingOperation.withSpan()) {
       return this.resultSet.getCursorName();
     } catch (Exception e) {
-      trackingOperation.endWithException(e);
+      trackingOperation.recordException(e);
       throw e;
     } finally {
       trackingOperation.end();
@@ -879,7 +879,7 @@ public class OcWrapResultSet implements ResultSet {
     try (Scope ws = trackingOperation.withSpan()) {
       return this.resultSet.getAsciiStream(columnIndex);
     } catch (Exception e) {
-      trackingOperation.endWithException(e);
+      trackingOperation.recordException(e);
       throw e;
     } finally {
       trackingOperation.end();
@@ -896,7 +896,7 @@ public class OcWrapResultSet implements ResultSet {
     try (Scope ws = trackingOperation.withSpan()) {
       return this.resultSet.getAsciiStream(columnLabel);
     } catch (Exception e) {
-      trackingOperation.endWithException(e);
+      trackingOperation.recordException(e);
       throw e;
     } finally {
       trackingOperation.end();
@@ -914,7 +914,7 @@ public class OcWrapResultSet implements ResultSet {
     try (Scope ws = trackingOperation.withSpan()) {
       return this.resultSet.getUnicodeStream(columnIndex);
     } catch (Exception e) {
-      trackingOperation.endWithException(e);
+      trackingOperation.recordException(e);
       throw e;
     } finally {
       trackingOperation.end();
@@ -932,7 +932,7 @@ public class OcWrapResultSet implements ResultSet {
     try (Scope ws = trackingOperation.withSpan()) {
       return this.resultSet.getUnicodeStream(columnLabel);
     } catch (Exception e) {
-      trackingOperation.endWithException(e);
+      trackingOperation.recordException(e);
       throw e;
     } finally {
       trackingOperation.end();
@@ -1283,7 +1283,7 @@ public class OcWrapResultSet implements ResultSet {
     try (Scope ws = trackingOperation.withSpan()) {
       return this.resultSet.getHoldability();
     } catch (Exception e) {
-      trackingOperation.endWithException(e);
+      trackingOperation.recordException(e);
       throw e;
     } finally {
       trackingOperation.end();
@@ -1300,7 +1300,7 @@ public class OcWrapResultSet implements ResultSet {
     try (Scope ws = trackingOperation.withSpan()) {
       this.resultSet.updateRow();
     } catch (Exception e) {
-      trackingOperation.endWithException(e);
+      trackingOperation.recordException(e);
       throw e;
     } finally {
       trackingOperation.end();
@@ -1359,7 +1359,7 @@ public class OcWrapResultSet implements ResultSet {
     try (Scope ws = trackingOperation.withSpan()) {
       return this.resultSet.getTimestamp(parameterIndex);
     } catch (Exception e) {
-      trackingOperation.endWithException(e);
+      trackingOperation.recordException(e);
       throw e;
     } finally {
       trackingOperation.end();
@@ -1377,7 +1377,7 @@ public class OcWrapResultSet implements ResultSet {
     try (Scope ws = trackingOperation.withSpan()) {
       return this.resultSet.getTimestamp(parameterIndex, cal);
     } catch (Exception e) {
-      trackingOperation.endWithException(e);
+      trackingOperation.recordException(e);
       throw e;
     } finally {
       trackingOperation.end();
@@ -1394,7 +1394,7 @@ public class OcWrapResultSet implements ResultSet {
     try (Scope ws = trackingOperation.withSpan()) {
       return this.resultSet.getTimestamp(parameterName);
     } catch (Exception e) {
-      trackingOperation.endWithException(e);
+      trackingOperation.recordException(e);
       throw e;
     } finally {
       trackingOperation.end();
@@ -1412,7 +1412,7 @@ public class OcWrapResultSet implements ResultSet {
     try (Scope ws = trackingOperation.withSpan()) {
       return this.resultSet.getTimestamp(parameterName, cal);
     } catch (Exception e) {
-      trackingOperation.endWithException(e);
+      trackingOperation.recordException(e);
       throw e;
     } finally {
       trackingOperation.end();
@@ -1429,7 +1429,7 @@ public class OcWrapResultSet implements ResultSet {
     try (Scope ws = trackingOperation.withSpan()) {
       this.resultSet.moveToCurrentRow();
     } catch (Exception e) {
-      trackingOperation.endWithException(e);
+      trackingOperation.recordException(e);
       throw e;
     } finally {
       trackingOperation.end();
@@ -1446,7 +1446,7 @@ public class OcWrapResultSet implements ResultSet {
     try (Scope ws = trackingOperation.withSpan()) {
       this.resultSet.moveToInsertRow();
     } catch (Exception e) {
-      trackingOperation.endWithException(e);
+      trackingOperation.recordException(e);
       throw e;
     } finally {
       trackingOperation.end();
@@ -1463,7 +1463,7 @@ public class OcWrapResultSet implements ResultSet {
     try (Scope ws = trackingOperation.withSpan()) {
       return this.resultSet.last();
     } catch (Exception e) {
-      trackingOperation.endWithException(e);
+      trackingOperation.recordException(e);
       throw e;
     } finally {
       trackingOperation.end();
@@ -1480,7 +1480,7 @@ public class OcWrapResultSet implements ResultSet {
     try (Scope ws = trackingOperation.withSpan()) {
       this.resultSet.afterLast();
     } catch (Exception e) {
-      trackingOperation.endWithException(e);
+      trackingOperation.recordException(e);
       throw e;
     } finally {
       trackingOperation.end();
@@ -1497,7 +1497,7 @@ public class OcWrapResultSet implements ResultSet {
     try (Scope ws = trackingOperation.withSpan()) {
       this.resultSet.beforeFirst();
     } catch (Exception e) {
-      trackingOperation.endWithException(e);
+      trackingOperation.recordException(e);
       throw e;
     } finally {
       trackingOperation.end();
@@ -1514,7 +1514,7 @@ public class OcWrapResultSet implements ResultSet {
     try (Scope ws = trackingOperation.withSpan()) {
       return this.resultSet.next();
     } catch (Exception e) {
-      trackingOperation.endWithException(e);
+      trackingOperation.recordException(e);
       throw e;
     } finally {
       trackingOperation.end();
@@ -1531,7 +1531,7 @@ public class OcWrapResultSet implements ResultSet {
     try (Scope ws = trackingOperation.withSpan()) {
       return this.resultSet.previous();
     } catch (Exception e) {
-      trackingOperation.endWithException(e);
+      trackingOperation.recordException(e);
       throw e;
     } finally {
       trackingOperation.end();
@@ -1548,7 +1548,7 @@ public class OcWrapResultSet implements ResultSet {
     try (Scope ws = trackingOperation.withSpan()) {
       return this.resultSet.absolute(rows);
     } catch (Exception e) {
-      trackingOperation.endWithException(e);
+      trackingOperation.recordException(e);
       throw e;
     } finally {
       trackingOperation.end();
@@ -1565,7 +1565,7 @@ public class OcWrapResultSet implements ResultSet {
     try (Scope ws = trackingOperation.withSpan()) {
       return this.resultSet.getRow();
     } catch (Exception e) {
-      trackingOperation.endWithException(e);
+      trackingOperation.recordException(e);
       throw e;
     } finally {
       trackingOperation.end();
@@ -1582,7 +1582,7 @@ public class OcWrapResultSet implements ResultSet {
     try (Scope ws = trackingOperation.withSpan()) {
       return this.resultSet.relative(rows);
     } catch (Exception e) {
-      trackingOperation.endWithException(e);
+      trackingOperation.recordException(e);
       throw e;
     } finally {
       trackingOperation.end();
@@ -1599,7 +1599,7 @@ public class OcWrapResultSet implements ResultSet {
     try (Scope ws = trackingOperation.withSpan()) {
       this.resultSet.cancelRowUpdates();
     } catch (Exception e) {
-      trackingOperation.endWithException(e);
+      trackingOperation.recordException(e);
       throw e;
     } finally {
       trackingOperation.end();
@@ -1616,7 +1616,7 @@ public class OcWrapResultSet implements ResultSet {
     try (Scope ws = trackingOperation.withSpan()) {
       this.resultSet.refreshRow();
     } catch (Exception e) {
-      trackingOperation.endWithException(e);
+      trackingOperation.recordException(e);
       throw e;
     } finally {
       trackingOperation.end();
