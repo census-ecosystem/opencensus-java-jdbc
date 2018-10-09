@@ -40,11 +40,13 @@ buildscript {
 
 def opencensusVersion = '0.16.1'
 def errorProneVersion = '2.3.1'
+def findBugsJsr305Version = '3.0.2'
 
 dependencies {
     compile "io.opencensus:opencensus-api:${opencensusVersion}"
     runtime "io.opencensus:opencensus-impl:${opencensusVersion}"
 
+    compileOnly "com.google.code.findbugs:jsr305:${findBugsJsr305Version}"
     compileOnly "com.google.errorprone:error_prone_annotations:${errorProneVersion}"
 }
 

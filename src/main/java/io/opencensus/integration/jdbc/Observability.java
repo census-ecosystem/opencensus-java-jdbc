@@ -14,7 +14,6 @@
 
 package io.opencensus.integration.jdbc;
 
-import com.sun.istack.internal.Nullable;
 import io.opencensus.common.Scope;
 import io.opencensus.stats.Aggregation;
 import io.opencensus.stats.Aggregation.Distribution;
@@ -38,6 +37,7 @@ import io.opencensus.trace.Tracer;
 import io.opencensus.trace.Tracing;
 import java.util.Arrays;
 import java.util.EnumSet;
+import javax.annotation.Nullable;
 
 public final class Observability {
 
