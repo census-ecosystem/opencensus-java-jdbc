@@ -57,20 +57,9 @@ public class OcWrapPreparedStatement implements PreparedStatement {
 
   @Override
   public void addBatch(String SQL) throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.PreparedStatement.addBatch",
-            "addBatch",
-            this.shouldAnnotateSpansWithSQL,
-            SQL);
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.preparedStatement.addBatch(SQL);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    // This method doesn't go over the network:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/PreparedStatement.html#addBatch--
+    this.preparedStatement.addBatch(SQL);
   }
 
   @Override
@@ -90,6 +79,9 @@ public class OcWrapPreparedStatement implements PreparedStatement {
 
   @Override
   public void clearBatch() throws SQLException {
+    // This method may go over the network:
+    // Inherited from:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/Statement.html#clearBatch--
     TrackingOperation trackingOperation =
         Observability.createRoundtripTrackingSpan(
             "java.sql.PreparedStatement.createBatch", "createBatch");
@@ -106,6 +98,9 @@ public class OcWrapPreparedStatement implements PreparedStatement {
 
   @Override
   public void clearWarnings() throws SQLException {
+    // This method may go over the network:
+    // Inherited from:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/Statement.html#clearWarnings--
     TrackingOperation trackingOperation =
         Observability.createRoundtripTrackingSpan(
             "java.sql.PreparedStatement.clearWarnings", "clearWarnings");
@@ -122,18 +117,9 @@ public class OcWrapPreparedStatement implements PreparedStatement {
 
   @Override
   public void clearParameters() throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.PreparedStatement.clearParameters", "clearParameters");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.preparedStatement.clearParameters();
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    // This method doesn't go over the network:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/PreparedStatement.html#clearParameters--
+    this.preparedStatement.clearParameters();
   }
 
   @Override
@@ -153,18 +139,10 @@ public class OcWrapPreparedStatement implements PreparedStatement {
 
   @Override
   public void closeOnCompletion() throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.PreparedStatement.closeOnCompletion", "closeOnCompletion");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.preparedStatement.closeOnCompletion();
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    // This method doesn't go over the network:
+    // Inherited from:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/Statement.html#closeOnCompletion--
+    this.preparedStatement.closeOnCompletion();
   }
 
   @Override
@@ -385,605 +363,299 @@ public class OcWrapPreparedStatement implements PreparedStatement {
 
   @Override
   public int getFetchDirection() throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.PreparedStatement.getFetchDirection", "getFetchDirection");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      return this.preparedStatement.getFetchDirection();
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    // This method doesn't go over the network:
+    // Inherited from:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/Statement.html#getFetchDirection--
+    return this.preparedStatement.getFetchDirection();
   }
 
   @Override
   public int getFetchSize() throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.PreparedStatement.getFetchSize", "getFetchSize");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      return this.preparedStatement.getFetchSize();
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    // This method doesn't go over the network:
+    // Inherited from:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/Statement.html#getFetchSize--
+    return this.preparedStatement.getFetchSize();
   }
 
   @Override
   public java.sql.ResultSet getGeneratedKeys() throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.PreparedStatement.getGeneratedKeys", "getGeneratedKeys");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      java.sql.ResultSet rs = this.preparedStatement.getGeneratedKeys();
-      return new OcWrapResultSet(rs);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    // This method doesn't go over the network:
+    // Inherited from:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/Statement.html#getGeneratedKeys--
+    java.sql.ResultSet rs = this.preparedStatement.getGeneratedKeys();
+    return new OcWrapResultSet(rs);
   }
 
   @Override
   public int getMaxFieldSize() throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.PreparedStatement.getMaxFieldSize", "getMaxFieldSize");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      return this.preparedStatement.getMaxFieldSize();
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    // This method doesn't go over the network:
+    // Inherited from:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/Statement.html#getMaxFieldSize--
+    return this.preparedStatement.getMaxFieldSize();
   }
 
   @Override
   public int getMaxRows() throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.PreparedStatement.getMaxRows", "getMaxRows");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      return this.preparedStatement.getMaxRows();
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    // This method doesn't go over the network:
+    // Inherited from:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/Statement.html#getMaxRows--
+    return this.preparedStatement.getMaxRows();
   }
 
   @Override
   public java.sql.ResultSetMetaData getMetaData() throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.PreparedStatement.getMetaData", "getMetaData");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      return this.preparedStatement.getMetaData();
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    // This method doesn't go over the network:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/PreparedStatement.html#getMetaData--
+    return this.preparedStatement.getMetaData();
   }
 
   @Override
   public boolean getMoreResults(int current) throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.PreparedStatement.getMoreResults", "getMoreResults");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      return this.preparedStatement.getMoreResults(current);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    // This method doesn't go over the network:
+    // Inherited from:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/Statement.html#getMoreResults--
+    return this.preparedStatement.getMoreResults(current);
   }
 
   @Override
   public boolean getMoreResults() throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.PreparedStatement.getMoreResults", "getMoreResults");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      return this.preparedStatement.getMoreResults();
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    // This method doesn't go over the network:
+    // Inherited from:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/Statement.html#getMoreResults-int-
+    return this.preparedStatement.getMoreResults();
   }
 
   @Override
   public java.sql.ResultSet getResultSet() throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.PreparedStatement.getResultSet", "getResultSet");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      java.sql.ResultSet rs = this.preparedStatement.getResultSet();
-      return new OcWrapResultSet(rs);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    // This method doesn't go over the network:
+    // Inherited from:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/Statement.html#getResultSet--
+    java.sql.ResultSet rs = this.preparedStatement.getResultSet();
+    return new OcWrapResultSet(rs);
   }
 
   @Override
   public int getResultSetConcurrency() throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.PreparedStatement.getResultSetConcurrency", "getResultSetConcurrency");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      return this.preparedStatement.getResultSetConcurrency();
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    // This method doesn't go over the network:
+    // Inherited from:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/Statement.html#getResultSetConcurrency--
+    return this.preparedStatement.getResultSetConcurrency();
   }
 
   @Override
   public int getQueryTimeout() throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.PreparedStatement.getQueryTimeout", "getQueryTimeout");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      return this.preparedStatement.getQueryTimeout();
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    // This method doesn't go over the network:
+    // Inherited from:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/Statement.html#getQueryTimeout--
+    return this.preparedStatement.getQueryTimeout();
   }
 
   @Override
   public java.sql.Connection getConnection() throws SQLException {
+    // This method doesn't go over the network:
+    // Inherited from:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/Statement.html#getConnection--
     return this.preparedStatement.getConnection();
   }
 
   @Override
   public java.sql.ParameterMetaData getParameterMetaData() throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.PreparedStatement.getParameterMetaData", "getParameterMetaData");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      return this.preparedStatement.getParameterMetaData();
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    // This method doesn't go over the network:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/PreparedStatement.html#getParameterMetaData--
+    return this.preparedStatement.getParameterMetaData();
   }
 
   @Override
   public int getResultSetHoldability() throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.PreparedStatement.getResultSetHoldability", "getResultSetHoldability");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      return this.preparedStatement.getResultSetHoldability();
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    // This method doesn't get over the network:
+    // Inherited from:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/Statement.html#getResultSetHoldability--
+    return this.preparedStatement.getResultSetHoldability();
   }
 
   @Override
   public int getResultSetType() throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.PreparedStatement.getResultSetType", "getResultSetType");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      return this.preparedStatement.getResultSetType();
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    // This method doesn't get over the network:
+    // Inherited from:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/Statement.html#getResultSetType--
+    return this.preparedStatement.getResultSetType();
   }
 
   @Override
   public int getUpdateCount() throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.PreparedStatement.getUpdateCount", "getUpdateCount");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      return this.preparedStatement.getUpdateCount();
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    // This method doesn't go over the network:
+    // Inherited from:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/Statement.html#getUpdateCount--
+    return this.preparedStatement.getUpdateCount();
   }
 
   @Override
   public java.sql.SQLWarning getWarnings() throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.PreparedStatement.getWarnings", "getWarnings");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      return this.preparedStatement.getWarnings();
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    // This method doesn't go over the network:
+    // Inherited from:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/Statement.html#getWarnings--
+    return this.preparedStatement.getWarnings();
   }
 
   @Override
   public void setArray(int parameterIndex, java.sql.Array x) throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.PreparedStatement.setArray", "setArray");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.preparedStatement.setArray(parameterIndex, x);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    // This method doesn't go over the network:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/PreparedStatement.html#setArray-int-java.sql.Array-
+    this.preparedStatement.setArray(parameterIndex, x);
   }
 
   @Override
   public void setAsciiStream(int parameterIndex, java.io.InputStream stream) throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.PreparedStatement.setAsciiStream", "setAsciiStream");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.preparedStatement.setAsciiStream(parameterIndex, stream);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    // This method doesn't go over the network:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/PreparedStatement.html#setAsciiStream-int-java.io.InputStream-
+    this.preparedStatement.setAsciiStream(parameterIndex, stream);
   }
 
   @Override
   public void setAsciiStream(int parameterIndex, java.io.InputStream stream, int length)
       throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.PreparedStatement.setAsciiStream", "setAsciiStream");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.preparedStatement.setAsciiStream(parameterIndex, stream, length);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    // This method doesn't go over the network:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/PreparedStatement.html#setAsciiStream-int-java.io.InputStream-int-
+    this.preparedStatement.setAsciiStream(parameterIndex, stream, length);
   }
 
   @Override
   public void setAsciiStream(int parameterIndex, java.io.InputStream stream, long length)
       throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.PreparedStatement.setAsciiStream", "setAsciiStream");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.preparedStatement.setAsciiStream(parameterIndex, stream, length);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    // This method doesn't go over the network:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/PreparedStatement.html#setAsciiStream-int-java.io.InputStream-long-
+    this.preparedStatement.setAsciiStream(parameterIndex, stream, length);
   }
 
   @Override
   public void setBigDecimal(int parameterIndex, java.math.BigDecimal x) throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.PreparedStatement.setBigDecimal", "setBigDecimal");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.preparedStatement.setBigDecimal(parameterIndex, x);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    // This method doesn't go over the network:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/PreparedStatement.html#setBigDecimal-int-java.math.BigDecimal-
+    this.preparedStatement.setBigDecimal(parameterIndex, x);
   }
 
   @Override
   public void setBinaryStream(int parameterIndex, java.io.InputStream stream) throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.PreparedStatement.setBinaryStream", "setBinaryStream");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.preparedStatement.setBinaryStream(parameterIndex, stream);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    // This method doesn't go over the network:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/PreparedStatement.html#setBinaryStream-int-java.io.InputStream-
+    this.preparedStatement.setBinaryStream(parameterIndex, stream);
   }
 
   @Override
   public void setBinaryStream(int parameterIndex, java.io.InputStream stream, int length)
       throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.PreparedStatement.setBinaryStream", "setBinaryStream");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.preparedStatement.setBinaryStream(parameterIndex, stream, length);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    // This method doesn't go over the network:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/PreparedStatement.html#setBinaryStream-int-java.io.InputStream-int-
+    this.preparedStatement.setBinaryStream(parameterIndex, stream, length);
   }
 
   @Override
   public void setBinaryStream(int parameterIndex, java.io.InputStream stream, long length)
       throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.PreparedStatement.setBinaryStream", "setBinaryStream");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.preparedStatement.setBinaryStream(parameterIndex, stream, length);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    // This method doesn't go oer the network:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/PreparedStatement.html#setBinaryStream-int-java.io.InputStream-long-
+    this.preparedStatement.setBinaryStream(parameterIndex, stream, length);
   }
 
   @Override
   public void setBlob(int parameterIndex, java.sql.Blob x) throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setBlob", "setBlob");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.preparedStatement.setBlob(parameterIndex, x);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    // This method doesn't go over the network:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/PreparedStatement.html#setBlob-int-java.sql.Blob-
+    this.preparedStatement.setBlob(parameterIndex, x);
   }
 
   @Override
   public void setBlob(int parameterIndex, java.io.InputStream x) throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setBlob", "setBlob");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.preparedStatement.setBlob(parameterIndex, x);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    // This method doesn't go over the network:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/PreparedStatement.html#setBlob-int-java.io.InputStream-
+    this.preparedStatement.setBlob(parameterIndex, x);
   }
 
   @Override
   public void setBlob(int parameterIndex, java.io.InputStream inputStream, long length)
       throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setBlob", "setBlob");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.preparedStatement.setBlob(parameterIndex, inputStream, length);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    // This method doesn't go over the network:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/PreparedStatement.html#setBlob-int-java.io.InputStream-long-
+    this.preparedStatement.setBlob(parameterIndex, inputStream, length);
   }
 
   @Override
   public void setBoolean(int parameterIndex, boolean x) throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.PreparedStatement.setBoolean", "setBoolean");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.preparedStatement.setBoolean(parameterIndex, x);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    // This method doesn't go over the network:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/PreparedStatement.html#setBoolean-int-boolean-
+    this.preparedStatement.setBoolean(parameterIndex, x);
   }
 
   @Override
   public void setByte(int parameterIndex, byte x) throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setByte", "setByte");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.preparedStatement.setByte(parameterIndex, x);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    // This method doesn't go over the network:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/PreparedStatement.html#setByte-int-byte-
+    this.preparedStatement.setByte(parameterIndex, x);
   }
 
   @Override
   public void setBytes(int parameterIndex, byte[] x) throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.PreparedStatement.setBytes", "setBytes");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.preparedStatement.setBytes(parameterIndex, x);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    // This method doesn't go over the network:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/PreparedStatement.html#setBytes-int-byte:A-
+    this.preparedStatement.setBytes(parameterIndex, x);
   }
 
   @Override
   public void setCharacterStream(int parameterIndex, java.io.Reader reader) throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.PreparedStatement.setCharacterStream", "setCharacterStream");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.preparedStatement.setCharacterStream(parameterIndex, reader);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    // This method doesn't go over the network:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/PreparedStatement.html#setCharacterStream-int-java.io.Reader-
+    this.preparedStatement.setCharacterStream(parameterIndex, reader);
   }
 
   @Override
   public void setCharacterStream(int parameterIndex, java.io.Reader reader, int length)
       throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.PreparedStatement.setCharacterStream", "setCharacterStream");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.preparedStatement.setCharacterStream(parameterIndex, reader, length);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    // This method doesn't go over the network:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/PreparedStatement.html#setCharacterStream-int-java.io.Reader-int-
+    this.preparedStatement.setCharacterStream(parameterIndex, reader, length);
   }
 
   @Override
   public void setCharacterStream(int parameterIndex, java.io.Reader reader, long length)
       throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.PreparedStatement.setCharacterStream", "setCharacterStream");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.preparedStatement.setCharacterStream(parameterIndex, reader, length);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    // This method doesn't go over the network:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/PreparedStatement.html#setCharacterStream-int-java.io.Reader-long-
+    this.preparedStatement.setCharacterStream(parameterIndex, reader, length);
   }
 
   @Override
   public void setClob(int parameterIndex, java.sql.Clob x) throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setClob", "setClob");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.preparedStatement.setClob(parameterIndex, x);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    // This method doesn't go over the network:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/PreparedStatement.html#setClob-int-java.sql.Clob-
+    this.preparedStatement.setClob(parameterIndex, x);
   }
 
   @Override
   public void setClob(int parameterIndex, java.io.Reader reader) throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setClob", "setClob");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.preparedStatement.setClob(parameterIndex, reader);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    // This method doesn't go over the network:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/PreparedStatement.html#setClob-int-java.io.Reader-
+    this.preparedStatement.setClob(parameterIndex, reader);
   }
 
   @Override
   public void setClob(int parameterIndex, java.io.Reader reader, long length) throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setClob", "setClob");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.preparedStatement.setClob(parameterIndex, reader, length);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    // This method doesn't go over the network:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/PreparedStatement.html#setClob-int-java.io.Reader-long-
+    this.preparedStatement.setClob(parameterIndex, reader, length);
   }
 
   @Override
   public void setDate(int parameterIndex, java.sql.Date x) throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setDate", "setDate");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.preparedStatement.setDate(parameterIndex, x);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    // This method doesn't go over the network:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/PreparedStatement.html#setDate-int-java.sql.Date-
+    this.preparedStatement.setDate(parameterIndex, x);
   }
 
   @Override
   public void setDate(int parameterIndex, java.sql.Date x, java.util.Calendar cal)
       throws SQLException {
+    // This method goes over the network:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/PreparedStatement.html#setDate-int-java.sql.Date-java.util.Calendar-
     TrackingOperation trackingOperation =
         Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setDate", "setDate");
 
@@ -999,339 +671,158 @@ public class OcWrapPreparedStatement implements PreparedStatement {
 
   @Override
   public void setDouble(int parameterIndex, double x) throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.PreparedStatement.setDouble", "setDouble");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.preparedStatement.setDouble(parameterIndex, x);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    // This method doesn't go over the network:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/PreparedStatement.html#setDouble-int-double-
+    this.preparedStatement.setDouble(parameterIndex, x);
   }
 
   @Override
   public void setFloat(int parameterIndex, float x) throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.PreparedStatement.setFloat", "setFloat");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.preparedStatement.setFloat(parameterIndex, x);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    // This method doesn't go over the network:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/PreparedStatement.html#setFloat-int-float-
+    this.preparedStatement.setFloat(parameterIndex, x);
   }
 
   @Override
   public void setInt(int parameterIndex, int x) throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setInt", "setInt");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.preparedStatement.setFloat(parameterIndex, x);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    // This method doesn't go over the network:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/PreparedStatement.html#setInt-int-int-
+    this.preparedStatement.setFloat(parameterIndex, x);
   }
 
   @Override
   public void setLong(int parameterIndex, long x) throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setLong", "setLong");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.preparedStatement.setLong(parameterIndex, x);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    // This method doesn't go over the network:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/PreparedStatement.html#setLong-int-long-
+    this.preparedStatement.setLong(parameterIndex, x);
   }
 
   @Override
   public void setNCharacterStream(int parameterIndex, java.io.Reader value) throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.PreparedStatement.setNCharacterStream", "setNCharacterStream");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.preparedStatement.setNCharacterStream(parameterIndex, value);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    // This method doesn't go over the network:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/PreparedStatement.html#setNCharacterStream-int-java.io.Reader-
+    this.preparedStatement.setNCharacterStream(parameterIndex, value);
   }
 
   @Override
   public void setNCharacterStream(int parameterIndex, java.io.Reader value, long length)
       throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.PreparedStatement.setNCharacterStream", "setNCharacterStream");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.preparedStatement.setNCharacterStream(parameterIndex, value, length);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    // This method doesn't go over the network:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/PreparedStatement.html#setNCharacterStream-int-java.io.Reader-long-
+    this.preparedStatement.setNCharacterStream(parameterIndex, value, length);
   }
 
   @Override
   public void setNClob(int parameterIndex, java.sql.NClob value) throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.PreparedStatement.setNClob", "setNClob");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.preparedStatement.setNClob(parameterIndex, value);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    // This method doesn't go over the network:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/PreparedStatement.html#setNClob-int-java.sql.NClob-
+    this.preparedStatement.setNClob(parameterIndex, value);
   }
 
   @Override
   public void setNClob(int parameterIndex, java.io.Reader reader) throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.PreparedStatement.setNClob", "setNClob");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.preparedStatement.setNClob(parameterIndex, reader);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    // This method doesn't go over the network:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/PreparedStatement.html#setNClob-int-java.io.Reader-
+    this.preparedStatement.setNClob(parameterIndex, reader);
   }
 
   @Override
   public void setNClob(int parameterIndex, java.io.Reader reader, long length) throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.PreparedStatement.setNClob", "setNClob");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.preparedStatement.setNClob(parameterIndex, reader, length);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    // This method doesn't go over the network:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/PreparedStatement.html#setNClob-int-java.io.Reader-long-
+    this.preparedStatement.setNClob(parameterIndex, reader, length);
   }
 
   @Override
   public void setNString(int parameterIndex, String value) throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.PreparedStatement.setNString", "setNString");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.preparedStatement.setNString(parameterIndex, value);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    // This method doesn't go over the network:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/PreparedStatement.html#setNString-int-java.lang.String-
+    this.preparedStatement.setNString(parameterIndex, value);
   }
 
   @Override
   public void setNull(int parameterIndex, int sqlType) throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setNull", "setNull");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.preparedStatement.setNull(parameterIndex, sqlType);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    // This method doesn't go over the network:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/PreparedStatement.html#setNull-int-int-
+    this.preparedStatement.setNull(parameterIndex, sqlType);
   }
 
   @Override
   public void setNull(int parameterIndex, int sqlType, String typeName) throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setNull", "setNull");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.preparedStatement.setNull(parameterIndex, sqlType, typeName);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    // This method doesn't go over the network:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/PreparedStatement.html#setNull-int-int-java.lang.String-
+    this.preparedStatement.setNull(parameterIndex, sqlType, typeName);
   }
 
   @Override
   public void setObject(int parameterIndex, Object x) throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.PreparedStatement.setObject", "setObject");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.preparedStatement.setObject(parameterIndex, x);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    // This method doesn't go over the network:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/PreparedStatement.html#setObject-int-java.lang.Object-
+    this.preparedStatement.setObject(parameterIndex, x);
   }
 
   @Override
   public void setObject(int parameterIndex, Object x, int targetSqlType) throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.PreparedStatement.setObject", "setObject");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.preparedStatement.setObject(parameterIndex, x, targetSqlType);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    // This method doesn't go over the network:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/PreparedStatement.html#setObject-int-java.lang.Object-java.sql.SQLType-
+    this.preparedStatement.setObject(parameterIndex, x, targetSqlType);
   }
 
   @Override
   public void setObject(int parameterIndex, Object x, int targetSqlType, int scaleOrLength)
       throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.PreparedStatement.setObject", "setObject");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.preparedStatement.setObject(parameterIndex, x, targetSqlType, scaleOrLength);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    // This method doesn't go over the network:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/PreparedStatement.html#setObject-int-java.lang.Object-java.sql.SQLType-int-
+    this.preparedStatement.setObject(parameterIndex, x, targetSqlType, scaleOrLength);
   }
 
   @Override
   public void setRef(int parameterIndex, java.sql.Ref x) throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setRef", "setRef");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.preparedStatement.setRef(parameterIndex, x);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    // This method doesn't go over the network:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/PreparedStatement.html#setRef-int-java.sql.Ref-
+    this.preparedStatement.setRef(parameterIndex, x);
   }
 
   @Override
   public void setRowId(int parameterIndex, java.sql.RowId x) throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.PreparedStatement.setRowId", "setRowId");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.preparedStatement.setRowId(parameterIndex, x);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    // This method doesn't go over the network:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/PreparedStatement.html#setRowId-int-java.sql.RowId-
+    this.preparedStatement.setRowId(parameterIndex, x);
   }
 
   @Override
   public void setShort(int parameterIndex, short x) throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.PreparedStatement.setShort", "setShort");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.preparedStatement.setShort(parameterIndex, x);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    // This method doesn't go over the network:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/PreparedStatement.html#setShort-int-short-
+    this.preparedStatement.setShort(parameterIndex, x);
   }
 
   @Override
   public void setSQLXML(int parameterIndex, java.sql.SQLXML xmlObject) throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.PreparedStatement.setSQLXML", "setSQLXML");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.preparedStatement.setSQLXML(parameterIndex, xmlObject);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    // This method doesn't go over the network:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/PreparedStatement.html#setSQLXML-int-java.sql.SQLXML-
+    this.preparedStatement.setSQLXML(parameterIndex, xmlObject);
   }
 
   @Override
   public void setString(int parameterIndex, String x) throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.PreparedStatement.setString", "setString");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.preparedStatement.setString(parameterIndex, x);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    // This method doesn't go over the network:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/PreparedStatement.html#setString-int-java.lang.String-
+    this.preparedStatement.setString(parameterIndex, x);
   }
 
   @Override
   public void setTime(int parameterIndex, java.sql.Time x) throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setTime", "setTime");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.preparedStatement.setTime(parameterIndex, x);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    // This method doesn't go over the network:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/PreparedStatement.html#setTime-int-java.sql.Time-
+    this.preparedStatement.setTime(parameterIndex, x);
   }
 
   @Override
   public void setTime(int parameterIndex, java.sql.Time x, java.util.Calendar cal)
       throws SQLException {
+    // This method goes over the network:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/PreparedStatement.html#setTime-int-java.sql.Time-java.util.Calendar-
     TrackingOperation trackingOperation =
         Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setTime", "setTime");
 
@@ -1347,23 +838,16 @@ public class OcWrapPreparedStatement implements PreparedStatement {
 
   @Override
   public void setTimestamp(int parameterIndex, java.sql.Timestamp x) throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.PreparedStatement.setTimestamp", "setTimestamp");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.preparedStatement.setTimestamp(parameterIndex, x);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    // This method doesn't go over the network:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/PreparedStatement.html#setTimestamp-int-java.sql.Timestamp-
+    this.preparedStatement.setTimestamp(parameterIndex, x);
   }
 
   @Override
   public void setTimestamp(int parameterIndex, java.sql.Timestamp x, java.util.Calendar cal)
       throws SQLException {
+    // This method goes over the network:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/PreparedStatement.html#setTimestamp-int-java.sql.Timestamp-java.util.Calendar-
     TrackingOperation trackingOperation =
         Observability.createRoundtripTrackingSpan(
             "java.sql.PreparedStatement.setTimestamp", "setTimestamp");
@@ -1382,209 +866,71 @@ public class OcWrapPreparedStatement implements PreparedStatement {
   @Override
   public void setUnicodeStream(int parameterIndex, java.io.InputStream x, int length)
       throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.PreparedStatement.setUnicodeStream", "setUnicodeStream");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.preparedStatement.setUnicodeStream(parameterIndex, x, length);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    // This method doesn't go over the network:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/PreparedStatement.html#setUnicodeStream-int-java.io.InputStream-int-
+    this.preparedStatement.setUnicodeStream(parameterIndex, x, length);
   }
 
   @Override
   public void setURL(int parameterIndex, java.net.URL x) throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.setURL", "setURL");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.preparedStatement.setURL(parameterIndex, x);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    // This method doesn't go over the network:
+    // https://docs.oracle.com/javase/8/docs/api/java/sql/PreparedStatement.html#setURL-int-java.net.URL-
+    this.preparedStatement.setURL(parameterIndex, x);
   }
 
   @Override
   public boolean isClosed() throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.PreparedStatement.isClosed", "isClosed");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      return this.preparedStatement.isClosed();
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    return this.preparedStatement.isClosed();
   }
 
   @Override
   public boolean isCloseOnCompletion() throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.PreparedStatement.isCloseOnCompletion", "isCloseOnCompletion");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      return this.preparedStatement.isCloseOnCompletion();
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    return this.preparedStatement.isCloseOnCompletion();
   }
 
   @Override
   public boolean isPoolable() throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.PreparedStatement.isPoolable", "isPoolable");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      return this.preparedStatement.isPoolable();
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    return this.preparedStatement.isPoolable();
   }
 
   @Override
   public void setCursorName(String cursorName) throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.PreparedStatement.setCursorName", "setCursorName");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.preparedStatement.setCursorName(cursorName);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    this.preparedStatement.setCursorName(cursorName);
   }
 
   @Override
   public void setEscapeProcessing(boolean enable) throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.PreparedStatement.setEscapeProcessing", "setEscapeProcessing");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.preparedStatement.setEscapeProcessing(enable);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    this.preparedStatement.setEscapeProcessing(enable);
   }
 
   @Override
   public void setFetchDirection(int direction) throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.PreparedStatement.setFetchDirection", "setFetchDirection");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.preparedStatement.setFetchDirection(direction);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    this.preparedStatement.setFetchDirection(direction);
   }
 
   @Override
   public void setFetchSize(int rows) throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.PreparedStatement.setFetchSize", "setFetchSize");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.preparedStatement.setFetchSize(rows);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    this.preparedStatement.setFetchSize(rows);
   }
 
   @Override
   public void setMaxFieldSize(int max) throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.PreparedStatement.setMaxFieldSize", "setMaxFieldSize");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.preparedStatement.setMaxFieldSize(max);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    this.preparedStatement.setMaxFieldSize(max);
   }
 
   @Override
   public void setMaxRows(int max) throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.PreparedStatement.setMaxRows", "setMaxRows");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.preparedStatement.setMaxRows(max);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    this.preparedStatement.setMaxRows(max);
   }
 
   @Override
   public void setPoolable(boolean poolable) throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.PreparedStatement.setPoolable", "setPoolable");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.preparedStatement.setPoolable(poolable);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    this.preparedStatement.setPoolable(poolable);
   }
 
   @Override
   public void setQueryTimeout(int seconds) throws SQLException {
-    TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan(
-            "java.sql.PreparedStatement.setQueryTimeout", "setQueryTimeout");
-
-    try (Scope ws = trackingOperation.withSpan()) {
-      this.preparedStatement.setQueryTimeout(seconds);
-    } catch (Exception e) {
-      trackingOperation.endWithException(e);
-      throw e;
-    } finally {
-      trackingOperation.end();
-    }
+    this.preparedStatement.setQueryTimeout(seconds);
   }
 
   @Override
