@@ -19,7 +19,6 @@ import io.opencensus.stats.Aggregation;
 import io.opencensus.stats.Aggregation.Distribution;
 import io.opencensus.stats.BucketBoundaries;
 import io.opencensus.stats.Measure.MeasureDouble;
-import io.opencensus.stats.Measure.MeasureLong;
 import io.opencensus.stats.Stats;
 import io.opencensus.stats.StatsRecorder;
 import io.opencensus.stats.View;
@@ -38,8 +37,7 @@ import io.opencensus.trace.Tracer;
 import io.opencensus.trace.Tracing;
 import java.util.Arrays;
 import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.Map;
+import javax.annotation.Nullable;
 
 public final class Observability {
 
@@ -48,14 +46,12 @@ public final class Observability {
   private static final Tracer tracer = Tracing.getTracer();
 
   // Units of measurement
-  private static final String BYTES = "By";
-  private static final String DIMENSIONLESS = "1";
   private static final String MILLISECONDS = "ms";
 
   // Tag keys
-  public static final TagKey KEY_METHOD = TagKey.create("method");
-  public static final TagKey KEY_ERROR = TagKey.create("error");
-  public static final TagKey KEY_STATUS = TagKey.create("status");
+  public static final TagKey JAVA_SQL_METHOD = TagKey.create("java_sql_method");
+  public static final TagKey JAVA_SQL_ERROR = TagKey.create("java_sql_error");
+  public static final TagKey JAVA_SQL_STATUS = TagKey.create("java_sql_status");
 
   // Tag values
   private static final TagValue VALUE_OK = TagValue.create("OK");
@@ -66,28 +62,6 @@ public final class Observability {
       MeasureDouble.create(
           "java.sql/latency", "The latency of calls in milliseconds", MILLISECONDS);
 
-  // Default distribution buckets.
-  private static final Aggregation DEFAULT_BYTES_DISTRIBUTION =
-      Distribution.create(
-          BucketBoundaries.create(
-              Arrays.asList(
-                  // [0, 1KB,  2KB,    4KB,    16KB,    64KB,    256KB,    1MB,       4MB,
-                  // 16MB,       64MB,       256MB,       1GB,          2GB,          4GB]
-                  0.0,
-                  1024.0,
-                  2048.0,
-                  4096.0,
-                  16384.0,
-                  65536.0,
-                  262144.0,
-                  1048576.0,
-                  4194304.0,
-                  16777216.0,
-                  67108864.0,
-                  268435456.0,
-                  1073741824.0,
-                  2147483648.0,
-                  4294967296.0)));
   private static final Aggregation DEFAULT_MILLISECONDS_DISTRIBUTION =
       Distribution.create(
           BucketBoundaries.create(
@@ -127,22 +101,8 @@ public final class Observability {
                   200000.0,
                   500000.0)));
 
-  private static TagContext buildTagContextWithTags(Map<TagKey, TagValue> tags) {
-    TagContextBuilder tagContextBuilder = tagger.currentBuilder();
-    for (Map.Entry<TagKey, TagValue> tag : tags.entrySet()) {
-      tagContextBuilder.put(tag.getKey(), tag.getValue());
-    }
-    return tagContextBuilder.build();
-  }
-
-  private static void recordStatWithTags(
-      MeasureLong measureLong, long value, Map<TagKey, TagValue> tags) {
-    statsRecorder.newMeasureMap().put(measureLong, value).record(buildTagContextWithTags(tags));
-  }
-
-  private static void recordStatWithTags(
-      MeasureDouble measureDouble, double value, Map<TagKey, TagValue> tags) {
-    statsRecorder.newMeasureMap().put(measureDouble, value).record(buildTagContextWithTags(tags));
+  private static void recordStatWithTags(double value, TagContext tagContext) {
+    statsRecorder.newMeasureMap().put(Observability.MEASURE_LATENCY_MS, value).record(tagContext);
   }
 
   public enum TraceOption {
@@ -173,7 +133,7 @@ public final class Observability {
       this(method, null);
     }
 
-    TrackingOperation(String method, String sql) {
+    TrackingOperation(String method, @Nullable String sql) {
       startTimeNs = System.nanoTime();
       span = tracer.spanBuilder(method).startSpan();
       this.method = method;
@@ -193,31 +153,32 @@ public final class Observability {
       try {
         // Finally record the latency of the entire call,
         // as well as "status": "OK" for non-error calls.
-        Map<TagKey, TagValue> tags = new HashMap<>();
-        tags.put(KEY_METHOD, TagValue.create(this.method));
+        TagContextBuilder tagContextBuilder = tagger.currentBuilder();
+        tagContextBuilder.put(JAVA_SQL_METHOD, TagValue.create(this.method));
 
         if (recordedError == null) {
-          tags.put(KEY_STATUS, VALUE_OK);
+          tagContextBuilder.put(JAVA_SQL_STATUS, VALUE_OK);
         } else {
-          tags.put(KEY_ERROR, TagValue.create(recordedError));
-          tags.put(KEY_STATUS, VALUE_ERROR);
+          tagContextBuilder.put(JAVA_SQL_ERROR, TagValue.create(recordedError));
+          tagContextBuilder.put(JAVA_SQL_STATUS, VALUE_ERROR);
         }
 
         long totalTimeNs = System.nanoTime() - this.startTimeNs;
         double timeSpentMs = ((double) totalTimeNs) / 1e6;
 
         // Now finally record all the stats the same tags.
-        recordStatWithTags(MEASURE_LATENCY_MS, timeSpentMs, tags);
+        recordStatWithTags(timeSpentMs, tagContextBuilder.build());
       } finally {
+        span.end();
         closed = true;
       }
     }
 
-    // Ends and Annotates the underlying span with the description
-    // of the exception. The actual ending will be performed by end.
-    void endWithException(Exception e) {
+    // Annotates the underlying span with the description of the exception. The actual ending
+    // will be performed by end.
+    void recordException(Exception e) {
       recordedError = e.toString();
-      span.setStatus(Status.INTERNAL.withDescription(recordedError));
+      span.setStatus(Status.UNKNOWN.withDescription(recordedError));
     }
   }
 
@@ -240,13 +201,13 @@ public final class Observability {
               "The distribution of the latencies of various calls in milliseconds",
               MEASURE_LATENCY_MS,
               DEFAULT_MILLISECONDS_DISTRIBUTION,
-              Arrays.asList(KEY_METHOD, KEY_ERROR, KEY_STATUS)),
+              Arrays.asList(JAVA_SQL_METHOD, JAVA_SQL_ERROR, JAVA_SQL_STATUS)),
           View.create(
               Name.create("java.sql/client/calls"),
               "The number of various calls of methods",
               MEASURE_LATENCY_MS,
               countAggregation,
-              Arrays.asList(KEY_METHOD, KEY_ERROR, KEY_STATUS))
+              Arrays.asList(JAVA_SQL_METHOD, JAVA_SQL_ERROR, JAVA_SQL_STATUS))
         };
 
     ViewManager viewManager = Stats.getViewManager();
