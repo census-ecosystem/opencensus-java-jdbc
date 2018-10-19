@@ -8,7 +8,7 @@ apply plugin: "net.ltgt.errorprone"
 apply plugin: "signing"
 
 group = "io.opencensus.integration"
-version = "0.0.2" // CURRENT_OCJDBC_VERSION
+version = "0.1.0" // CURRENT_OCJDBC_VERSION
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
