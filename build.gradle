@@ -48,6 +48,10 @@ dependencies {
 
     compileOnly "com.google.code.findbugs:jsr305:${findBugsJsr305Version}"
     compileOnly "com.google.errorprone:error_prone_annotations:${errorProneVersion}"
+
+    testCompile 'junit:junit:4.12'
+    testCompile 'com.google.truth:truth:0.30'
+    testCompile 'org.mockito:mockito-core:1.9.5'
 }
 
 compileJava {
