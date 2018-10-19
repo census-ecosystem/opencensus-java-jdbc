@@ -39,7 +39,10 @@ import java.util.Arrays;
 import java.util.EnumSet;
 import javax.annotation.Nullable;
 
+/** Observability for JDBC. */
 public final class Observability {
+
+  private Observability() {}
 
   private static final StatsRecorder statsRecorder = Stats.getStatsRecorder();
   private static final Tagger tagger = Tags.getTagger();
@@ -49,20 +52,22 @@ public final class Observability {
   private static final String MILLISECONDS = "ms";
 
   // Tag keys
-  public static final TagKey JAVA_SQL_METHOD = TagKey.create("java_sql_method");
-  public static final TagKey JAVA_SQL_ERROR = TagKey.create("java_sql_error");
-  public static final TagKey JAVA_SQL_STATUS = TagKey.create("java_sql_status");
+  static final TagKey JAVA_SQL_METHOD = TagKey.create("java_sql_method");
+  static final TagKey JAVA_SQL_ERROR = TagKey.create("java_sql_error");
+  static final TagKey JAVA_SQL_STATUS = TagKey.create("java_sql_status");
 
   // Tag values
-  private static final TagValue VALUE_OK = TagValue.create("OK");
-  private static final TagValue VALUE_ERROR = TagValue.create("ERROR");
+  // VisibleForTesting
+  static final TagValue VALUE_OK = TagValue.create("OK");
+  static final TagValue VALUE_ERROR = TagValue.create("ERROR");
 
   // Measures
-  public static final MeasureDouble MEASURE_LATENCY_MS =
+  static final MeasureDouble MEASURE_LATENCY_MS =
       MeasureDouble.create(
           "java.sql/latency", "The latency of calls in milliseconds", MILLISECONDS);
 
-  private static final Aggregation DEFAULT_MILLISECONDS_DISTRIBUTION =
+  // VisibleForTesting
+  static final Aggregation DEFAULT_MILLISECONDS_DISTRIBUTION =
       Distribution.create(
           BucketBoundaries.create(
               Arrays.asList(
@@ -101,9 +106,23 @@ public final class Observability {
                   200000.0,
                   500000.0)));
 
-  private static void recordStatWithTags(double value, TagContext tagContext) {
-    statsRecorder.newMeasureMap().put(Observability.MEASURE_LATENCY_MS, value).record(tagContext);
-  }
+  static final Aggregation COUNT = Aggregation.Count.create();
+
+  static final View SQL_CLIENT_LATENCY_VIEW =
+      View.create(
+          Name.create("java.sql/client/latency"),
+          "The distribution of the latencies of various calls in milliseconds",
+          MEASURE_LATENCY_MS,
+          DEFAULT_MILLISECONDS_DISTRIBUTION,
+          Arrays.asList(JAVA_SQL_METHOD, JAVA_SQL_ERROR, JAVA_SQL_STATUS));
+
+  static final View SQL_CLIENT_CALLS_VIEW =
+      View.create(
+          Name.create("java.sql/client/calls"),
+          "The number of various calls of methods",
+          MEASURE_LATENCY_MS,
+          COUNT,
+          Arrays.asList(JAVA_SQL_METHOD, JAVA_SQL_ERROR, JAVA_SQL_STATUS));
 
   public enum TraceOption {
     NONE,
@@ -129,17 +148,34 @@ public final class Observability {
     private boolean closed;
     private String recordedError;
 
+    private final StatsRecorder statsRecorder;
+    private final Tagger tagger;
+    private final Tracer tracer;
+
     TrackingOperation(String method) {
       this(method, null);
     }
 
     TrackingOperation(String method, @Nullable String sql) {
+      this(method, sql, Observability.statsRecorder, Observability.tagger, Observability.tracer);
+    }
+
+    // VisibleForTesting
+    TrackingOperation(
+        String method,
+        @Nullable String sql,
+        StatsRecorder statsRecorder,
+        Tagger tagger,
+        Tracer tracer) {
       startTimeNs = System.nanoTime();
       span = tracer.spanBuilder(method).startSpan();
       this.method = method;
       if (sql != null) {
         span.putAttribute("sql", AttributeValue.stringAttributeValue(sql));
       }
+      this.statsRecorder = statsRecorder;
+      this.tagger = tagger;
+      this.tracer = tracer;
     }
 
     @SuppressWarnings("MustBeClosedChecker")
@@ -180,6 +216,10 @@ public final class Observability {
       recordedError = e.toString();
       span.setStatus(Status.UNKNOWN.withDescription(recordedError));
     }
+
+    private void recordStatWithTags(double value, TagContext tagContext) {
+      statsRecorder.newMeasureMap().put(Observability.MEASURE_LATENCY_MS, value).record(tagContext);
+    }
   }
 
   static TrackingOperation createRoundtripTrackingSpan(String method) {
@@ -192,27 +232,12 @@ public final class Observability {
   }
 
   public static void registerAllViews() {
-    Aggregation countAggregation = Aggregation.Count.create();
+    registerAllViews(Stats.getViewManager());
+  }
 
-    View[] views =
-        new View[] {
-          View.create(
-              Name.create("java.sql/client/latency"),
-              "The distribution of the latencies of various calls in milliseconds",
-              MEASURE_LATENCY_MS,
-              DEFAULT_MILLISECONDS_DISTRIBUTION,
-              Arrays.asList(JAVA_SQL_METHOD, JAVA_SQL_ERROR, JAVA_SQL_STATUS)),
-          View.create(
-              Name.create("java.sql/client/calls"),
-              "The number of various calls of methods",
-              MEASURE_LATENCY_MS,
-              countAggregation,
-              Arrays.asList(JAVA_SQL_METHOD, JAVA_SQL_ERROR, JAVA_SQL_STATUS))
-        };
-
-    ViewManager viewManager = Stats.getViewManager();
-
-    for (View v : views) {
+  // VisibleForTesting
+  static void registerAllViews(ViewManager viewManager) {
+    for (View v : Arrays.asList(SQL_CLIENT_LATENCY_VIEW, SQL_CLIENT_CALLS_VIEW)) {
       viewManager.registerView(v);
     }
   }
