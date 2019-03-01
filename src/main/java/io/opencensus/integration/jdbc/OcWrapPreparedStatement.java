@@ -666,7 +666,7 @@ public class OcWrapPreparedStatement implements PreparedStatement {
   public void setInt(int parameterIndex, int x) throws SQLException {
     // This method doesn't go over the network:
     // https://docs.oracle.com/javase/8/docs/api/java/sql/PreparedStatement.html#setInt-int-int-
-    this.preparedStatement.setFloat(parameterIndex, x);
+    this.preparedStatement.setInt(parameterIndex, x);
   }
 
   @Override
