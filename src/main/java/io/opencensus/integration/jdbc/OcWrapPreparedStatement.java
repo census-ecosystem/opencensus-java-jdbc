@@ -28,15 +28,24 @@ import java.util.EnumSet;
 public class OcWrapPreparedStatement implements PreparedStatement {
   private final PreparedStatement preparedStatement;
   private final boolean shouldAnnotateSpansWithSQL;
+  private final String sql;
 
   public OcWrapPreparedStatement(PreparedStatement pstmt, EnumSet<TraceOption> opts) {
     this.preparedStatement = pstmt;
     this.shouldAnnotateSpansWithSQL = Observability.shouldAnnotateSpansWithSQL(opts);
+    this.sql = null;
   }
 
   public OcWrapPreparedStatement(PreparedStatement pstmt, boolean shouldAnnotateSpansWithSQL) {
     this.preparedStatement = pstmt;
     this.shouldAnnotateSpansWithSQL = shouldAnnotateSpansWithSQL;
+    this.sql = null;
+  }
+
+  public OcWrapPreparedStatement(PreparedStatement pstmt, EnumSet<TraceOption> opts, String SQL) {
+    this.preparedStatement = pstmt;
+    this.shouldAnnotateSpansWithSQL = Observability.shouldAnnotateSpansWithSQL(opts);
+    this.sql = this.shouldAnnotateSpansWithSQL ? SQL : null;
   }
 
   @Override
@@ -145,7 +154,8 @@ public class OcWrapPreparedStatement implements PreparedStatement {
   @Override
   public boolean execute() throws SQLException {
     TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.execute");
+        Observability.createRoundtripTrackingSpan(
+            "java.sql.PreparedStatement.execute", this.shouldAnnotateSpansWithSQL, this.sql);
 
     try (Scope ws = trackingOperation.withSpan()) {
       return this.preparedStatement.execute();
@@ -312,7 +322,8 @@ public class OcWrapPreparedStatement implements PreparedStatement {
   @Override
   public java.sql.ResultSet executeQuery() throws SQLException {
     TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.executeQuery");
+        Observability.createRoundtripTrackingSpan(
+            "java.sql.PreparedStatement.executeQuery", this.shouldAnnotateSpansWithSQL, this.sql);
 
     try (Scope ws = trackingOperation.withSpan()) {
       java.sql.ResultSet rs = this.preparedStatement.executeQuery();
@@ -328,7 +339,8 @@ public class OcWrapPreparedStatement implements PreparedStatement {
   @Override
   public int executeUpdate() throws SQLException {
     TrackingOperation trackingOperation =
-        Observability.createRoundtripTrackingSpan("java.sql.PreparedStatement.executeUpdate");
+        Observability.createRoundtripTrackingSpan(
+            "java.sql.PreparedStatement.executeUpdate", this.shouldAnnotateSpansWithSQL, this.sql);
 
     try (Scope ws = trackingOperation.withSpan()) {
       return this.preparedStatement.executeUpdate();
